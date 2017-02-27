@@ -1,0 +1,336 @@
+<?xml version="1.0" ?>
+<violin_model name="'Le Messie' Stradivari 1716">
+<description>
+"Le Messie" (also known as "Salabue") Stradivari is based on detailed plans purchased from the Ashmolean Museum, Oxford.
+</description>
+	<violin_ribs>
+		<curve2f name="rib_internal_lower_bout">
+			<order value="2" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0" />
+				<double value="1" />
+				<double value="2" />
+				<double value="3" />
+				<double value="4" />
+				<double value="5" />
+				<double value="6" />
+				<double value="7" />
+				<double value="8" />
+				<double value="9" />
+				<double value="10" />
+				<double value="11" />
+				<double value="12" />
+				<double value="13" />
+				<double value="14" />
+				<double value="15" />
+				<double value="15" />
+				<double value="15" />
+			</knot>
+			<points>
+					<point2f x="-58.1599" y="-89.3271" />
+					<point2f x="-65.1033" y="-87.0126" />
+					<point2f x="-76.4298" y="-89.622" />
+					<point2f x="-90.7" y="-95.7231" />
+					<point2f x="-110.755" y="-102.921" />
+					<point2f x="-139.515" y="-105.143" />
+					<point2f x="-173.898" y="-92.3707" />
+					<point2f x="-196.906" y="-60.3028" />
+					<point2f x="-203.824" y="-10.5502" />
+					<point2f x="-199.25" y="33.0879" />
+					<point2f x="-184.483" y="70.1441" />
+					<point2f x="-156.394" y="93.1415" />
+					<point2f x="-126.994" y="98.1069" />
+					<point2f x="-107.432" y="94.4476" />
+					<point2f x="-81.894" y="85.5671" />
+					<point2f x="-67.187" y="81.9037" />
+					<point2f x="-58.8916" y="83.7373" />
+			</points>
+		</curve2f>
+		<curve2f name="rib_internal_centre_bout_bass">
+			<order value="2" />
+			<knot>
+				<double value="15" />
+				<double value="15" />
+				<double value="15" />
+				<double value="16" />
+				<double value="17" />
+				<double value="18" />
+				<double value="19" />
+				<double value="20" />
+				<double value="21" />
+				<double value="22" />
+				<double value="23" />
+				<double value="23" />
+				<double value="23" />
+			</knot>
+			<points>
+					<point2f x="-58.8916" y="83.7373" />
+					<point2f x="-61.2476" y="77.599" />
+					<point2f x="-59.4263" y="67.1385" />
+					<point2f x="-51.8479" y="57.3389" />
+					<point2f x="-34.1027" y="49.3451" />
+					<point2f x="-3.63943" y="44.7947" />
+					<point2f x="20.5338" y="48.3226" />
+					<point2f x="30.0856" y="55.4182" />
+					<point2f x="34.7764" y="65.5706" />
+					<point2f x="33.4698" y="70.6665" />
+			</points>
+		</curve2f>
+		<curve2f name="rib_internal_upper_bout">
+			<order value="2" />
+			<knot>
+				<double value="23" />
+				<double value="23" />
+				<double value="23" />
+				<double value="24" />
+				<double value="25" />
+				<double value="26" />
+				<double value="27" />
+				<double value="28" />
+				<double value="29" />
+				<double value="30" />
+				<double value="31" />
+				<double value="32" />
+				<double value="33" />
+				<double value="34" />
+				<double value="35" />
+				<double value="36" />
+				<double value="37" />
+				<double value="38" />
+				<double value="39" />
+				<double value="40" />
+				<double value="40" />
+				<double value="40" />
+			</knot>
+			<points>
+					<point2f x="33.4698" y="70.6665" />
+					<point2f x="39.2231" y="68.3147" />
+					<point2f x="49.9382" y="68.7067" />
+					<point2f x="62.352" y="72.2348" />
+					<point2f x="80.3746" y="77.3669" />
+					<point2f x="104.69" y="76.0243" />
+					<point2f x="130.824" y="62.9572" />
+					<point2f x="146.843" y="38.3903" />
+					<point2f x="151.417" y="16.6573" />
+					<point2f x="152.332" y="-3.72824" />
+					<point2f x="150.112" y="-30.1782" />
+					<point2f x="144.231" y="-49.5188" />
+					<point2f x="134.561" y="-64.6777" />
+					<point2f x="118.357" y="-77.1055" />
+					<point2f x="98.3624" y="-82.7247" />
+					<point2f x="75.5378" y="-82.9868" />
+					<point2f x="55.4125" y="-76.4526" />
+					<point2f x="38.0315" y="-73.3162" />
+					<point2f x="31.6188" y="-77.056" />
+			</points>
+		</curve2f>
+		<curve2f name="block_bass_upper_bout">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.5" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="20" y="55" />
+				<point2f x="50" y="55" />
+				<point2f x="50" y="90" />
+			</points>
+		</curve2f>
+		<curve2f name="rib_internal_centre_bout_trbl">
+			<order value="2" />
+			<knot>
+				<double value="40" />
+				<double value="40" />
+				<double value="40" />
+				<double value="41" />
+				<double value="42" />
+				<double value="43" />
+				<double value="44" />
+				<double value="45" />
+				<double value="46" />
+				<double value="47" />
+				<double value="48" />
+				<double value="49" />
+				<double value="49" />
+				<double value="49" />
+			</knot>
+			<points>
+					<point2f x="31.6188" y="-77.056" />
+					<point2f x="32.2814" y="-72.2707" />
+					<point2f x="29.5371" y="-64.4297" />
+					<point2f x="23.3949" y="-56.5886" />
+					<point2f x="3.40027" y="-50.4465" />
+					<point2f x="-22.4904" y="-52.5373" />
+					<point2f x="-45.4914" y="-60.2479" />
+					<point2f x="-54.7702" y="-69.7881" />
+					<point2f x="-58.4295" y="-79.459" />
+					<point2f x="-58.9522" y="-85.8627" />
+					<point2f x="-58.1591" y="-89.5509" />
+			</points>
+		</curve2f>
+		<curve2f name="block_bass_lower_bout">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.5" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="-40" y="65" />
+				<point2f x="-70" y="65" />
+				<point2f x="-70" y="120" />
+			</points>
+		</curve2f>
+		<curve2f name="block_trbl_lower_bout">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.5" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="-40" y="-70" />
+				<point2f x="-70" y="-70" />
+				<point2f x="-70" y="-120" />
+			</points>
+		</curve2f>
+		<curve2f name="block_trbl_upper_bout">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.5" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="20" y="-60" />
+				<point2f x="50" y="-60" />
+				<point2f x="50" y="-120" />
+			</points>
+		</curve2f>
+		<curve2f name="block_neck">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.333333" />
+				<double value="0.666667" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="160" y="15" />
+				<point2f x="135" y="15" />
+				<point2f x="135" y="-15" />
+				<point2f x="160" y="-15" />
+			</points>
+		</curve2f>
+		<curve2f name="block_bottom">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.333333" />
+				<double value="0.666667" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="-210" y="15" />
+				<point2f x="-185" y="15" />
+				<point2f x="-185" y="-25" />
+				<point2f x="-210" y="-25" />
+			</points>
+		</curve2f>
+		<curve2f name="centre_line">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="-210" y="0" />
+				<point2f x="160" y="0" />
+			</points>
+		</curve2f>
+		<curve2f name="clamp_hole">
+			<order value="1" />
+			<knot>
+				<double value="0" />
+				<double value="0" />
+				<double value="0.25" />
+				<double value="0.5" />
+				<double value="0.75" />
+				<double value="1" />
+				<double value="1" />
+			</knot>
+			<points>
+				<point2f x="-150" y="-35" />
+				<point2f x="105" y="-35" />
+				<point2f x="105" y="35" />
+				<point2f x="-150" y="35" />
+				<point2f x="-150" y="-35" />
+			</points>
+		</curve2f>
+		<float name="rib_mould_depth" value="15" />
+		<float name="rib_mould_thickness" value="10" />
+	</violin_ribs>
+</violin_model>
+<toolpath type="toolpath_RibMould">
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath3_RibMould.txt" />
+	<tool name="6.35mm End Mill">
+		<float name="diameter" value="10.0" />
+		<string type="EndMill" />
+	</tool>
+	<float name="max_feedrate" value="6000" />
+	<float name="z_feedrate" value="500" />
+	<float name="xy_feedrate" value="1000" />
+	<float name="spindle_speed" value="22000" />
+	<float name="safe_z" value="20" />
+	<float name="mould_top_z" value="12.0" />
+	<float name="mould_bottom_z" value="0.0" />
+	<float name="step_z" value="5.0" />
+</toolpath>
+<toolpath type="toolpath_TrimBlocksCentreBout">
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath4_TrimBlocksCentreBout.txt" />
+	<tool name="6.35mm End Mill">
+		<float name="diameter" value="0.0" />
+		<string type="EndMill" />
+	</tool>
+	<float name="max_feedrate" value="6000" />
+	<float name="z_feedrate" value="500" />
+	<float name="xy_feedrate" value="1000" />
+	<float name="spindle_speed" value="22000" />
+	<float name="safe_z" value="50" />
+	<float name="block_top_z" value="32.0" />
+	<float name="block_bottom_z" value="0.0" />
+	<float name="step_z" value="5.0" />
+</toolpath>
+<toolpath type="toolpath_TrimBlocksEndBouts">
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath5_TrimBlocksEndBouts.txt" />
+	<tool name="6.35mm End Mill">
+		<float name="diameter" value="0.0" />
+		<string type="EndMill" />
+	</tool>
+	<float name="max_feedrate" value="6000" />
+	<float name="z_feedrate" value="500" />
+	<float name="xy_feedrate" value="1000" />
+	<float name="spindle_speed" value="22000" />
+	<float name="safe_z" value="50" />
+	<float name="block_top_z" value="32.0" />
+	<float name="block_bottom_z" value="0.0" />
+	<float name="step_z" value="5.0" />
+</toolpath>
+
