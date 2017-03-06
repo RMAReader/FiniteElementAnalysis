@@ -16,8 +16,10 @@
 #define CURVE3F bspline::curve<bspline::vec3<float>>
 #define CURVE2D bspline::curve<bspline::vec2<double>>
 #define CURVE3D bspline::curve<bspline::vec3<double>>
+#define LATTICE3F bspline::lattice<bspline::vec3<float>>
 #define SURFACE3F bspline::surface<bspline::vec3<float>>
 #define SURFACE3D bspline::surface<bspline::vec3<double>>
+#define TRIANGLE3F bspline::triangle3f
 
 
 namespace bspline{
@@ -488,6 +490,64 @@ namespace bspline{
 	};
 
 
+	
+
+	template <class T>
+	class lattice
+	{
+	public:
+		std::vector<T> data;
+		int rows, cols;
+
+		lattice(){}
+
+		lattice(lattice& base){
+			rows = base.rows;
+			cols = base.cols;
+			data = base.data;
+		}
+
+		lattice(int rows, int cols){
+			this->rows = rows;
+			this->cols = cols;
+			data = std::vector < T >(rows * cols);
+			//points.resize(rows * cols);
+		}
+		
+		lattice(std::vector<T>& p, int rows, int cols){
+			if (p.size() == rows * cols){
+				this->data = p;
+				this->rows = rows;
+				this->cols = cols;
+			}
+		}
+		
+		T GetPoint(int row, int col){
+			int i = row * cols + col;
+			return data[i];
+		}
+		std::vector<T> GetRow(int row){
+			std::vector < T > slice(cols);
+			//slice.resize(cols);
+			int offset = row * cols;
+			for (int i = 0; i < cols; i++){
+				slice[i] = data[offset + i];
+			}
+			return slice;
+		}
+		std::vector<T> GetCol(int col){
+			std::vector < T > slice(rows);
+			//slice.resize(cols);
+			for (int i = 0; i < rows; i++){
+				slice[i] = data[i * cols + col];
+			}
+			return slice;
+		}
+		void SetPoint(int row, int col, T p){
+			data[row * cols + col] = p;
+		}
+	};
+
 
 	template <class T>
 	class surface
@@ -495,7 +555,7 @@ namespace bspline{
 	public:
 		int p; 
 		int q;
-		std::vector<T> points;
+		lattice<T> points;
 		std::vector<double> knotx;
 		std::vector<double> knoty;
 
@@ -504,12 +564,12 @@ namespace bspline{
 		surface(surface& base){
 			p = base.p;
 			q = base.q;
-			points = base.points;
+			points = lattice<T>(base.points);
 			knotx = base.knotx;
 			knoty = base.knoty;
 		}
 
-		surface(int p, int q, std::vector<double>& knotx, std::vector<double>& knoty, std::vector<T>& points)
+		surface(int p, int q, std::vector<double>& knotx, std::vector<double>& knoty, lattice<T>& points)
 		{
 			this->p = p;
 			this->q = q;
@@ -527,13 +587,11 @@ namespace bspline{
 		//}
 
 		T evaluate(double u, double v){
-			std::vector<T> c(knotx.size() - p - 1);
-			int i = 0;
-			for (int j = 0; j < points.size(); j += knotx.size() - p - 1){
-				c[i] = evaluate_curve(q, *(knoty.data()), knoty.size(), points[j], v);
-				i++;
+			std::vector<T> c(points.cols);
+			for (int j = 0; j < points.cols; j++){
+				c[j] = evaluate_curve(p, *(knotx.data()), knotx.size(), *(points.GetCol(j).data()), u);
 			}
-			return evaluate_curve(p, *(knotx.data()), knotx.size(), *(c.data()), u);
+			return evaluate_curve(q, *(knoty.data()), knoty.size(), *(c.data()), v);
 		}
 	};
 
@@ -809,6 +867,122 @@ namespace bspline{
 		double offset;
 	};
 
+
+
+	class triangle3f
+	{
+	public:
+		VEC3F p[3];
+
+		float min_x()
+		{
+			float result = FLT_MAX;
+			for (int i = 0; i < 3; i++){
+				if (p[i].x < result){ result = p[i].x; }
+			}
+			return result;
+		}
+		float max_x()
+		{
+			float result = FLT_MIN;
+			for (int i = 0; i < 3; i++){
+				if (p[i].x > result){ result = p[i].x; }
+			}
+			return result;
+		}
+		float min_y()
+		{
+			float result = FLT_MAX;
+			for (int i = 0; i < 3; i++){
+				if (p[i].y < result){ result = p[i].y; }
+			}
+			return result;
+		}
+		float max_y()
+		{
+			float result = FLT_MIN;
+			for (int i = 0; i < 3; i++){
+				if (p[i].y > result){ result = p[i].y; }
+			}
+			return result;
+		}
+		float min_z()
+		{
+			float result = FLT_MAX;
+			for (int i = 0; i < 3; i++){
+				if (p[i].z < result){ result = p[i].z; }
+			}
+			return result;
+		}
+		float max_z()
+		{
+			float result = FLT_MIN;
+			for (int i = 0; i < 3; i++){
+				if (p[i].z > result){ result = p[i].z; }
+			}
+			return result;
+		}
+	};
+
+	class triangle2f
+	{
+	public:
+		VEC2F p[3];
+	};
+
+
+	static bool interior_circle_point(VEC2F& c, float r, VEC2F p1){
+		p1 -= c;
+		if (p1.x * p1.x + p1.y * p1.y < r * r){ return true; }
+		return false;
+	}
+
+
+	//returns true if circle overlaps p1->p2 edge of triangle such that could overlap interior of triangle [p1, p2, p3]
+	static bool interior_triangle_edge(VEC2F c, float r, VEC2F p1, VEC2F p2, VEC2F p3){
+
+		//1. translate points so p1 is origin
+		p2 -= p1;
+		p3 -= p1;
+		c -= p1;
+		p1 -= p1;
+
+		//2. rotate points about origin so p2 lies on positive x axis
+		VEC2F q2(sqrtf(p2.x * p2.x + p2.y * p2.y), 0);
+		
+		VEC2F d(c.x * p3.x + c.y * p3.y, c.x * p3.y - c.y * p3.x);
+		d *= 1 / q2.x;
+
+		if (d.x + r < 0){ return false; }
+		if (d.x - r > q2.x){ return false; }
+
+		VEC2F q3(p2.x * p3.x + p2.y * p3.y, p2.x * p3.y - p2.y * p3.x);
+		q3 *= 1 / q2.x;
+
+		if (d.y + r < fminf(0, q3.y)){ return false; }
+		if (d.y - r > fmaxf(0, q3.y)){ return false; }
+
+		return true;
+	}
+
+	//returns true if circle and triangle overlap
+	static bool interior_triangle(VEC2F& c, float r, VEC2F& p1, VEC2F& p2, VEC2F& p3){
+		
+		//1. check if any triangle vertices are inside cirlce (cheap)
+		if (interior_circle_point(c, r, p1) == true){ return true; }
+		if (interior_circle_point(c, r, p2) == true){ return true; }
+		if (interior_circle_point(c, r, p3) == true){ return true; }
+
+		//2. check if circle is on interior side of all triangle edges
+		if (interior_triangle_edge(c, r, p1, p2, p3) == false){ return false; }
+		if (interior_triangle_edge(c, r, p3, p1, p2) == false){ return false; }
+		if (interior_triangle_edge(c, r, p2, p3, p1) == false){ return false; }
+
+		return true;
+	}
+
+	
+
 }
 
 
@@ -873,10 +1047,6 @@ public:
 	void append(point2f point);
 	//curve2f* trim_curve(double min_t, double max_t);
 };
-
-
-
-
 
 
 

@@ -37,6 +37,7 @@ bool TestCurve_InsertKnots(bool verbose);
 bool TestCurve_LineIntersection(bool verbose);
 bool TestCurve_CurveIntersection(bool verbose);
 bool TestToolPath3(bool verbose);
+bool TestTriangle(bool verbose);
 
 bool AreEqual(double p, double q, double error){
 	if (abs(p - q) > error){ return false; }
@@ -120,6 +121,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else{
 		cout << "TestCurve_CurveInterction failed" << endl; TestsFailed++;
+	}
+
+	if (TestTriangle(verbose))
+	{
+		cout << "TestTriangle passed" << endl; TestsPassed++;
+	}
+	else{
+		cout << "TestTriangle failed" << endl; TestsFailed++;
 	}
 
 
@@ -843,22 +852,22 @@ bool TestFileLoader_LoadModelJava(bool verbose){
 
 	if (verbose){ std::cout << "Beginning Loader test\n"; }
 
-	char filepath[] = "C:\\Users\\Lizzie\\Documents\\Richards documents\\Violin\\Perlman Stradivarius\\Perlman Strad belly full v24 high wide v5.txt";
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
 
-	std::vector<bspline::curve<bspline::vec2<float>>>* curve;
-	curve = new std::vector<bspline::curve<bspline::vec2<float>>>();
-	bool successful = IO::LoadModelJava(filepath, curve, verbose);
+	std::vector<CURVE2F> curves;
+	std::vector<SURFACE3F> surfaces;
+	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
 	
 	violin_model* violin = new violin_model();
 	violin->ribs = new violin_ribs();
 	std::string name = "rib_internal_lower_bout";
-	violin->ribs->curves.insert(std::make_pair(name, &((*curve)[0])));
+	violin->ribs->curves.insert(std::make_pair(name, &(curves[0])));
 
-	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\Richards documents\\Violin\\Perlman Stradivarius\\Perlman Strad Violin Model saved.xml";
+	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
 	IO::SaveModelXML(filepath2, violin, verbose);
 
 
-	if (successful == true && curve->size() == 16){ 
+	if (successful == true && curves.size() == 16){ 
 		return true; 
 	}
 	else{ return false; }
@@ -1165,16 +1174,17 @@ bool TestSurface(bool verbose)
 		1,
 		std::vector<double>{ 0, 0, 0, 1, 1, 1 },
 		std::vector<double>{ 0, 0, 1, 1 },
-		std::vector<VEC3F>{ VEC3F(0, 0, 0), VEC3F(0.5, 0, 0), VEC3F(1.0, 0, 0), VEC3F(0, 1.0, 0), VEC3F(0.5, 1.0, 0), VEC3F(1.0, 1.0, 0) }
+		LATTICE3F(std::vector<VEC3F>{ VEC3F(0, 0, 0), VEC3F(0.3, 0, 0), VEC3F(1.0, 0, 0), VEC3F(0, 1.0, 0), VEC3F(0.3, 1.0, 0), VEC3F(1.0, 1.0, 0) }, 3, 2)
 	);
 	
 	SURFACE3F s2(s1);
 	s2.p = 4;
 	s2.knotx[0] = -1;
-	s2.points[0].x = -2;
+	s2.points.data[0].x = -2;
 
 	VEC3F p1 = s1.evaluate(0, 0);
 	VEC3F p2 = s1.evaluate(1, 1);
+	VEC3F p3 = s1.evaluate(0.5, 0.5);
 
 
 	if (true){
@@ -1356,6 +1366,43 @@ bool TestCurve_CurveIntersection(bool verbose){
 	float d = bspline::distance(i1, i2);
 	if (intersectFound == false){ return false; }
 	if (d > error){ return false; }
+	return true;
+
+}
+
+
+bool TestTriangle(bool verbose){
+
+	using namespace bspline;
+
+	VEC2F p1(1.0, 0.0);
+	VEC2F p2(9.0, 0.0);
+	VEC2F p3(1.0, 7.0);
+
+	VEC2F c1(0.0, 0.0);
+	float r1 = 0.9;
+
+	bool overlap1 = interior_triangle(c1, r1, p1, p2, p3);
+
+	VEC2F c2(0.0, 0.0);
+	float r2 = 1.0;
+
+	bool overlap2 = interior_triangle(c2, r2, p1, p2, p3);
+
+	VEC2F c3(0.0, 0.0);
+	float r3 = 1.1;
+
+	bool overlap3 = interior_triangle(c3, r3, p1, p2, p3);
+
+	VEC2F c4(3.0, 1.5);
+	float r4 = 1.0;
+
+	bool overlap4 = interior_triangle(c4, r4, p1, p2, p3);
+
+	if (overlap1 == true){ return false; }
+	if (overlap2 == false){ return false; }
+	if (overlap3 == false){ return false; }
+	if (overlap4 == false){ return false; }
 	return true;
 
 }

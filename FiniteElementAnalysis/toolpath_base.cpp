@@ -438,6 +438,77 @@ void toolpath_base::trim_end_block(CURVE2F* rib, CURVE2F* centre_line, CURVE2F* 
 }
 
 
+void toolpath_base::rough_surface_scanning_stl(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, std::vector<TRIANGLE3F>* triangles)
+{
+	if (step_y > tool_diameter * 0.5) return;
+	
+	float min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
+	
+	//1. find ranges of stl
+	for (auto t = triangles->begin(); t != triangles->end(); ++t){
+		min_y = fminf(min_y, t->min_y());
+		max_y = fmaxf(max_y, t->max_y());
+	}
+	min_y -= 0.5 * tool_diameter;
+	max_y += 0.5 * tool_diameter;
+
+
+	//2. move over stl taking steps in y direction
+	int steps_y = (int)((max_y - min_y) / step_y + 1);
+
+	float x, x_plus, x_minus, y, y_plus, y_minus, z;
+	std::vector<TRIANGLE3F*> strip;
+
+	for (int j = 0; j <= steps_y; j++)
+	{
+		
+		//2.1 add all triangles that could overlap current y strip to strip vector
+		y = (1 - (float) j / steps_y) * min_y + (float)j / steps_y * max_y;
+		y_plus = y + 0.5 * tool_diameter;
+		y_minus = y - 0.5 * tool_diameter;
+
+		strip.clear();
+		for (auto t = triangles->begin(); t != triangles->end(); ++t)
+		{
+			if (t->max_y() > y_minus && t->min_y() < y_plus)
+			{  
+				strip.push_back(t._Ptr);
+				min_x = fminf(min_x, t->min_x());
+				max_x = fmaxf(max_x, t->max_x());
+			}
+		}
+		min_x -= 0.5 * tool_diameter;
+		max_x += 0.5 * tool_diameter;
+
+		//2.2 move over strip in x direction 
+		int steps_x = (int)((max_x - min_x) / step_x + 1);
+
+		for (int i = 0; i < steps_x; i++)
+		{
+			x = (1 - (float)i / steps_x) * min_x + (float)i / steps_x * max_x;
+			x_plus = x + 0.5 * tool_diameter;
+			x_minus = x - 0.5 * tool_diameter;
+
+			z = minimum_z;
+
+			for (auto t = strip.begin(); t != strip.end(); ++t)
+			{
+				if ((*t)->max_x() > x_minus && (*t)->min_x() < x_plus)
+				{
+					if (bspline::interior_triangle(VEC2F(x, y), 0.5 * tool_diameter, VEC2F((*t)->p[0].x, (*t)->p[0].y), VEC2F((*t)->p[1].x, (*t)->p[1].y), VEC2F((*t)->p[2].x, (*t)->p[2].y)))
+					{
+						z = fmaxf(z, (*t)->max_z());
+					}
+				}
+			}
+			path->push_back(VEC3F(x, y, z));
+		}
+
+
+	}
+
+
+}
 
 
 void toolpath_RibMould::calculate()

@@ -25,7 +25,7 @@ class IO
 public:
 	
 	static void ReadInput(const char*, BSplineSolid*, double*, double&);
-	static bool LoadModelJava(const char*, std::vector<bspline::curve<bspline::vec2<float>>>*, bool);
+	static bool LoadModelJava(const char*, std::vector<CURVE2F>*, std::vector<SURFACE3F>*,bool);
 	static app_model* LoadModelXML(const char*, bool);
 
 	static void SaveModel(const char*, std::vector<bspline::curve<bspline::vec2<float>>>&);

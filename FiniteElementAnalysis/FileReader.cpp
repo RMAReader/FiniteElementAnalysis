@@ -125,7 +125,7 @@ void IO::ReadInput(const char* filepath, BSplineSolid* solid, double* D, double&
 
 
 
-bool IO::LoadModelJava(const char* filepath, std::vector<bspline::curve<bspline::vec2<float>>>* curve, bool verbose)
+bool IO::LoadModelJava(const char* filepath, std::vector<CURVE2F>* curve, std::vector<SURFACE3F>* surfaces, bool verbose)
 {
 	std::ifstream input;
 	input.open(filepath, std::ios::in);
@@ -135,7 +135,91 @@ bool IO::LoadModelJava(const char* filepath, std::vector<bspline::curve<bspline:
 
 		while (std::getline(input, line, '\n')){
 
-			if (line.find("BeginGraphicBSplineCurve:") == 0)
+			if (line.find("BeginGraphicBSplineSurface") == 0)
+			{
+				int p, q, m, n;
+				std::vector<double> knotx;
+				std::vector<double> knoty;
+				std::vector<float> Px;
+				std::vector<float> Py;
+				std::vector<float> Pz;
+				LATTICE3F lattice;
+				m = 0;
+				n = 0;
+				while (line.find("End") != 0)
+				{
+					std::getline(input, line, '\n');
+					std::istringstream iss(line);
+
+					if (line.find("p") == 0){
+						std::getline(iss, word, ':');
+						std::getline(iss, word, '\n');
+						p = stoi(word);
+					}
+					else if (line.find("q") == 0){
+						std::getline(iss, word, ':');
+						std::getline(iss, word, '\n');
+						q = stoi(word);
+					}
+					else if (line.find("knotx") == 0)
+					{
+						std::getline(iss, word, ':');
+						while (std::getline(iss, word, ','))
+						{
+							knotx.push_back(stod(word));
+							if (verbose){ std::cout << "knotx[" << knotx.size() << "] = " << word << std::endl; }
+						}
+					}
+					else if (line.find("knoty") == 0)
+					{
+						std::getline(iss, word, ':');
+						while (std::getline(iss, word, ','))
+						{
+							knoty.push_back(stod(word));
+							if (verbose){ std::cout << "knoty[" << knoty.size() << "] = " << word << std::endl; }
+						}
+					}
+					else if (line.find("Px[") == 0)
+					{
+						m++;
+						std::getline(iss, word, ':');
+						while (std::getline(iss, word, ','))
+						{
+							Px.push_back((float)stod(word));
+							if (verbose){ std::cout << "Px[" << Px.size() << "] = " << word << std::endl; }
+						}
+					}
+					else if (line.find("Py[") == 0)
+					{
+						std::getline(iss, word, ':');
+						while (std::getline(iss, word, ','))
+						{
+							Py.push_back((float)stod(word));
+							if (verbose){ std::cout << "Py[" << Py.size() << "] = " << word << std::endl; }
+						}
+					}
+					else if (line.find("Pz[") == 0)
+					{
+						std::getline(iss, word, ':');
+						while (std::getline(iss, word, ','))
+						{
+							Pz.push_back((float)stod(word));
+							if (verbose){ std::cout << "Pz[" << Pz.size() << "] = " << word << std::endl; }
+						}
+					}
+				}
+				if (Px.size() == Py.size() && Px.size() == Pz.size())
+				{
+					n = Px.size() / m;
+					LATTICE3F lattice(m, n);
+					for (int i = 0; i < Px.size(); i++){
+						lattice.data[i] = VEC3F(Px[i], Py[i], Pz[i]);
+					}
+					surfaces->push_back(SURFACE3F(p, q, knotx, knoty, lattice));
+				}
+
+			}
+			else if (line.find("BeginGraphicBSplineCurve:") == 0)
 			{
 				int p;
 				std::vector<double>  knot;
