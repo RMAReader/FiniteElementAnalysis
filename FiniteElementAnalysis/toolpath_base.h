@@ -84,4 +84,11 @@ public:
 
 
 
+class toolpath_BackRough : public toolpath_base
+{
+public:
+	void calculate();
+};
+
+
 #endif _TOOLPATH_H_

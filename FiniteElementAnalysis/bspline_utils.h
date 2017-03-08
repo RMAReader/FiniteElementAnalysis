@@ -578,13 +578,21 @@ namespace bspline{
 			this->knoty = knoty;
 		}
 
-		//curve<T> curve_x(double v){
+		curve<T>* curve_x(double v){
+			std::vector<T> c(points.rows);
+			for (int j = 0; j < points.rows; j++){
+				c[j] = evaluate_curve(q, *(knoty.data()), knoty.size(), *(points.GetCRow(j).data()), v);
+			}
+			return new curve<T>(p, c.size(), knotx.size(), knotx.data(), c.data());
+		}
 
-		//}
-
-		//curve<T> curve_y(double u){
-
-		//}
+		curve<T>* curve_y(double u){
+			std::vector<T> c(points.cols);
+			for (int j = 0; j < points.cols; j++){
+				c[j] = evaluate_curve(p, *(knotx.data()), knotx.size(), *(points.GetCol(j).data()), u);
+			}
+			return new curve<T>(q, c.size(), knoty.size(), knoty.data(), c.data());
+		}
 
 		T evaluate(double u, double v){
 			std::vector<T> c(points.cols);
@@ -593,7 +601,24 @@ namespace bspline{
 			}
 			return evaluate_curve(q, *(knoty.data()), knoty.size(), *(c.data()), v);
 		}
+
+
+
+
+		double minParam_x(){
+			return knotx[p];
+		}
+		double maxParam_x(){
+			return knotx[knotx.size() - p - 1];
+		}
+		double minParam_y(){
+			return knoty[q];
+		}
+		double maxParam_y(){
+			return knoty[knoty.size() - q - 1];
+		}
 	};
+
 
 
 
@@ -874,6 +899,15 @@ namespace bspline{
 	public:
 		VEC3F p[3];
 
+		triangle3f(){}
+
+		triangle3f(VEC3F p0, VEC3F p1, VEC3F p2)
+		{
+			p[0] = p0;
+			p[1] = p1;
+			p[2] = p2;
+		}
+
 		float min_x()
 		{
 			float result = FLT_MAX;
@@ -931,6 +965,34 @@ namespace bspline{
 	};
 
 
+
+	
+	class mesh3f
+	{
+	public:
+
+		std::vector<VEC3F> points;
+		std::vector<std::vector<int>> elements;
+
+		triangle3f get_triangle(int index)
+		{
+			return triangle3f(points[elements[index][0]], points[elements[index][1]], points[elements[index][2]]);
+		}
+
+		std::vector<triangle3f>* triangles()
+		{
+			std::vector<triangle3f>* result = new std::vector<triangle3f>();
+			for (int i = 0; i < elements.size(); i++)
+			{
+				result->push_back(get_triangle(i));
+			}
+			return result;
+		}
+	};
+
+
+
+
 	static bool interior_circle_point(VEC2F& c, float r, VEC2F p1){
 		p1 -= c;
 		if (p1.x * p1.x + p1.y * p1.y < r * r){ return true; }
@@ -982,6 +1044,42 @@ namespace bspline{
 	}
 
 	
+	static mesh3f* build_mesh(SURFACE3F* surface, int nx, int ny)
+	{
+		mesh3f* mesh = new mesh3f();
+
+		CURVE3F* curve_y;
+
+		float u, v;
+		for (int i = 0; i < nx; i++){
+
+			u = (1 - (float)i / (nx - 1)) * surface->minParam_x() + (float)i / (nx - 1) * surface->maxParam_x();
+			curve_y = surface->curve_y(u);
+
+			for (int j = 0; j < ny; j++){
+				v = (1 - (float)j / (ny - 1)) * surface->minParam_y() + (float)j / (ny - 1) * surface->maxParam_y();
+
+				mesh->points.push_back(curve_y->evaluate(v));
+
+			}
+		}
+
+		int p1, p2, p3, p4, count;
+		mesh->elements.reserve(2 * nx * ny);
+		for (int i = ny; i < nx * ny; i+= ny){
+			for (int j = 1; j < ny; j++){
+				p1 = i + j;
+				p2 = p1 - 1;
+				p3 = p1 - ny;
+				p4 = p3 - 1;
+				mesh->elements.push_back({ p1, p2, p3 });
+				mesh->elements.push_back({ p4, p3, p2 });
+			}
+		}
+
+		return mesh;
+	}
+
 
 }
 

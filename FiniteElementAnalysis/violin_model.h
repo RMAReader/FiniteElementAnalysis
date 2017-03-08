@@ -28,6 +28,16 @@ public:
 
 };
 
+class violin_back
+{
+public:
+	std::unordered_map < std::string, SURFACE3F* > surfaces;
+	std::unordered_map < std::string, CURVE3F* > curves;
+	std::unordered_map < std::string, float > floats;
+	std::vector<circle2f> rib_mould_locator_holes;
+
+};
+
 class violin_model
 {
 public:
@@ -43,6 +53,8 @@ public:
 	std::string description;
 
 	violin_ribs* ribs;
+	violin_back* back;
+	violin_belly* belly;
 
 };
 

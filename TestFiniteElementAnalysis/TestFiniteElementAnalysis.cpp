@@ -37,6 +37,7 @@ bool TestCurve_InsertKnots(bool verbose);
 bool TestCurve_LineIntersection(bool verbose);
 bool TestCurve_CurveIntersection(bool verbose);
 bool TestToolPath3(bool verbose);
+bool TestToolPath4(bool verbose);
 bool TestTriangle(bool verbose);
 
 bool AreEqual(double p, double q, double error){
@@ -171,6 +172,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else{
 		cout << "TestToolPath3 failed" << endl; TestsFailed++;
+	}
+	if (TestToolPath4(verbose))
+	{
+		cout << "TestToolPath4 passed" << endl; TestsPassed++;
+	}
+	else{
+		cout << "TestToolPath4 failed" << endl; TestsFailed++;
 	}
 
 	cout << endl;
@@ -880,8 +888,8 @@ bool TestFileLoader_LoadViolinXML(bool verbose){
 
 	if (verbose){ std::cout << "Beginning Loader test\n"; }
 
-	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
-	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
 
 	app_model* model = IO::LoadModelXML(filepath, verbose);
 	if (model == nullptr){ return false; }
@@ -1428,6 +1436,35 @@ bool TestToolPath3(bool verbose){
 		path.second->save_gcode();
 	}
 
+	return true;
+}
+
+
+bool TestToolPath4(bool verbose){
+
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
+
+	std::vector<CURVE2F> curves;
+	std::vector<SURFACE3F> surfaces;
+	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
+
+	violin_model violin;
+	violin.back = new violin_back();
+	violin.back->surfaces.insert(std::make_pair("exterior", &surfaces[0]));
+
+	toolpath_BackRough toolpath;
+	toolpath.parameters.insert(std::make_pair("safe_z",30));
+	toolpath.parameters.insert(std::make_pair("minimum_z", 0));
+	toolpath.parameters.insert(std::make_pair("step_x", 0.1));
+	toolpath.parameters.insert(std::make_pair("step_y", 3));
+	toolpath.parameters.insert(std::make_pair("tool_diameter", 6.35));
+	toolpath.parameters.insert(std::make_pair("mesh_nx", 75));
+	toolpath.parameters.insert(std::make_pair("mesh_ny", 150));
+	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpath4_BackRough.txt";
+	toolpath.violin = &violin;
+
+	toolpath.calculate();
+	toolpath.save_gcode();
 	return true;
 }
 
