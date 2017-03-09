@@ -202,6 +202,7 @@
     <ClCompile Include="Element_BSplineSolid.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="gauss_legendre.cpp" />
+    <ClCompile Include="mesh3.cpp" />
     <ClCompile Include="Optimizer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -213,7 +214,11 @@
     <ClCompile Include="tinyxml.cpp" />
     <ClCompile Include="tinyxmlerror.cpp" />
     <ClCompile Include="tinyxmlparser.cpp" />
+    <ClCompile Include="toolpath_BackRough.cpp" />
     <ClCompile Include="toolpath_base.cpp" />
+    <ClCompile Include="toolpath_RibMould.cpp" />
+    <ClCompile Include="toolpath_TrimBlocksCentreBout.cpp" />
+    <ClCompile Include="toolpath_TrimBlocksEndBouts.cpp" />
     <ClCompile Include="violin_model.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

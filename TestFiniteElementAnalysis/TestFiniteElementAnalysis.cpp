@@ -1458,8 +1458,8 @@ bool TestToolPath4(bool verbose){
 	toolpath.parameters.insert(std::make_pair("step_x", 0.1));
 	toolpath.parameters.insert(std::make_pair("step_y", 3));
 	toolpath.parameters.insert(std::make_pair("tool_diameter", 6.35));
-	toolpath.parameters.insert(std::make_pair("mesh_nx", 75));
-	toolpath.parameters.insert(std::make_pair("mesh_ny", 150));
+	toolpath.parameters.insert(std::make_pair("mesh_nx", 500));
+	toolpath.parameters.insert(std::make_pair("mesh_ny", 500));
 	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpath4_BackRough.txt";
 	toolpath.violin = &violin;
 

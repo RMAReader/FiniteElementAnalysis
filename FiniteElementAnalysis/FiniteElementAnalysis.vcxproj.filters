@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{124d8fe0-6387-402c-81c3-c5116f44df3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ToolPaths">
+      <UniqueIdentifier>{cd9f8752-4837-4e02-83a6-8e4909235698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,9 +51,6 @@
     <ClInclude Include="Optimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bspline_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="violin_model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,11 +60,14 @@
     <ClInclude Include="tinyxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="toolpath_base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="app_model.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="toolpath_base.h">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClInclude>
+    <ClInclude Include="bspline_utils.h">
+      <Filter>Source Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +95,6 @@
     <ClCompile Include="Optimizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bspline_utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="violin_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -107,8 +110,26 @@
     <ClCompile Include="tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bspline_utils.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
     <ClCompile Include="toolpath_base.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="toolpath_RibMould.cpp">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="toolpath_TrimBlocksCentreBout.cpp">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="toolpath_TrimBlocksEndBouts.cpp">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="toolpath_BackRough.cpp">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh3.cpp">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

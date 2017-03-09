@@ -522,7 +522,7 @@ namespace bspline{
 			}
 		}
 		
-		T GetPoint(int row, int col){
+		T& GetPoint(int row, int col){
 			int i = row * cols + col;
 			return data[i];
 		}
@@ -889,7 +889,7 @@ namespace bspline{
 
 	private:
 		curve<vec2<float>>* base;
-		double offset;
+double offset;
 	};
 
 
@@ -966,28 +966,25 @@ namespace bspline{
 
 
 
-	
+
 	class mesh3f
 	{
 	public:
 
 		std::vector<VEC3F> points;
 		std::vector<std::vector<int>> elements;
+		
+		lattice<std::vector<int>> nodes;
+		std::vector<float> node_x;
+		std::vector<float> node_y;
 
-		triangle3f get_triangle(int index)
-		{
-			return triangle3f(points[elements[index][0]], points[elements[index][1]], points[elements[index][2]]);
-		}
+		inline triangle3f get_triangle(int index);
+		VEC3F get_vertex(int element, int v);
+		std::vector<triangle3f>* triangles();
 
-		std::vector<triangle3f>* triangles()
-		{
-			std::vector<triangle3f>* result = new std::vector<triangle3f>();
-			for (int i = 0; i < elements.size(); i++)
-			{
-				result->push_back(get_triangle(i));
-			}
-			return result;
-		}
+		void get_mesh_range(VEC3F* min, VEC3F* max);
+		inline void get_element_range(int i, VEC3F* min, VEC3F* max);
+		void build_nodes(int nx, int ny);
 	};
 
 
