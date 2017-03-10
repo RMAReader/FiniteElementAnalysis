@@ -16,6 +16,8 @@ public:
 	std::vector<circle2f> rib_mould_locator_holes;
 
 	void scale_model(double ratio);
+	void rotate_model(double angle);
+	void translate_model(double angle);
 };
 
 class violin_belly
@@ -35,6 +37,8 @@ public:
 	std::unordered_map < std::string, CURVE3F* > curves;
 	std::unordered_map < std::string, float > floats;
 	std::vector<circle2f> rib_mould_locator_holes;
+
+	void rotate_model(double angle);
 
 };
 

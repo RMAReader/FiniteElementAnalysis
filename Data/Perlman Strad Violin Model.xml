@@ -289,7 +289,7 @@
 	</violin_ribs>
 </violin_model>
 <toolpath type="toolpath_RibMould">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath3_RibMould.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath3_RibMould.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="10.0" />
 		<string type="EndMill" />
@@ -304,7 +304,7 @@
 	<float name="step_z" value="5.0" />
 </toolpath>
 <toolpath type="toolpath_TrimBlocksCentreBout">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath4_TrimBlocksCentreBout.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath4_TrimBlocksCentreBout.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="0.0" />
 		<string type="EndMill" />
@@ -319,9 +319,9 @@
 	<float name="step_z" value="5.0" />
 </toolpath>
 <toolpath type="toolpath_TrimBlocksEndBouts">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\ToolPath5_TrimBlocksEndBouts.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath5_TrimBlocksEndBouts.txt" />
 	<tool name="6.35mm End Mill">
-		<float name="diameter" value="0.0" />
+		<float name="diameter" value="6.35" />
 		<string type="EndMill" />
 	</tool>
 	<float name="max_feedrate" value="6000" />
@@ -332,5 +332,23 @@
 	<float name="block_top_z" value="32.0" />
 	<float name="block_bottom_z" value="0.0" />
 	<float name="step_z" value="5.0" />
+</toolpath>
+<toolpath type="toolpath_BackRough">
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath6_BackRough.txt" />
+	<tool name="6.35mm End Mill">
+		<float name="diameter" value="6.35" />
+		<string type="EndMill" />
+	</tool>
+	<float name="max_feedrate" value="6000" />
+	<float name="z_feedrate" value="500" />
+	<float name="xy_feedrate" value="1000" />
+	<float name="spindle_speed" value="22000" />
+	<float name="safe_z" value="30" />
+	<float name="minimum_z" value="4" />
+	<float name="margin_z" value="2" />
+	<float name="step_x" value="1.5" />
+	<float name="step_y" value="3.0" />
+	<float name="mesh_nx" value="350" />
+	<float name="mesh_ny" value="200" />
 </toolpath>
 

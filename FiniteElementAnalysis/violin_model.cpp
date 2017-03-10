@@ -28,6 +28,18 @@ void violin_model::scale_model(double ratio){
 	ribs->scale_model(ratio);
 }
 
+void violin_back::rotate_model(double angle){
+	
+	double m1 = sin(angle);
+	double m2 = cos(angle);
+	for (auto item : surfaces)
+	{
+		for (int i = 0; i < item.second->points.data.size(); i++){
+			VEC3F& p = item.second->points.data[i];
+			p = VEC3F(m2*p.x + m1*p.y, m1*p.x - m2*p.y, p.z);
+		}
+	}
+}
 
 
 base2f::base2f()

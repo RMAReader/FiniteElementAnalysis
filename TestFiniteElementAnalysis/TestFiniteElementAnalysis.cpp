@@ -1420,7 +1420,7 @@ bool TestTriangle(bool verbose){
 
 bool TestToolPath3(bool verbose){
 
-	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\Finite-Element-Engine\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
 
 	app_model* model = IO::LoadModelXML(filepath, verbose);
 	if (model == nullptr){ return false; }
@@ -1431,7 +1431,7 @@ bool TestToolPath3(bool verbose){
 	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(110, 45, 10));
 	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(110, -45, 10));
 
-	for (std::pair<std::string, toolpath_base*> path : model->paths){
+	for (auto path : model->paths){
 		path.second->calculate();
 		path.second->save_gcode();
 	}
@@ -1451,15 +1451,28 @@ bool TestToolPath4(bool verbose){
 	violin_model violin;
 	violin.back = new violin_back();
 	violin.back->surfaces.insert(std::make_pair("exterior", &surfaces[0]));
+	violin.back->rotate_model(3.1415926/2);
+
+	cnc_tool tool;
+	tool.diameter = 6.35;
+	tool.name = "End Mill";
+	tool.type = "End Mill";
 
 	toolpath_BackRough toolpath;
 	toolpath.parameters.insert(std::make_pair("safe_z",30));
 	toolpath.parameters.insert(std::make_pair("minimum_z", 0));
-	toolpath.parameters.insert(std::make_pair("step_x", 0.1));
+	toolpath.parameters.insert(std::make_pair("margin_z", 2));
+	toolpath.parameters.insert(std::make_pair("step_x", 1.5));
 	toolpath.parameters.insert(std::make_pair("step_y", 3));
-	toolpath.parameters.insert(std::make_pair("tool_diameter", 6.35));
-	toolpath.parameters.insert(std::make_pair("mesh_nx", 500));
-	toolpath.parameters.insert(std::make_pair("mesh_ny", 500));
+	toolpath.parameters.insert(std::make_pair("mesh_nx", 350));
+	toolpath.parameters.insert(std::make_pair("mesh_ny", 200));
+
+	toolpath.parameters.insert(std::make_pair("spindle_speed", 24000));
+	toolpath.parameters.insert(std::make_pair("z_feedrate", 500));
+	toolpath.parameters.insert(std::make_pair("max_feedrate", 6000));
+	toolpath.parameters.insert(std::make_pair("xy_feedrate", 1000));
+
+	toolpath.tool = &tool;
 	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpath4_BackRough.txt";
 	toolpath.violin = &violin;
 

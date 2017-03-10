@@ -534,4 +534,131 @@ void toolpath_base::rough_surface_scanning_stl(std::vector<VEC3F>* path, float t
 
 
 
+void toolpath_base::rough_surface_grid(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float margin_z, bspline::mesh3f* mesh)
+{
+	using namespace bspline;
+	
+	if (step_y > tool_diameter * 0.5) return;
+	if (margin_z < 0) return;
+
+	VEC3F min, max;
+	mesh->get_mesh_range(&min, &max);
+
+
+	//1. construct grid of max heights over mesh
+	std::vector<float> grid_x;
+	std::vector<float> grid_y;
+
+	float x = min.x;
+	do
+	{
+		grid_x.push_back(x);
+		x += step_x;
+	} while (x < max.x + step_x);
+
+	float y = min.y;
+	do
+	{
+		grid_y.push_back(y);
+		y += step_y;
+	} while (y < max.y + step_y);
+
+	lattice<float> grid_mesh_heights(grid_x.size() - 1, grid_y.size() - 1);
+
+	for (int g = 0; g < grid_mesh_heights.data.size(); g++)
+	{
+		grid_mesh_heights.data[g] = FLT_MIN;
+	}
+
+	for (int e = 0; e < mesh->elements.size(); e++){
+
+		mesh->get_element_range(e, &min, &max);
+		for (int i = 0; i < grid_x.size() - 1; i++){
+			if (min.x <= grid_x[i + 1] && max.x >= grid_x[i])
+			{
+				for (int j = 0; j < grid_y.size() - 1; j++){
+					if (min.y <= grid_y[j + 1] && max.y >= grid_y[j])
+					{
+						grid_mesh_heights.SetPoint(i, j, max.z + margin_z);
+					}
+				}
+			}
+		}
+	}
+
+
+	//2. step over grid using max heights to set tool height
+	float y_min, y_max, x_min, x_max, z;
+	int start, end, incr;
+	int row_width, col_width;
+
+	row_width = (int)(tool_diameter * 0.5) / step_x + 1;
+	col_width = (int)(tool_diameter * 0.5) / step_y + 1;
+
+	bool at_safe_z = true;
+	//bool valid_row;
+
+	for (int j = 0; j < grid_y.size(); j++)
+	{
+		y = grid_y[j];
+
+		start = (j % 2 == 0) ? 0 : grid_x.size() - 2;
+		end = (j % 2 == 0) ? grid_x.size() - 1 : -1;
+		incr = (j % 2 == 0) ? 1 : -1;
+
+		for (int i = start; i != end; i+=incr)
+		{
+			//valid_row = false;
+			
+			x = grid_x[i];
+
+			z = FLT_MIN;
+			for (int j0 = fmaxf(0, j - col_width); j0 < fminf(grid_mesh_heights.cols, j + col_width); j0++){
+				for (int i0 = fmaxf(0, i - row_width - 1); i0 < fminf(grid_mesh_heights.rows, i + row_width + 1); i0++){
+					z = fmaxf(z, grid_mesh_heights.GetPoint(i0, j0));
+				}
+			}
+
+			if (z > FLT_MIN){
+				if (at_safe_z == true){
+					path->push_back(VEC3F(x, y, safe_z));
+					at_safe_z = false;
+				}
+				path->push_back(VEC3F(x, y, z));
+			}
+
+			//if (z > FLT_MIN && at_safe_z == true)
+			//{
+			//	path->push_back(VEC3F(x, y, safe_z));
+			//	path->push_back(VEC3F(x, y, z));
+			//	at_safe_z = false;
+			//	valid_row = true;
+			//}
+			//else if (z > FLT_MIN && at_safe_z == false)
+			//{
+			//	path->push_back(VEC3F(x, y, z));
+			//	valid_row = true;
+			//}
+			//else if (z == FLT_MIN && at_safe_z == false)
+			//{
+			//	VEC3F p = path->back();
+			//	path->push_back(VEC3F(p.x, p.y, safe_z));
+			//	at_safe_z = true;
+			//}
+
+			//if (abs(i - end) == 1 && valid_row){
+
+			//}
+		}
+
+	}
+	VEC3F p = path->back();
+	path->push_back(VEC3F(p.x, p.y, safe_z));
+
+
+
+}
+
+
+
 

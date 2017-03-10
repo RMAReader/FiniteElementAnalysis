@@ -493,6 +493,11 @@ app_model* IO::LoadModelXML(const char* filepath,  bool verbose)
 				toolpath_TrimBlocksCentreBout* path = NewToolPath_TrimBlocksCentreBout(*e, verbose);
 				model->paths.insert(std::make_pair(subtype, path));
 			}
+			else if (subtype == "toolpath_BackRough")
+			{
+				toolpath_BackRough* path = NewToolPath_BackRough(*e, verbose);
+				model->paths.insert(std::make_pair(subtype, path));
+			}
 		}
 	}
 
@@ -699,6 +704,12 @@ toolpath_TrimBlocksCentreBout* IO::NewToolPath_TrimBlocksCentreBout(TiXmlElement
 toolpath_TrimBlocksEndBouts* IO::NewToolPath_TrimBlocksEndBouts(TiXmlElement& root, bool verbose)
 {
 	toolpath_TrimBlocksEndBouts* toolpath = new toolpath_TrimBlocksEndBouts();
+	IO::LoadToolPath(&root, toolpath, verbose);
+	return toolpath;
+}
+toolpath_BackRough* IO::NewToolPath_BackRough(TiXmlElement& root, bool verbose)
+{
+	toolpath_BackRough* toolpath = new toolpath_BackRough();
 	IO::LoadToolPath(&root, toolpath, verbose);
 	return toolpath;
 }

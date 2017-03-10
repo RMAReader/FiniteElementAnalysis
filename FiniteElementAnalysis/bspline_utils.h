@@ -523,8 +523,7 @@ namespace bspline{
 		}
 		
 		T& GetPoint(int row, int col){
-			int i = row * cols + col;
-			return data[i];
+			return data[row * cols + col];
 		}
 		std::vector<T> GetRow(int row){
 			std::vector < T > slice(cols);
@@ -543,7 +542,7 @@ namespace bspline{
 			}
 			return slice;
 		}
-		void SetPoint(int row, int col, T p){
+		inline void SetPoint(int row, int col, T p){
 			data[row * cols + col] = p;
 		}
 	};
@@ -985,6 +984,7 @@ double offset;
 		void get_mesh_range(VEC3F* min, VEC3F* max);
 		inline void get_element_range(int i, VEC3F* min, VEC3F* max);
 		void build_nodes(int nx, int ny);
+		void build_grid_z(float,float);
 	};
 
 
@@ -1038,6 +1038,22 @@ double offset;
 		if (interior_triangle_edge(c, r, p2, p3, p1) == false){ return false; }
 
 		return true;
+	}
+
+	template <class T>
+	static int binarySearch(T* buf, T key, int min, int max)
+	{
+		if (buf[key] < min || buf[key] > max || min > max) return -1;
+		int mid;
+		while (max > min + 1){
+			mid = (min + max) / 2;
+
+			if (buf[mid] < key)
+				min = mid;
+			else if (buf[mid] > key)
+				max = mid - 1;
+		}
+		return mid;
 	}
 
 	

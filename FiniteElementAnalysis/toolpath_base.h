@@ -55,6 +55,7 @@ public:
 	void trim_end_block(CURVE2F* rib, CURVE2F* centre_line, CURVE2F* block, float block_top_z, float block_bottom_z, float step, float resolution);
 
 	void rough_surface_scanning_stl(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, bspline::mesh3f*);
+	void rough_surface_grid(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, bspline::mesh3f*);
 };
 
 class toolpath_RibMouldBaseJig : public toolpath_base
