@@ -11,7 +11,7 @@ void toolpath_TrimBlocksCentreBout::calculate()
 	float step_z = parameters["step_z"];
 	float resolution = 0.1;
 
-	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs->curves;
+	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs.curves;
 	points.push_back(VEC3F(0, 0, safe_z));
 
 	trim_corner_block(c["rib_internal_centre_bout_trbl"], c["rib_internal_lower_bout"], c["block_trbl_lower_bout"], block_top_z, block_bottom_z, step_z, resolution);

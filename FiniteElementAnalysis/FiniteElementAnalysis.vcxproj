@@ -172,6 +172,8 @@
     <ClInclude Include="Element_BSplineSolid.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="gauss_legendre.h" />
+    <ClInclude Include="geometry.h" />
+    <ClInclude Include="geometry_matrix.h" />
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="supermatrix.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="tinystr.h" />
     <ClInclude Include="tinyxml.h" />
     <ClInclude Include="toolpath_base.h" />
+    <ClInclude Include="geometry_vector.h" />
     <ClInclude Include="violin_model.h" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +222,7 @@
     <ClCompile Include="toolpath_RibMould.cpp" />
     <ClCompile Include="toolpath_TrimBlocksCentreBout.cpp" />
     <ClCompile Include="toolpath_TrimBlocksEndBouts.cpp" />
+    <ClCompile Include="violin_component.cpp" />
     <ClCompile Include="violin_model.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

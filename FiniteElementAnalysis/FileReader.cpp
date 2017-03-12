@@ -390,7 +390,7 @@ void IO::SaveModelXML(const char* filepath, violin_model* violin, bool verbose){
 	violin_element->LinkEndChild(description);
 
 	std::string name = "violin_ribs";
-	TiXmlElement* ribs = IO::NewXmlElement(violin->ribs, name);
+	TiXmlElement* ribs = IO::NewXmlElement(&(violin->ribs), name);
 	violin_element->LinkEndChild(ribs);
 
 	doc.SaveFile(filepath);
@@ -521,7 +521,7 @@ violin_model* IO::NewViolin(TiXmlElement* doc, bool verbose)
 		std::string type = e->Value();
 		if (type == "violin_ribs")
 		{
-			violin->ribs = NewRibs(*e, verbose);
+			violin->ribs = *NewRibs(*e, verbose);
 		}
 		else if (type == "description"){
 			violin->description = e->GetText();

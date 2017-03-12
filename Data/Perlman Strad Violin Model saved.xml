@@ -91,6 +91,23 @@
                 <point2f x="33.4698" y="70.6665" />
             </points>
         </curve2f>
+        <curve2f name="block_neck">
+            <order value="1" />
+            <knot>
+                <double value="0" />
+                <double value="0" />
+                <double value="0.333333" />
+                <double value="0.666667" />
+                <double value="1" />
+                <double value="1" />
+            </knot>
+            <points>
+                <point2f x="160" y="15" />
+                <point2f x="135" y="15" />
+                <point2f x="135" y="-15" />
+                <point2f x="160" y="-15" />
+            </points>
+        </curve2f>
         <curve2f name="rib_internal_upper_bout">
             <order value="2" />
             <knot>
@@ -137,23 +154,6 @@
                 <point2f x="55.4125" y="-76.4526" />
                 <point2f x="38.0315" y="-73.3162" />
                 <point2f x="31.6188" y="-77.056" />
-            </points>
-        </curve2f>
-        <curve2f name="block_neck">
-            <order value="1" />
-            <knot>
-                <double value="0" />
-                <double value="0" />
-                <double value="0.333333" />
-                <double value="0.666667" />
-                <double value="1" />
-                <double value="1" />
-            </knot>
-            <points>
-                <point2f x="160" y="15" />
-                <point2f x="135" y="15" />
-                <point2f x="135" y="-15" />
-                <point2f x="160" y="-15" />
             </points>
         </curve2f>
         <curve2f name="rib_internal_centre_bout_trbl">
@@ -203,6 +203,21 @@
                 <point2f x="-70" y="120" />
             </points>
         </curve2f>
+        <curve2f name="block_trbl_lower_bout">
+            <order value="1" />
+            <knot>
+                <double value="0" />
+                <double value="0" />
+                <double value="0.5" />
+                <double value="1" />
+                <double value="1" />
+            </knot>
+            <points>
+                <point2f x="-40" y="-70" />
+                <point2f x="-70" y="-70" />
+                <point2f x="-70" y="-120" />
+            </points>
+        </curve2f>
         <curve2f name="block_bottom">
             <order value="1" />
             <knot>
@@ -218,21 +233,6 @@
                 <point2f x="-185" y="15" />
                 <point2f x="-185" y="-25" />
                 <point2f x="-210" y="-25" />
-            </points>
-        </curve2f>
-        <curve2f name="block_trbl_lower_bout">
-            <order value="1" />
-            <knot>
-                <double value="0" />
-                <double value="0" />
-                <double value="0.5" />
-                <double value="1" />
-                <double value="1" />
-            </knot>
-            <points>
-                <point2f x="-40" y="-70" />
-                <point2f x="-70" y="-70" />
-                <point2f x="-70" y="-120" />
             </points>
         </curve2f>
         <curve2f name="block_trbl_upper_bout">
@@ -282,7 +282,7 @@
                 <point2f x="-150" y="-35" />
             </points>
         </curve2f>
-        <float name="rib_mould_thickness" value="10" />
         <float name="rib_mould_depth" value="15" />
+        <float name="rib_mould_thickness" value="10" />
     </violin_ribs>
 </Violin>

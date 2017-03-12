@@ -13,9 +13,9 @@ void toolpath_RibMould::calculate()
 
 
 	//bore location holes
-	for (int i = 0; i < violin->ribs->rib_mould_locator_holes.size(); i++)
+	for (int i = 0; i < violin->ribs.rib_mould_locator_holes.size(); i++)
 	{
-		bore_hole(violin->ribs->rib_mould_locator_holes[i], safe_z, mould_top_z, mould_bottom_z, step_z);
+		bore_hole(violin->ribs.rib_mould_locator_holes[i], safe_z, mould_top_z, mould_bottom_z, step_z);
 	}
 
 	float resolution = 1.0;
@@ -23,7 +23,7 @@ void toolpath_RibMould::calculate()
 
 	//cut out central clamping hole
 	std::vector<VEC3F> clamp_hole_layer;
-	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs->curves;
+	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs.curves;
 
 	cut_curve_const_z(&clamp_hole_layer, tool->diameter, *c["clamp_hole"], 0, c["clamp_hole"]->minParam(), c["clamp_hole"]->maxParam(), resolution);
 

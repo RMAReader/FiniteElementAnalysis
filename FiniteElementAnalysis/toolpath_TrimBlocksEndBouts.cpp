@@ -10,7 +10,7 @@ void toolpath_TrimBlocksEndBouts::calculate()
 	float step_z = parameters["step_z"];
 	float resolution = 0.1;
 
-	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs->curves;
+	std::unordered_map<std::string, CURVE2F*>& c = violin->ribs.curves;
 
 	points.push_back(VEC3F(0, 0, safe_z));
 

@@ -17,6 +17,7 @@
 #include "bspline_utils.h"
 #include "violin_model.h"
 #include "toolpath_base.h"
+#include "geometry.h"
 
 //void TestHarwellBoeing();
 bool TestDeBoor(bool verbose);
@@ -867,9 +868,9 @@ bool TestFileLoader_LoadModelJava(bool verbose){
 	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
 	
 	violin_model* violin = new violin_model();
-	violin->ribs = new violin_ribs();
+	//violin->ribs = new violin_ribs();
 	std::string name = "rib_internal_lower_bout";
-	violin->ribs->curves.insert(std::make_pair(name, &(curves[0])));
+	violin->ribs.curves.insert(std::make_pair(name, &(curves[0])));
 
 	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
 	IO::SaveModelXML(filepath2, violin, verbose);
@@ -1426,10 +1427,10 @@ bool TestToolPath3(bool verbose){
 	if (model == nullptr){ return false; }
 	if (model->violin == nullptr){ return false; }
 
-	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(-140, -65, 10));
-	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(-140, 65, 10));
-	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(110, 45, 10));
-	model->violin->ribs->rib_mould_locator_holes.push_back(circle2f(110, -45, 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(-140, -65, 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(-140, 65, 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(110, 45, 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(110, -45, 10));
 
 	for (auto path : model->paths){
 		path.second->calculate();
@@ -1449,9 +1450,8 @@ bool TestToolPath4(bool verbose){
 	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
 
 	violin_model violin;
-	violin.back = new violin_back();
-	violin.back->surfaces.insert(std::make_pair("exterior", &surfaces[0]));
-	violin.back->rotate_model(3.1415926/2);
+	violin.back.surfaces.insert(std::make_pair("exterior", &surfaces[0]));
+	violin.back.rotate_model(3.1415926/2);
 
 	cnc_tool tool;
 	tool.diameter = 6.35;
@@ -1478,6 +1478,48 @@ bool TestToolPath4(bool verbose){
 
 	toolpath.calculate();
 	toolpath.save_gcode();
+
+
+	geometry::vector<float, 2> p;
+	p[0] = 1;
+	p[1] = -1;
+	geometry::vector<float, 2> q;
+	q[0] = 2;
+	q[1] = 4;
+	geometry::vector<float, 2> r = p;
+	r += q;
+	r *= q;
+	r /= q;
+	//r -= q;
+	geometry::vector<float, 2> s(p);
+	s = (r + q) * q / r;
+
+	float n1 = s.L1norm();
+	float n2 = s.L2norm();
+	s.normalise();
+	float n3 = s.L2norm();
+
+	std::vector<geometry::vector<float, 2>> list;
+	list.push_back(p);
+	list.push_back(q);
+	auto it = list.begin();
+	list.insert(it+1,r);
+	list.push_back(s);
+
+	geometry::matrix<float, 2, 2> m;
+	m(0,0) = 2;
+	m(1,1) = 5;
+
+	geometry::vector<float, 2> a = geometry::product(m, s);
+
+	int d = s.size();
+	
+	geometry::vector<float, 3> v1, v2;
+	v1[0] = 1;
+	v2[1] = 1;
+	auto v3 = geometry::cross_product(v1, v2);
+
+
 	return true;
 }
 

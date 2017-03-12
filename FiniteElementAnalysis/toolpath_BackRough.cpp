@@ -5,11 +5,8 @@ void toolpath_BackRough::calculate()
 	using namespace bspline;
 
 	if (violin == nullptr) { return; }
-	if (violin->back == nullptr) 
-	{ 
-		return; 
-	}
-	if (violin->back->surfaces.find("exterior") == violin->back->surfaces.end()) return;
+
+	if (violin->back.surfaces.find("exterior") == violin->back.surfaces.end()) return;
 
 	float safe_z = parameters["safe_z"];
 	float minimum_z = parameters["minimum_z"];
@@ -19,7 +16,7 @@ void toolpath_BackRough::calculate()
 	int nx = (int)parameters["mesh_nx"];
 	int ny = (int)parameters["mesh_ny"];
 
-	SURFACE3F* s = violin->back->surfaces["exterior"];
+	SURFACE3F* s = violin->back.surfaces["exterior"];
 	mesh3f* mesh = bspline::build_mesh(s, nx, ny);
 
 	points.push_back(VEC3F(0, 0, safe_z));

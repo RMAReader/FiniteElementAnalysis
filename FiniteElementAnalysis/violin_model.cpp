@@ -10,6 +10,50 @@ violin_model::~violin_model()
 {
 }
 
+//copy constructor
+violin_model::violin_model(const violin_model& other)
+{
+	*this = other;
+}
+
+//copy assignment
+violin_model& violin_model::operator=(const violin_model& other)
+{
+	if (this != &other)
+	{
+		//call delete[] on any pointer class members to free existing resource
+		name = other.name;
+		description = other.description;
+		ribs = other.ribs;
+		back = other.back;
+		belly = other.belly;
+
+	}
+	return *this;
+}
+
+//move constructor
+violin_model::violin_model(violin_model&& other)
+{
+	*this = std::move(other);
+}
+
+//move assignment operator
+violin_model& violin_model::operator=(violin_model&& other)
+{
+	if (this != &other)
+	{
+		name = std::move(other.name);
+		description = std::move(other.description);
+		ribs = std::move(other.ribs);
+		back = std::move(other.back);
+		belly = std::move(other.belly);
+	}
+	return *this;
+}
+
+
+
 
 
 
@@ -25,21 +69,10 @@ void violin_ribs::scale_model(double ratio){
 	}
 }
 void violin_model::scale_model(double ratio){
-	ribs->scale_model(ratio);
+	ribs.scale_model(ratio);
 }
 
-void violin_back::rotate_model(double angle){
-	
-	double m1 = sin(angle);
-	double m2 = cos(angle);
-	for (auto item : surfaces)
-	{
-		for (int i = 0; i < item.second->points.data.size(); i++){
-			VEC3F& p = item.second->points.data[i];
-			p = VEC3F(m2*p.x + m1*p.y, m1*p.x - m2*p.y, p.z);
-		}
-	}
-}
+
 
 
 base2f::base2f()

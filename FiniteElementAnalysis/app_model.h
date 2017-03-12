@@ -10,7 +10,7 @@ class app_model
 {
 public:
 	
-	violin_model* violin;
+	violin_model* violin = nullptr;
 	std::unordered_map < std::string, toolpath_base* > paths;
 
 

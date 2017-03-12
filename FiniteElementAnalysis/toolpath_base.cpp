@@ -42,22 +42,25 @@ void toolpath_base::save_gcode()
 		out << "F" << fixed << setprecision(0) << parameters["z_feedrate"];
 		out << endl;
 
-		out << "G01";
-		out << "X" << fixed << setprecision(3) << points[0].x;
-		out << "Y" << fixed << setprecision(3) << points[0].y;
-		out << "F" << fixed << setprecision(0) << parameters["max_feedrate"];
-		out << endl;
-
-		for (int i = 0; i < points.size(); i++)
+		if (points.size() > 0)
 		{
-			out << "G01";
-			out << "X" << fixed << setprecision(3) << points[i].x;
-			out << "Y" << fixed << setprecision(3) << points[i].y;
-			out << "Z" << fixed << setprecision(3) << points[i].z;
-			out << "F" << fixed << setprecision(0) << parameters["xy_feedrate"];
-			out << endl;
-		}
 
+			out << "G01";
+			out << "X" << fixed << setprecision(3) << points[0].x;
+			out << "Y" << fixed << setprecision(3) << points[0].y;
+			out << "F" << fixed << setprecision(0) << parameters["max_feedrate"];
+			out << endl;
+
+			for (int i = 0; i < points.size(); i++)
+			{
+				out << "G01";
+				out << "X" << fixed << setprecision(3) << points[i].x;
+				out << "Y" << fixed << setprecision(3) << points[i].y;
+				out << "Z" << fixed << setprecision(3) << points[i].z;
+				out << "F" << fixed << setprecision(0) << parameters["xy_feedrate"];
+				out << endl;
+			}
+		}
 		out << "M05"; //spindle off
 		out << "M30"; //end program
 		out << endl;
