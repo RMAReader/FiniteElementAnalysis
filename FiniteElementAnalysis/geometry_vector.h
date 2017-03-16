@@ -2,6 +2,7 @@
 #define _GEOMETRY_VECTOR_H_
 
 
+
 namespace geometry
 {
 

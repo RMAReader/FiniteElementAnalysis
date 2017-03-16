@@ -3,7 +3,7 @@
 
 #include "geometry_vector.h"
 #include "geometry_matrix.h"
-
+#include "geometry_bspline_basis.h"
 
 namespace geometry
 {
