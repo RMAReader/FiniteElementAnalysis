@@ -1,14 +1,15 @@
 #ifndef _GEOMETRY_BSPLINE_BASIS_H_
 #define _GEOMETRY_BSPLINE_BASIS_H_
 
+#include "geometry_bspline_knot.h"
 
 namespace geometry {
 	namespace bspline{
 
-		template < class T_k, class T_x >
+		template < class T >
 		class basis
 		{
-			T_k _knot;
+			geometry::bspline::knot<T> _knot;
 			int _p;
 
 		public:
@@ -63,35 +64,35 @@ namespace geometry {
 			//}
 
 
-			public T_x evaluate(int i, int p, double x){//, double *knot, int lknot, double x){
+			//public T evaluate(int i, int p, T x){//, double *knot, int lknot, double x){
 
-				if (i < 0) throw "deboor error: require i >= 0";
-				
-				if (i + p + 1 >= knot.size()) throw "deboor error: require i + p + 1 < knot.size()";
+			//	if (i < 0) throw "deboor error: require i >= 0";
+			//	
+			//	if (i + p + 1 >= _knot.size()) throw "deboor error: require i + p + 1 < knot.size()";
 
-				if (x == knot[knot.size() - p - 1]){ x -= x * DBL_EPSILON; }
+			//	if (x == _knot[_knot.size() - p - 1]){ x -= x * DBL_EPSILON; }
 
-				if (p == 0){
-					if (knot[i] <= x && x < knot[i + 1]){
-						return 1;
-					}
-					else{
-						return 0;
-					}
-				}
-				double d1 = knot[i + p] - knot[i];
-				double d2 = knot[i + p + 1] - knot[i + 1];
+			//	if (p == 0){
+			//		if (_knot[i] <= x && x < _knot[i + 1]){
+			//			return 1;
+			//		}
+			//		else{
+			//			return 0;
+			//		}
+			//	}
+			//	double d1 = _knot[i + p] - _knot[i];
+			//	double d2 = _knot[i + p + 1] - _knot[i + 1];
 
-				double val1 = 0;
-				double val2 = 0;
-				if (d1 > 0){
-					val1 = (x - knot[i]) / d1 * deboor_value(i, p - 1, knot, lknot, x);
-				}
-				if (d2 > 0) {
-					val2 = (knot[i + p + 1] - x) / d2 * deboor_value(i + 1, p - 1, knot, lknot, x);
-				}
-				return val1 + val2;
-			}
+			//	double val1 = 0;
+			//	double val2 = 0;
+			//	if (d1 > 0){
+			//		val1 = (x - _knot[i]) / d1 * evaluate(i, p - 1, x);
+			//	}
+			//	if (d2 > 0) {
+			//		val2 = (_knot[i + p + 1] - x) / d2 * evaluate(i + 1, p - 1, x);
+			//	}
+			//	return val1 + val2;
+			//}
 
 
 

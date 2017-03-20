@@ -4,6 +4,7 @@
 
 #include <vector>
 
+
 namespace geometry
 {
 	namespace bspline
@@ -11,10 +12,11 @@ namespace geometry
 
 		template < class T >
 		class knot{
-			int p;
-			std::vector<T> data;
+
 
 		public:
+			int p;
+			std::vector<T> _data;
 
 			knot(){}
 			~knot(){}
@@ -25,7 +27,7 @@ namespace geometry
 				if (this != &other)
 				{
 					p = other.p;
-					data = other.data;
+					_data = other._data;
 				}
 				return *this;
 			}
@@ -39,10 +41,10 @@ namespace geometry
 			//move assignment operator
 			knot& operator=(knot&& other)
 			{
-				if (this != &&other)
+				if (this != &other)
 				{
 					p = other.p;
-					knot = std::move(other.knot);
+					_data = std::move(other._data);
 				}
 				return *this;
 			}
@@ -53,62 +55,77 @@ namespace geometry
 			}
 
 
-			static knot& create_uniform_open(int p, int n)
+			static knot create_uniform_open(int p, int n)
 			{
 				knot output;
 				output.p = p;
-				output.data.resize(n);
+				output._data.resize(n);
 				for (int i = 0; i < n; i++)
 				{
 					output[i] = (T)i;
 				}
-				nromalise();
+				output.normalise();
+				return output;
 			}
-			static knot& create_uniform_closed(int p, int n)
+			static knot create_uniform_closed(int p, int n)
 			{
-				knot output;
-				output.p = p;
-				output.data.resize(n);
-				for (int i = 0; i < n; i++){
-					output[i] = (T)fmin(fmax((double)(i - p) / (n - p), 0), 1);
-				}
-				normalise();
+				knot output = create_uniform_open(p,n);
+				output.close_front();
+				output.close_back();
+				return output;
 			}
 			
 
+			void close_front()
+			{
+				for (int i = 0; i < p; i++){
+					_data[i] = minParam();
+				}
+			}
+			void close_back()
+			{
+				for (int i = _data.size() - p; i < _data.size(); i++){
+					_data[i] = maxParam();
+				}
+			}
+
 			inline T minParam()
 			{
-				return data[p];
+				return _data[p];
 			}
 			inline T maxParam()
 			{
-				return data[data.size() - p - 1];
+				return _data[_data.size() - p - 1];
 			}
-			inline T operator[](int i)
+			inline T& operator[](int i)
 			{
-				return data[i];
+				return _data[i];
 			}
 
 
 			void insert(std::vector<T> k)
 			{
-				data.push_back((data.end(), k.begin(), k.end()));
-				std::sort(data.begin(),data.end());
+				_data.insert(_data.end(), k.begin(), k.end());
+				std::sort(_data.begin(),_data.end());
 				normalise();
 			}
 			void push_back_open()
 			{
-				data = create_uniform_open(p, data.size() + 1);
+				*this = create_uniform_open(p, _data.size() + 1);
 			}
 
+			void push_back_closed()
+			{
+				*this = create_uniform_closed(p, _data.size() + 1);
+			}
 
 			//returns continuity of curve at parameter x
-			int continuity(K x)
+			int continuity(T x)
 			{
 				int c = p;
-				for (int i = 0; i < data.size(); i++)
+				for (int i = 0; i < _data.size(); i++)
 				{
-					if (data[i] == x){ c--; }
+					if (_data[i] == x){ c--; }
 				}
 				return c;
 			}
@@ -116,12 +133,22 @@ namespace geometry
 			int multiplicity(int i)
 			{
 				int m = 0;
-				for (int j = 0; j < data.size(); j++)
+				for (int j = 0; j < _data.size(); j++)
 				{
-					if (data[i] == data[j]){ m++; }
+					if (_data[i] == _data[j]){ m++; }
 				}
 				return m;
 			}
+
+			inline int size()
+			{
+				return _data.size();
+			}
+			inline T* data()
+			{
+				return _data.data();
+			}
+
 
 		private:
 			
@@ -129,9 +156,10 @@ namespace geometry
 			void normalise()
 			{
 				T alpha = maxParam() - minParam();
-				for (int i = 0; i < data.size(); i++)
+				T beta = minParam();
+				for (int i = 0; i < _data.size(); i++)
 				{
-					data[i] = (data[i] - minParam()) / alpha;
+					_data[i] = (_data[i] - beta) / alpha;
 				}
 			}
 

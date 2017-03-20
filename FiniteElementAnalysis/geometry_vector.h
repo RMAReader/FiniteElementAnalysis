@@ -1,6 +1,7 @@
 #ifndef _GEOMETRY_VECTOR_H_
 #define _GEOMETRY_VECTOR_H_
 
+#include <array>
 
 
 namespace geometry
@@ -10,8 +11,9 @@ namespace geometry
 	class vector
 	{
 	private:
-		T data[_N];
 		
+		std::array<T, _N> data;
+
 
 	public:
 
@@ -39,15 +41,17 @@ namespace geometry
 			*this = other;
 		}
 
+		vector(const std::array<T, _N>& data)
+		{
+			this->data = data;
+		}
 
 		////move assignment operator
-		//vector& vector::operator=(vector&& other)
+		//vector& operator=(vector&& other)
 		//{
 		//	if (this != &&other)
 		//	{
-		//		for (int i = 0; i < N; i++){
-		//			this->data[i] = other.data[i];
-		//		}
+		//		data = std::move(other.data);
 		//	}
 		//	return *this;
 		//}
@@ -69,13 +73,25 @@ namespace geometry
 		//}
 
 
-		virtual ~vector(){}
+//		virtual ~vector(){}
 
-
+		//copy assignment
+		void operator=(T v)
+		{
+			for (int i = 0; i < _N; i++){
+				this->data[i] = v;
+			}
+		}
 		void operator +=(vector& v)
 		{
 			for (int i = 0; i < _N; i++){
 				this->data[i] += v.data[i];
+			}
+		}
+		void operator +=(T v)
+		{
+			for (int i = 0; i < _N; i++){
+				this->data[i] += v;
 			}
 		}
 		void operator -=(vector& v)
@@ -84,16 +100,34 @@ namespace geometry
 				this->data[i] -= v.data[i];
 			}
 		}
+		void operator -=(T v)
+		{
+			for (int i = 0; i < _N; i++){
+				this->data[i] -= v;
+			}
+		}
 		void operator *=(vector& v)
 		{
 			for (int i = 0; i < _N; i++){
 				this->data[i] *= v.data[i];
 			}
 		}
+		void operator *=(T v)
+		{
+			for (int i = 0; i < _N; i++){
+				this->data[i] *= v;
+			}
+		}
 		void operator /=(vector& v)
 		{
 			for (int i = 0; i < _N; i++){
 				this->data[i] /= v.data[i];
+			}
+		}
+		void operator /=(T v)
+		{
+			for (int i = 0; i < _N; i++){
+				this->data[i] /= v;
 			}
 		}
 
@@ -171,6 +205,8 @@ namespace geometry
 		out /= b;
 		return out;
 	}
+
+
 
 }
 

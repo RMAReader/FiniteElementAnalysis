@@ -173,6 +173,7 @@
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="gauss_legendre.h" />
     <ClInclude Include="geometry.h" />
+    <ClInclude Include="geometry_bspline_algorithms.h" />
     <ClInclude Include="geometry_bspline_curve.h" />
     <ClInclude Include="geometry_bspline_knot.h" />
     <ClInclude Include="geometry_matrix.h" />

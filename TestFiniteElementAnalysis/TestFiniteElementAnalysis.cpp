@@ -59,18 +59,18 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (TestDeBoor(verbose))
 	{
-		cout << "TestDeBoor passed" << endl; TestsPassed++;
+		std::cout << "TestDeBoor passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestDeBoor failed" << endl; TestsFailed++;
+		std::cout << "TestDeBoor failed" << endl; TestsFailed++;
 	}
 
 	if (TestBasisFunctions(verbose))
 	{
-		cout << "TestBasisFunctions passed" << endl; TestsPassed++;
+		std::cout << "TestBasisFunctions passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestBasisFunctions failed" << endl; TestsFailed++;
+		std::cout << "TestBasisFunctions failed" << endl; TestsFailed++;
 	}
 
 	//TestHarwellBoeing();
@@ -86,107 +86,107 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	if (TestOlsoAlgorithm(verbose))
 	{
-		cout << "TestOlsoAlgorithm passed" << endl; TestsPassed++;
+		std::cout << "TestOlsoAlgorithm passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestOlsoAlgorithm failed" << endl; TestsFailed++;
+		std::cout << "TestOlsoAlgorithm failed" << endl; TestsFailed++;
 	}
 
 
 	if (TestSurface(verbose))
 	{
-		cout << "TestSurface passed" << endl; TestsPassed++;
+		std::cout << "TestSurface passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestSurface failed" << endl; TestsFailed++;
+		std::cout << "TestSurface failed" << endl; TestsFailed++;
 	}
 
 	if (TestCurve_InsertKnots(verbose))
 	{
-		cout << "TestCurve_InsertKnots passed" << endl; TestsPassed++;
+		std::cout << "TestCurve_InsertKnots passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestCurve_InsertKnots failed" << endl; TestsFailed++;
+		std::cout << "TestCurve_InsertKnots failed" << endl; TestsFailed++;
 	}
 
 	if (TestCurve_LineIntersection(verbose))
 	{
-		cout << "TestCurve_Intersection passed" << endl; TestsPassed++;
+		std::cout << "TestCurve_Intersection passed" << endl; TestsPassed++;
 	}
 	else{ 
-		cout << "TestCurve_Intersection failed" << endl; TestsFailed++; 
+		std::cout << "TestCurve_Intersection failed" << endl; TestsFailed++; 
 	}
 
 	if (TestCurve_CurveIntersection(verbose))
 	{
-		cout << "TestCurve_CurveInterction passed" << endl; TestsPassed++;
+		std::cout << "TestCurve_CurveInterction passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestCurve_CurveInterction failed" << endl; TestsFailed++;
+		std::cout << "TestCurve_CurveInterction failed" << endl; TestsFailed++;
 	}
 
 	if (TestTriangle(verbose))
 	{
-		cout << "TestTriangle passed" << endl; TestsPassed++;
+		std::cout << "TestTriangle passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestTriangle failed" << endl; TestsFailed++;
+		std::cout << "TestTriangle failed" << endl; TestsFailed++;
 	}
 
 
 	if (TestFileLoader_LoadModelJava(verbose))
 	{
-		cout << "TestFileLoader_LoadModelJava passed" << endl; TestsPassed++;
+		std::cout << "TestFileLoader_LoadModelJava passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestFileLoader_LoadModelJava failed" << endl; TestsFailed++;
+		std::cout << "TestFileLoader_LoadModelJava failed" << endl; TestsFailed++;
 	}
 
 
 	if (TestFileLoader_LoadViolinXML(verbose))
 	{
-		cout << "TestFileLoader_LoadViolinXML passed" << endl; TestsPassed++;
+		std::cout << "TestFileLoader_LoadViolinXML passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestFileLoader_LoadViolinXML failed" << endl; TestsFailed++;
+		std::cout << "TestFileLoader_LoadViolinXML failed" << endl; TestsFailed++;
 	}
 
 	//if (TestToolPath1(verbose))
 	//{
-	//	cout << "TestToolPath1 passed" << endl; TestsPassed++;
+	//	std::cout << "TestToolPath1 passed" << endl; TestsPassed++;
 	//}
 	//else{
-	//	cout << "TestToolPath1 failed" << endl; TestsFailed++;
+	//	std::cout << "TestToolPath1 failed" << endl; TestsFailed++;
 	//}
 
 	//if (TestToolPath2(verbose))
 	//{
-	//	cout << "TestToolPath2 passed" << endl; TestsPassed++;
+	//	std::cout << "TestToolPath2 passed" << endl; TestsPassed++;
 	//}
 	//else{
-	//	cout << "TestToolPath2 failed" << endl; TestsFailed++;
+	//	std::cout << "TestToolPath2 failed" << endl; TestsFailed++;
 	//}
 
 	if (TestToolPath3(verbose))
 	{
-		cout << "TestToolPath3 passed" << endl; TestsPassed++;
+		std::cout << "TestToolPath3 passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestToolPath3 failed" << endl; TestsFailed++;
+		std::cout << "TestToolPath3 failed" << endl; TestsFailed++;
 	}
 	if (TestToolPath4(verbose))
 	{
-		cout << "TestToolPath4 passed" << endl; TestsPassed++;
+		std::cout << "TestToolPath4 passed" << endl; TestsPassed++;
 	}
 	else{
-		cout << "TestToolPath4 failed" << endl; TestsFailed++;
+		std::cout << "TestToolPath4 failed" << endl; TestsFailed++;
 	}
 
-	cout << endl;
-	cout << "Summary:" << endl;
-	cout << "Number of tests passed: " << TestsPassed << endl;
-	cout << "Number of tests failed: " << TestsFailed << endl;
-	cout << endl;
+	std::cout << endl;
+	std::cout << "Summary:" << endl;
+	std::cout << "Number of tests passed: " << TestsPassed << endl;
+	std::cout << "Number of tests failed: " << TestsFailed << endl;
+	std::cout << endl;
 
 	system("pause");
 
@@ -224,26 +224,26 @@ bool TestDeBoor(bool verbose){
 
 
 
-	//std::cout << "Enter i: ";
+	//std::std::cout << "Enter i: ";
 	//std::cin >> i;
 
-	//std::cout << "Enter p: ";
+	//std::std::cout << "Enter p: ";
 	//std::cin >> p;
 
-	//std::cout << "Enter length of knot vector: ";
+	//std::std::cout << "Enter length of knot vector: ";
 	//std::cin >> lknot;
 
 	//knot = new double[lknot];
 
 	//for (int j = 0; j < lknot; j++){
-	//	std::cout << "knot[" << j << "] = ";
+	//	std::std::cout << "knot[" << j << "] = ";
 	//	std::cin >> knot[j];
 	//}
 
-	//std::cout << "Enter x: ";
+	//std::std::cout << "Enter x: ";
 	//std::cin >> x;
 
-	//std::cout << "deBoor value = " << bspline::deboor_value(i, p, knot, lknot, x) << "\n";
+	//std::std::cout << "deBoor value = " << bspline::deboor_value(i, p, knot, lknot, x) << "\n";
 
 	//for (int j = 0; j < lknot * 10; j++){
 	//	x = j * 0.1;
@@ -1039,10 +1039,10 @@ bool TestOlsoAlgorithm(bool verbose){
 
 	if (verbose){
 		for (int i = 0; i < n; i++){
-			cout << "old(cx, cy) = " << cx[i] << "," << cy[i] << endl;
+			std::cout << "old(cx, cy) = " << cx[i] << "," << cy[i] << endl;
 		}
 		for (int i = 0; i < new_n; i++){
-			cout << "new(cx, cy) = " << new_cx[i] << "," << new_cy[i] << endl;
+			std::cout << "new(cx, cy) = " << new_cx[i] << "," << new_cy[i] << endl;
 		}
 		for (int i = 0; i < 20; i++){
 			double x = (double)i / 19;
@@ -1054,11 +1054,11 @@ bool TestOlsoAlgorithm(bool verbose){
 			for (int j = 0; j < new_n; j++){
 				new_curve += new_cx[j] * bspline::deboor_value(j, p, new_knot, new_n + p + 1, x);
 			}
-			cout << x << ": ";
-			cout << bspline::evaluate_curve(p, *knot, n + p + 1, *cx, x) << ", ";
-			cout << bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_cx, x) << ", ";
-			cout << curve << ", ";
-			cout << new_curve << endl;
+			std::cout << x << ": ";
+			std::cout << bspline::evaluate_curve(p, *knot, n + p + 1, *cx, x) << ", ";
+			std::cout << bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_cx, x) << ", ";
+			std::cout << curve << ", ";
+			std::cout << new_curve << endl;
 		}
 
 	}
@@ -1106,10 +1106,10 @@ bool TestOlsoAlgorithm(bool verbose){
 
 	if (verbose){
 		for (int i = 0; i < n; i++){
-			cout << "old(cx, cy) = " << c2[i].x << "," << c2[i].y << endl;
+			std::cout << "old(cx, cy) = " << c2[i].x << "," << c2[i].y << endl;
 		}
 		for (int i = 0; i < new_n; i++){
-			cout << "new(cx, cy) = " << new_c2[i].x << "," << new_c2[i].y << endl;
+			std::cout << "new(cx, cy) = " << new_c2[i].x << "," << new_c2[i].y << endl;
 		}
 		for (int i = 0; i < 20; i++){
 			double x = (double)i / 19;
@@ -1117,7 +1117,7 @@ bool TestOlsoAlgorithm(bool verbose){
 			vec2<double> c_old = bspline::evaluate_curve(p, *knot2, n + p + 1, *c2, x);
 			vec2<double> c_new = bspline::evaluate_curve(p, *new_knot2, new_n + p + 1, *new_c2, x);
 
-			cout << x << ": " << c_old.x << ", " << c_old.y << ", " << c_new.x << ", " << c_new.y << endl;;
+			std::cout << x << ": " << c_old.x << ", " << c_old.y << ", " << c_new.x << ", " << c_new.y << endl;;
 		}
 
 	}
@@ -1142,14 +1142,14 @@ bool TestOlsoAlgorithm(bool verbose){
 	BSplineSolid::olso_split_spans_y(&output1, &output2, 10);
 	
 	if (verbose){
-		cout << "input: degrees of freedom = ";
-		cout << input.npoints() * 3 << endl;
+		std::cout << "input: degrees of freedom = ";
+		std::cout << input.npoints() * 3 << endl;
 
-		cout << "output1: degrees of freedom = ";
-		cout << output1.npoints() * 3 << endl;
+		std::cout << "output1: degrees of freedom = ";
+		std::cout << output1.npoints() * 3 << endl;
 
-		cout << "output2: degrees of freedom = ";
-		cout << output2.npoints() * 3 << endl;
+		std::cout << "output2: degrees of freedom = ";
+		std::cout << output2.npoints() * 3 << endl;
 	}
 
 	bspline::curve<double> curve(2,0.5);
@@ -1215,18 +1215,33 @@ bool TestCurve_InsertKnots(bool verbose){
 	float r = 1;
 	float theta = 0;
 	curve<vec2<float>>* c = new curve<vec2<float>>(p, vec2<float>(r*cosf(theta), r*sinf(theta)));
+
+	std::array < float, 2 > _d1 = { r*cosf(theta), r*sinf(theta) };
+
+	geometry::bspline::curve<geometry::vector<float, 2>, double> _c(p);
+	_c.push_back_closed(geometry::vector < float, 2 >(_d1));
+
 	for (int i = 0; i < n - 1; i++){
 		theta += 0.1;
-		c->append(vec2<float>(r*cosf(theta), r*sinf(theta)));
+		std::array < float, 2 > d = { r*cosf(theta), r*sinf(theta) };
+		c->append(vec2<float>(d[0],d[1]));
+		_c.push_back_closed(geometry::vector < float, 2 >(d));
 	}
+
+	auto _x = _c.evaluate(0.5);
+	auto x = c->evaluate(0.5);
 
 	double newKnots[] = { 0.1, 0.9 };
 	curve<vec2<float>>* d;
 	d = c->insert_knots(newKnots, 2);
-	
+	auto _d = _c;
+	std::vector < double > _newKnots = {0.1, 0.9};
+	_d.insert_knots(_newKnots);
+
 	curve<vec2<float>>* e;
 	e = c->trim_curve(newKnots[0], newKnots[1]);
-
+	auto _e = _d;
+	_e.trim_curve(newKnots[0], newKnots[1]);
 
 	int neval = 15;
 	double t;
@@ -1234,107 +1249,172 @@ bool TestCurve_InsertKnots(bool verbose){
 	if (verbose){
 		for (int i = 0; i <= neval; i++){
 			t = (i * c->maxParam() + neval * c->minParam()) / neval;
-			cout << t << ": ";
-			cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
-			cout << "(" << d->evaluate(t).x << "," << d->evaluate(t).y << ") ";
-			cout << endl;
+			std::cout << t << ": ";
+			std::cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
+			std::cout << "(" << _d.evaluate(t)[0] << "," << _d.evaluate(t)[1] << ") ";
+			std::cout << endl;
 		}
 
 
 		for (int i = 0; i < c->lKnot(); i++){
-			cout << "c: " << c->getKnot(i) << endl;
+			std::cout << "c: " << c->getKnot(i) << endl;
 		}
-		cout << endl;
+		std::cout << endl;
 		for (int i = 0; i < d->lKnot(); i++){
-			cout << "d: " << d->getKnot(i) << endl;
+			std::cout << "d: " << _d._knot[i] << endl;
 		}
 
 		for (int i = 0; i < c->nPoints(); i++){
-			cout << "c[" << i << "] = (" << c->get(i).x << "," << c->get(i).y << ") " << endl;
+			std::cout << "c[" << i << "] = (" << c->get(i).x << "," << c->get(i).y << ") " << endl;
 		}
 		for (int i = 0; i < d->nPoints(); i++){
-			cout << "d[" << i << "] = (" << d->get(i).x << "," << d->get(i).y << ") " << endl;
+			std::cout << "d[" << i << "] = (" << _d._points[i][0] << "," << _d._points[i][1] << ") " << endl;
 		}
 
-		cout << "Trimmed curve" << endl;
-		cout << "Original:  New:" << endl;
+		std::cout << "Trimmed curve" << endl;
+		std::cout << "Original:  New:" << endl;
 		for (int i = 0; i <= neval; i++){
-			t = (i * e->maxParam() + neval * e->minParam()) / neval;
-			cout << t << ": ";
-			cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
-			cout << "(" << e->evaluate(t).x << "," << e->evaluate(t).y << ") ";
-			cout << endl;
+			t = (i * _e.maxParam() + (neval - i) * _e.minParam()) / neval;
+			std::cout << t << ": ";
+			std::cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
+			std::cout << "(" << _e.evaluate(t)[0] << "," << _e.evaluate(t)[1] << ") ";
+			std::cout << endl;
 		}
 	}
 
 	double tol = 0.000001;
-	if (c->maxParam() != d->maxParam()){ return false; }
-	if (c->minParam() != d->minParam()){ return false; }
-	if (e->minParam() != newKnots[0]){ return false; }
-	if (e->maxParam() != newKnots[1]){ return false; }
-	if (c->nPoints() != d->nPoints() - 2){ return false; }
-	if (c->lKnot() != d->lKnot() - 2){ return false; }
+	if (c->maxParam() != _d.maxParam()){ return false; }
+	if (c->minParam() != _d.minParam()){ return false; }
+	if (_e.minParam() != newKnots[0]){ return false; }
+	if (_e.maxParam() != newKnots[1]){ return false; }
+	if (c->nPoints() != _d.nPoints() - 2){ return false; }
+	//if (c->lKnot() != d->lKnot() - 2){ return false; }
 	for (int i = 0; i <= neval; i++){
 		t = (i * c->maxParam() + neval * c->minParam()) / neval;
 		vec2<float> p = c->evaluate(t);
-		vec2<float> q = d->evaluate(t);
-		if (AreEqual(p.x, q.x, tol)==false){ return false; }
-		if (AreEqual(p.y, q.y, tol) == false){ return false; }
+		auto q = _d.evaluate(t);
+		if (AreEqual(p.x, q[0], tol)==false){ 
+			return false; }
+		if (AreEqual(p.y, q[1], tol) == false){ 
+			return false; }
 	}
 	for (int i = 0; i <= neval; i++){
 		t = (i * e->maxParam() + neval * e->minParam()) / neval;
 		vec2<float> p = c->evaluate(t);
-		vec2<float> q = e->evaluate(t);
-		if (AreEqual(p.x, q.x, tol) == false){ return false; }
-		if (AreEqual(p.y, q.y, tol) == false){ return false; }
+		auto q = _e.evaluate(t);
+		if (AreEqual(p.x, q[0], tol) == false){ return false; }
+		if (AreEqual(p.y, q[1], tol) == false){ return false; }
 	}
+	//double tol = 0.000001;
+	//if (c->maxParam() != d->maxParam()){ return false; }
+	//if (c->minParam() != d->minParam()){ return false; }
+	//if (e->minParam() != newKnots[0]){ return false; }
+	//if (e->maxParam() != newKnots[1]){ return false; }
+	//if (c->nPoints() != d->nPoints() - 2){ return false; }
+	//if (c->lKnot() != d->lKnot() - 2){ return false; }
+	//for (int i = 0; i <= neval; i++){
+	//	t = (i * c->maxParam() + neval * c->minParam()) / neval;
+	//	vec2<float> p = c->evaluate(t);
+	//	vec2<float> q = d->evaluate(t);
+	//	if (AreEqual(p.x, q.x, tol) == false){ return false; }
+	//	if (AreEqual(p.y, q.y, tol) == false){ return false; }
+	//}
+	//for (int i = 0; i <= neval; i++){
+	//	t = (i * e->maxParam() + neval * e->minParam()) / neval;
+	//	vec2<float> p = c->evaluate(t);
+	//	vec2<float> q = e->evaluate(t);
+	//	if (AreEqual(p.x, q.x, tol) == false){ return false; }
+	//	if (AreEqual(p.y, q.y, tol) == false){ return false; }
+	//}
 	return true;
 }
 
 
 bool TestCurve_LineIntersection(bool verbose){
 
-	using namespace bspline;
+	//using namespace bspline;
 
-	vec2<float> p1(0,0);
-	vec2<float> p2(10, 10);
-	vec2<float> q1(5, 2);
-	vec2<float> q2(5, 6);
+	//vec2<float> p1(0,0);
+	//vec2<float> p2(10, 10);
+	//vec2<float> q1(5, 2);
+	//vec2<float> q2(5, 6);
 
-	vec2<double> params;
+	//vec2<double> params;
+	//bool intersect;
+
+	//intersect = bspline::IntersectionParam(p1,p2,q1,q2,&params,verbose);
+	//if (intersect == false || params.x != 0.5 || params.y != 0.25){ return false; }
+
+	//intersect = bspline::IntersectionParam(q1, q2, p1, p2, &params, verbose);
+	//if (intersect == false || params.x != 0.25 || params.y != 0.5){ return false; }
+
+	//q1.y = 5;
+	//intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	//if (intersect == false || params.x != 0.5 || params.y != 1.0){ return false; }
+
+	//q1.y = 0;
+	//q2.y = 5;
+	//intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	//if (intersect == false || params.x != 0.5 || params.y != 0.0){ return false; }
+
+	//q2.y = 4;
+	//intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	//if (intersect == true ){ return false; }
+
+	//q1.x = 5;
+	//q1.y = 0;
+	//q2.x = 10;
+	//q2.y = 5;
+	//intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	//if (intersect == true){ return false; }
+
+	//q1.x = 5;
+	//q1.y = 5;
+	//q2.x = 7;
+	//q2.y = 7;
+	//intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	//if (intersect == true){ return false; }
+
+
+	geometry::vector<float, 2> p1(std::array < float, 2 > { {0, 0 }});
+	geometry::vector<float, 2> p2(std::array < float, 2 > { {10, 10 }});
+	geometry::vector<float, 2> q1(std::array < float, 2 > { {5,2 }});
+	geometry::vector<float, 2> q2(std::array < float, 2 > { {5,6 }});
+
+	geometry::vector<float, 2> params;
 	bool intersect;
 
-	intersect = bspline::IntersectionParam(p1,p2,q1,q2,&params,verbose);
-	if (intersect == false || params.x != 0.5 || params.y != 0.25){ return false; }
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
+	if (intersect == false || params[0] != 0.5 || params[1] != 0.25){ return false; }
 
-	intersect = bspline::IntersectionParam(q1, q2, p1, p2, &params, verbose);
-	if (intersect == false || params.x != 0.25 || params.y != 0.5){ return false; }
+	intersect = geometry::IntersectionParam(q1, q2, p1, p2, params, verbose);
+	if (intersect == false || params[0] != 0.25 || params[1] != 0.5){ return false; }
 
-	q1.y = 5;
-	intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
-	if (intersect == false || params.x != 0.5 || params.y != 1.0){ return false; }
+	q1[1] = 5;
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
+	if (intersect == false || params[0] != 0.5 || params[1] != 1.0){ return false; }
 
-	q1.y = 0;
-	q2.y = 5;
-	intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
-	if (intersect == false || params.x != 0.5 || params.y != 0.0){ return false; }
+	q1[1] = 0;
+	q2[1] = 5;
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
+	if (intersect == false || params[0] != 0.5 || params[1] != 0.0){ return false; }
 
-	q2.y = 4;
-	intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
-	if (intersect == true ){ return false; }
-
-	q1.x = 5;
-	q1.y = 0;
-	q2.x = 10;
-	q2.y = 5;
-	intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	q2[1] = 4;
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
 	if (intersect == true){ return false; }
 
-	q1.x = 5;
-	q1.y = 5;
-	q2.x = 7;
-	q2.y = 7;
-	intersect = bspline::IntersectionParam(p1, p2, q1, q2, &params, verbose);
+	q1[0] = 5;
+	q1[1] = 0;
+	q2[0] = 10;
+	q2[1] = 5;
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
+	if (intersect == true){ return false; }
+
+	q1[0] = 5;
+	q1[1] = 5;
+	q2[0] = 7;
+	q2[1] = 7;
+	intersect = geometry::IntersectionParam(p1, p2, q1, q2, params, verbose);
 	if (intersect == true){ return false; }
 
 	return true;
@@ -1349,38 +1429,89 @@ bool TestCurve_CurveIntersection(bool verbose){
 	int n = 5;
 	float r = 1;
 	float theta = 0;
-	curve<vec2<float>>* c1 = new curve<vec2<float>>(p, vec2<float>(r*cosf(theta), r*sinf(theta)));
-	curve<vec2<float>>* c2 = new curve<vec2<float>>(p, vec2<float>(r - r*cosf(-theta), r*sinf(theta)));
+	//curve<vec2<float>>* c1 = new curve<vec2<float>>(p, vec2<float>(r*cosf(theta), r*sinf(theta)));
+	//curve<vec2<float>>* c2 = new curve<vec2<float>>(p, vec2<float>(r - r*cosf(-theta), r*sinf(theta)));
+
+	std::array < float, 2 > _d1 = { r*cosf(theta), r*sinf(theta) };
+	std::array < float, 2 > _d2 = { r - r*cosf(-theta), r*sinf(theta) };
+
+	geometry::bspline::curve<geometry::vector<float, 2>, double> _c1(p);
+	geometry::bspline::curve<geometry::vector<float, 2>, double> _c2(p);
+	_c1.push_back_closed(geometry::vector < float, 2 >(_d1));
+	_c2.push_back_closed(geometry::vector < float, 2 >(_d2));
+
 	for (int i = 0; i < n - 1; i++){
 		theta += 0.6;
-		c1->append(vec2<float>(r*cosf(theta), r*sinf(theta)));
-		c2->append(vec2<float>(r - r*cosf(-theta), r*sinf(theta)));
+		//c1->append(vec2<float>(r*cosf(theta), r*sinf(theta)));
+		//c2->append(vec2<float>(r - r*cosf(-theta), r*sinf(theta)));
+
+		std::array < float, 2 > d1 = { r*cosf(theta), r*sinf(theta) };
+		std::array < float, 2 > d2 = { r - r*cosf(-theta), r*sinf(theta) };
+		//c1->append(vec2<float>(d1[0], d1[1]));
+		//c2->append(vec2<float>(d2[0], d2[1]));
+		_c1.push_back_closed(geometry::vector < float, 2 >(d1));
+		_c2.push_back_closed(geometry::vector < float, 2 >(d2));
 	}
 
 	if (verbose){
-		for (int i = 0; i < c1->nPoints(); i++){
-			cout << "i = " << i;
-			cout << " c1 = (" << c1->get(i).x << "," << c1->get(i).y;
-			cout << " c2 = (" << c2->get(i).x << "," << c2->get(i).y;
-			cout << endl;
+		for (int i = 0; i < _c1._points.size(); i++){
+			std::cout << "i = " << i;
+			std::cout << " c1 = (" << _c1._points[i][0] << "," << _c1._points[i][1];
+			std::cout << " c2 = (" << _c2._points[i][0] << "," << _c2._points[i][1];
+			std::cout << endl;
 		}
 	}
 
-	vec2<double> param;
-	float error = 0.001;
-	bool intersectFound = IntersectParam((*c1), (*c2), error, &param, verbose);
+	//vec2<double> param;
+	//float error = 0.001;
+	//bool intersectFound = IntersectParam((*c1), (*c2), error, &param, verbose);
 
-	vec2<float> i1 = c1->evaluate(param.x);
-	vec2<float> i2 = c2->evaluate(param.y);
-	float d = bspline::distance(i1, i2);
-	if (intersectFound == false){ return false; }
-	if (d > error){ return false; }
+	geometry::vector<double,2> _param;
+	float _error = 0.001;
+	bool _intersectFound = geometry::bspline::IntersectParam(_c1, _c2, _error, _param, verbose);
+
+	auto i1 = _c1.evaluate(_param[0]);
+	auto i2 = _c2.evaluate(_param[1]);
+	float d = (i1-i2).L2norm();
+	if (_intersectFound == false){ return false; }
+	if (d > _error){ return false; }
 	return true;
 
 }
 
 
 bool TestTriangle(bool verbose){
+
+	geometry::vector<float, 2> p1(std::array < float, 2 > {{ 1.0, 0.0 }});
+	geometry::vector<float, 2> p2(std::array < float, 2 > {{ 9.0, 0.0 }});
+	geometry::vector<float, 2> p3(std::array < float, 2 > {{ 1.0, 7.0 }});
+
+	geometry::vector<float, 2> c1(std::array < float, 2 > {{ 0.0, 0.0 }});
+	float r1 = 0.9;
+
+	bool overlap1 = interior_triangle(c1, r1, p1, p2, p3);
+
+	geometry::vector<float, 2> c2(std::array < float, 2 > {{ 0.0, 0.0 }});
+	float r2 = 1.0;
+
+	bool overlap2 = interior_triangle(c2, r2, p1, p2, p3);
+
+	geometry::vector<float, 2> c3(std::array < float, 2 > {{ 0.0, 0.0 }});
+	float r3 = 1.1;
+
+	bool overlap3 = interior_triangle(c3, r3, p1, p2, p3);
+
+	geometry::vector<float, 2> c4(std::array < float, 2 > {{ 3.0, 1.5 }});
+	float r4 = 1.0;
+
+	bool overlap4 = interior_triangle(c4, r4, p1, p2, p3);
+
+	if (overlap1 == true){ return false; }
+	if (overlap2 == false){ return false; }
+	if (overlap3 == false){ return false; }
+	if (overlap4 == false){ return false; }
+	return true;
+/*
 
 	using namespace bspline;
 
@@ -1412,8 +1543,7 @@ bool TestTriangle(bool verbose){
 	if (overlap2 == false){ return false; }
 	if (overlap3 == false){ return false; }
 	if (overlap4 == false){ return false; }
-	return true;
-
+	return true;*/
 }
 
 
