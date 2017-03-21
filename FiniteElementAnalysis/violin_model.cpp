@@ -59,11 +59,11 @@ violin_model& violin_model::operator=(violin_model&& other)
 
 void violin_ribs::scale_model(double ratio){
 
-	for (auto it = curves.begin(); it != curves.end(); ++it){
-		for (int i = 0; i < it->second->nPoints(); i++){
-			it->second->item(i)->operator*=(ratio);
-		}
-	}
+	//for (auto it = curves.begin(); it != curves.end(); ++it){
+	//	for (int i = 0; i < it->second._points.size(); i++){
+	//		it->second._points[i]*=ratio;
+	//	}
+	//}
 	for (auto it = floats.begin(); it != floats.end(); ++it){
 		it->second *=ratio;
 	}

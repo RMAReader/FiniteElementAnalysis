@@ -46,6 +46,8 @@ namespace geometry
 			this->data = data;
 		}
 
+
+
 		////move assignment operator
 		//vector& operator=(vector&& other)
 		//{
@@ -172,6 +174,16 @@ namespace geometry
 		}
 	};
 
+
+	template <class T, int N, int M>
+	static void operator<<(vector<T, N>& left, vector<T, M>& right)
+	{
+		int size = (N < M) ? N : M;
+		for (int i = 0; i < size; i++)
+		{
+			left[i] = right[i];
+		}
+	}
 
 
 	template <class T, int N>

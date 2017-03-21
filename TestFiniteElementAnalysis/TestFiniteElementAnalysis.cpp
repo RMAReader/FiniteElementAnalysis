@@ -863,14 +863,14 @@ bool TestFileLoader_LoadModelJava(bool verbose){
 
 	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
 
-	std::vector<CURVE2F> curves;
-	std::vector<SURFACE3F> surfaces;
-	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
+	std::vector<geoCURVE2F> curves;
+	std::vector<geoSURFACE3F> surfaces;
+	bool successful = IO::LoadModelJava(filepath, curves, surfaces, verbose);
 	
 	violin_model* violin = new violin_model();
 	//violin->ribs = new violin_ribs();
 	std::string name = "rib_internal_lower_bout";
-	violin->ribs.curves.insert(std::make_pair(name, &(curves[0])));
+	violin->ribs.curves.insert(std::make_pair(name, curves[0]));
 
 	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
 	IO::SaveModelXML(filepath2, violin, verbose);
@@ -1575,12 +1575,12 @@ bool TestToolPath4(bool verbose){
 
 	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
 
-	std::vector<CURVE2F> curves;
-	std::vector<SURFACE3F> surfaces;
-	bool successful = IO::LoadModelJava(filepath, &curves, &surfaces, verbose);
+	std::vector<geoCURVE2F> curves;
+	std::vector<geoSURFACE3F> surfaces;
+	bool successful = IO::LoadModelJava(filepath, curves, surfaces, verbose);
 
 	violin_model violin;
-	violin.back.surfaces.insert(std::make_pair("exterior", &surfaces[0]));
+	violin.back.surfaces.insert(std::make_pair("exterior", surfaces[0]));
 	violin.back.rotate_model(3.1415926/2);
 
 	cnc_tool tool;

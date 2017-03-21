@@ -7,12 +7,12 @@
 #include <algorithm>
 
 #include "bspline_utils.h"
-
+#include "geometry.h"
 
 class violin_ribs
 {
 public:
-	std::unordered_map < std::string, CURVE2F* > curves;
+	std::unordered_map < std::string, geoCURVE2F > curves;
 	std::unordered_map < std::string, float > floats;
 	std::vector<circle2f> rib_mould_locator_holes;
 
@@ -33,8 +33,8 @@ public:
 	violin_component& operator=(const violin_component& other);	//copy assignment
 	violin_component& operator=(violin_component&& other);	//move assignment operator
 
-	std::unordered_map < std::string, SURFACE3F* > surfaces;
-	std::unordered_map < std::string, CURVE3F* > curves;
+	std::unordered_map < std::string, geoSURFACE3F > surfaces;
+	std::unordered_map < std::string, geoCURVE3F > curves;
 	std::unordered_map < std::string, float > floats;
 
 	void rotate_model(double angle);

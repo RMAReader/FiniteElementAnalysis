@@ -12,7 +12,8 @@
 #include <time.h>
 #include <iomanip>
 
-#include "bspline_utils.h"
+//#include "bspline_utils.h"
+#include "geometry.h"
 #include "violin_model.h"
 
 
@@ -36,26 +37,26 @@ public:
 	std::string path_name;
 	std::string gcode_filepath;
 	std::unordered_map<std::string, float> parameters;
-	std::vector<VEC3F> points;
+	std::vector<geoVEC3F> points;
 
 	virtual void calculate();
 	void save_gcode();
 
-	void bore_hole(circle2f& c, float safe_z, float max_z, float min_z, float step_z);
+	void bore_hole(geoVEC2F& c, float d, float safe_z, float max_z, float min_z, float step_z);
 	
-	void cut_curve_add_point(std::vector<VEC3F>* path, VEC3F new_p, VEC2F& tangent, float resolution);
-	void cut_polyline_const_z(std::vector<VEC3F>* path, CURVE2F& c, float z, double minParam, double maxParam);
-	void cut_curve_const_z(std::vector<VEC3F>* path, float tool_diameter, CURVE2F& c, float z, double minParam, double maxParam, float resolution);
-	void cut_curve_const_z(std::vector<VEC3F>* path, float tool_diameter, bspline::offsetCurve2f& c, float z, double minParam, double maxParam, float resolution);
-	void offset_curve(std::vector<VEC3F>* path, float tool_diameter, bool deep_corners);
-	void join_curves_external(std::vector<VEC3F>& path1, std::vector<VEC3F>& path2);
-	void close_curve_external(std::vector<VEC3F>& path);
+	void cut_curve_add_point(std::vector<geoVEC3F>* path, geoVEC3F new_p, geoVEC2F& tangent, float resolution);
+	void cut_polyline_const_z(std::vector<geoVEC3F>* path, geoCURVE2F& c, float z, double minParam, double maxParam);
+	//void cut_curve_const_z(std::vector<geoVEC3F>* path, float tool_diameter, geoCURVE2F& c, float z, double minParam, double maxParam, float resolution);
+	void cut_curve_const_z(std::vector<geoVEC3F>* path, float tool_diameter, geoCURVE2F& c, float z, double minParam, double maxParam, float resolution);
+	void offset_curve(std::vector<geoVEC3F>* path, float tool_diameter, bool deep_corners);
+	void join_curves_external(std::vector<geoVEC3F>& path1, std::vector<geoVEC3F>& path2);
+	void close_curve_external(std::vector<geoVEC3F>& path);
 
-	void trim_corner_block(CURVE2F* c_bout, CURVE2F* bout, CURVE2F* block, float block_top_z, float block_bottom_z, float step, float resolution);
-	void trim_end_block(CURVE2F* rib, CURVE2F* centre_line, CURVE2F* block, float block_top_z, float block_bottom_z, float step, float resolution);
+	void trim_corner_block(geoCURVE2F& c_bout, geoCURVE2F& bout, geoCURVE2F& block, float block_top_z, float block_bottom_z, float step_z, float resolution);
+	void trim_end_block(geoCURVE2F& rib, geoCURVE2F& centre_line, geoCURVE2F& block, float block_top_z, float block_bottom_z, float step_z, float resolution);
 
-	void rough_surface_scanning_stl(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, bspline::mesh3f*);
-	void rough_surface_grid(std::vector<VEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, bspline::mesh3f*);
+	void rough_surface_scanning_stl(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f&);
+	void rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, geometry::mesh3f&);
 };
 
 class toolpath_RibMouldBaseJig : public toolpath_base

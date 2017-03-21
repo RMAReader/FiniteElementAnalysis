@@ -54,9 +54,9 @@ void violin_component::rotate_model(double angle){
 	double m2 = cos(angle);
 	for (auto item : surfaces)
 	{
-		for (int i = 0; i < item.second->points.data.size(); i++){
-			VEC3F& p = item.second->points.data[i];
-			p = VEC3F(m2*p.x + m1*p.y, m1*p.x - m2*p.y, p.z);
+		for (int i = 0; i < item.second._points.data.size(); i++){
+			geoVEC3F& p = item.second._points.data[i];
+			p = geoVEC3F(std::array < float, 3 > {{m2*p[0] + m1*p[1], m1*p[0] - m2*p[1], p[2]}});
 		}
 	}
 }

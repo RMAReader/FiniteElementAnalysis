@@ -3,9 +3,10 @@
 
 
 #include <vector>
+//#include <algorithm>  
 #include "geometry_bspline_knot.h"
 #include "geometry_bspline_algorithms.h"
-#include "bspline_utils.h"
+//#include "bspline_utils.h"
 
 namespace geometry {
 	namespace bspline{
@@ -43,7 +44,7 @@ namespace geometry {
 			//move assignment operator
 			curve& operator=(curve&& other)
 			{
-				if (this != &&other)
+				if (this != &other)
 				{
 					_p = other._p;
 					_knot = std::move(other._knot);
@@ -58,7 +59,7 @@ namespace geometry {
 			}
 
 
-			curve(int p, std::vector<double>& knot, std::vector<T>& points)
+			curve(int p, knot<K>& knot, std::vector<T>& points)
 			{
 				if (p + points.size() + 1 != knot.size()) throw "Illegal parameters: require p + points.size() + 1 = knot.size()";
 				_p = p;
@@ -138,7 +139,7 @@ namespace geometry {
 
 
 
-			T length(K minParam, K maxParam)
+			float length(K minParam, K maxParam)
 			{
 				double min_t, max_t;
 				if (maxParam > minParam){
@@ -151,14 +152,13 @@ namespace geometry {
 					max_t = (this->minParam() < minParam) ? minParam : this->minParam();
 					min_t = (this->maxParam() > maxParam) ? maxParam : this->maxParam();
 				}
-				curve<T>* c1 = this->trim_curve(min_t, max_t);
+				curve<T,K> c1 = *this;
+				c1.trim_curve(min_t, max_t);
 
 				float length1 = 0;
-				for (int i = 0; i < c1->nPoints() - 1; i++){
-					length1 += distance(c1->get(i), c1->get(i + 1));
+				for (int i = 0; i < c1._points.size() - 1; i++){
+					length1 += (c1._points[i] - c1._points[i + 1]).L2norm();
 				}
-
-				delete c1;
 				return length1;
 			}
 

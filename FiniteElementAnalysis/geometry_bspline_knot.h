@@ -107,16 +107,25 @@ namespace geometry
 			{
 				_data.insert(_data.end(), k.begin(), k.end());
 				std::sort(_data.begin(),_data.end());
-				normalise();
+				//normalise();
 			}
 			void push_back_open()
 			{
+				//T new_knot = 2 * _data[_data.size() - 1] - _data[_data.size() - 2];
+				//_data.push_back(new_knot);
 				*this = create_uniform_open(p, _data.size() + 1);
 			}
 
 			void push_back_closed()
 			{
+				//T new_knot = 2 * _data[_data.size() - p - 1] - _data[_data.size() - p - 2];
+				//_data.push_back(new_knot);
+				//for (int i = _data.size() - 2; i >= _data.size() - p - 1; i--)
+				//{
+				//	_data[i] = new_knot;
+				//}
 				*this = create_uniform_closed(p, _data.size() + 1);
+
 			}
 
 			//returns continuity of curve at parameter x
@@ -149,9 +158,6 @@ namespace geometry
 				return _data.data();
 			}
 
-
-		private:
-			
 			//rescales knot vector so parameter is in range [0, 1]
 			void normalise()
 			{

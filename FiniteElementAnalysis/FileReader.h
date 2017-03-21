@@ -13,6 +13,7 @@
 #include "violin_model.h"
 #include "toolpath_base.h"
 #include "app_model.h"
+#include "geometry.h"
 
 //#ifdef FEADLL_EXPORTS
 //#define FEADLL_API __declspec(dllexport) 
@@ -25,7 +26,7 @@ class IO
 public:
 	
 	static void ReadInput(const char*, BSplineSolid*, double*, double&);
-	static bool LoadModelJava(const char*, std::vector<CURVE2F>*, std::vector<SURFACE3F>*,bool);
+	static bool LoadModelJava(const char*, std::vector<geometry::bspline::curve<geometry::vector<float, 2>, double>>&, std::vector<geometry::bspline::surface<geometry::vector<float, 3>, double, double>>&, bool);
 	static app_model* LoadModelXML(const char*, bool);
 
 	static void SaveModel(const char*, std::vector<bspline::curve<bspline::vec2<float>>>&);
@@ -42,11 +43,14 @@ private:
 	static TiXmlElement* IO::NewXmlElement(bspline::curve<bspline::vec2<float>>*, std::string);
 	static TiXmlElement* IO::NewXmlElement(bspline::offsetCurve2f& curve);
 	static TiXmlElement* IO::NewXmlElement(violin_ribs*,std::string);
+	
+	static TiXmlElement* IO::NewXmlElement(geometry::vector<float, 2>& point);
+	static TiXmlElement* IO::NewXmlElement(geometry::bspline::curve<geometry::vector<float, 2>, double>&, std::string);
 
 	static int IO::NewInteger(TiXmlElement&);
 	static float IO::NewFloat(TiXmlElement&);
-	static bspline::vec2<float> NewPoint2f(TiXmlElement&);
-	static bspline::curve<bspline::vec2<float>>* NewCurve2f(TiXmlElement&);
+	static geoVEC2F NewPoint2f(TiXmlElement&);
+	static geoCURVE2F NewCurve2f(TiXmlElement&);
 	static violin_ribs* NewRibs(TiXmlElement&, bool);
 	static violin_model* IO::NewViolin(TiXmlElement*, bool);
 	static cnc_tool* IO::NewCNCTool(TiXmlElement&, bool);

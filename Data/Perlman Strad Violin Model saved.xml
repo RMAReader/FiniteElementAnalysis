@@ -8,42 +8,42 @@
                 <double value="0" />
                 <double value="0" />
                 <double value="0" />
+                <double value="0.0666667" />
+                <double value="0.133333" />
+                <double value="0.2" />
+                <double value="0.266667" />
+                <double value="0.333333" />
+                <double value="0.4" />
+                <double value="0.466667" />
+                <double value="0.533333" />
+                <double value="0.6" />
+                <double value="0.666667" />
+                <double value="0.733333" />
+                <double value="0.8" />
+                <double value="0.866667" />
+                <double value="0.933333" />
                 <double value="1" />
-                <double value="2" />
-                <double value="3" />
-                <double value="4" />
-                <double value="5" />
-                <double value="6" />
-                <double value="7" />
-                <double value="8" />
-                <double value="9" />
-                <double value="10" />
-                <double value="11" />
-                <double value="12" />
-                <double value="13" />
-                <double value="14" />
-                <double value="15" />
-                <double value="15" />
-                <double value="15" />
+                <double value="1" />
+                <double value="1" />
             </knot>
             <points>
-                <point2f x="-58.1599" y="-89.3271" />
-                <point2f x="-65.1033" y="-87.0126" />
-                <point2f x="-76.4298" y="-89.622" />
-                <point2f x="-90.7" y="-95.7231" />
-                <point2f x="-110.755" y="-102.921" />
-                <point2f x="-139.515" y="-105.143" />
-                <point2f x="-173.898" y="-92.3707" />
-                <point2f x="-196.906" y="-60.3028" />
-                <point2f x="-203.824" y="-10.5502" />
-                <point2f x="-199.25" y="33.0879" />
-                <point2f x="-184.483" y="70.1441" />
-                <point2f x="-156.394" y="93.1415" />
-                <point2f x="-126.994" y="98.1069" />
-                <point2f x="-107.432" y="94.4476" />
-                <point2f x="-81.894" y="85.5671" />
-                <point2f x="-67.187" y="81.9037" />
-                <point2f x="-58.8916" y="83.7373" />
+                <vector2f 0="-58.1599" 1="-89.3271" />
+                <vector2f 0="-65.1033" 1="-87.0126" />
+                <vector2f 0="-76.4298" 1="-89.622" />
+                <vector2f 0="-90.7" 1="-95.7231" />
+                <vector2f 0="-110.755" 1="-102.921" />
+                <vector2f 0="-139.515" 1="-105.143" />
+                <vector2f 0="-173.898" 1="-92.3707" />
+                <vector2f 0="-196.906" 1="-60.3028" />
+                <vector2f 0="-203.824" 1="-10.5502" />
+                <vector2f 0="-199.25" 1="33.0879" />
+                <vector2f 0="-184.483" 1="70.1441" />
+                <vector2f 0="-156.394" 1="93.1415" />
+                <vector2f 0="-126.994" 1="98.1069" />
+                <vector2f 0="-107.432" 1="94.4476" />
+                <vector2f 0="-81.894" 1="85.5671" />
+                <vector2f 0="-67.187" 1="81.9037" />
+                <vector2f 0="-58.8916" 1="83.7373" />
             </points>
         </curve2f>
         <curve2f name="block_bass_upper_bout">
@@ -56,39 +56,39 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="20" y="55" />
-                <point2f x="50" y="55" />
-                <point2f x="50" y="90" />
+                <vector2f 0="20" 1="55" />
+                <vector2f 0="50" 1="55" />
+                <vector2f 0="50" 1="90" />
             </points>
         </curve2f>
         <curve2f name="rib_internal_centre_bout_bass">
             <order value="2" />
             <knot>
-                <double value="15" />
-                <double value="15" />
-                <double value="15" />
-                <double value="16" />
-                <double value="17" />
-                <double value="18" />
-                <double value="19" />
-                <double value="20" />
-                <double value="21" />
-                <double value="22" />
-                <double value="23" />
-                <double value="23" />
-                <double value="23" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0.125" />
+                <double value="0.25" />
+                <double value="0.375" />
+                <double value="0.5" />
+                <double value="0.625" />
+                <double value="0.75" />
+                <double value="0.875" />
+                <double value="1" />
+                <double value="1" />
+                <double value="1" />
             </knot>
             <points>
-                <point2f x="-58.8916" y="83.7373" />
-                <point2f x="-61.2476" y="77.599" />
-                <point2f x="-59.4263" y="67.1385" />
-                <point2f x="-51.8479" y="57.3389" />
-                <point2f x="-34.1027" y="49.3451" />
-                <point2f x="-3.63943" y="44.7947" />
-                <point2f x="20.5338" y="48.3226" />
-                <point2f x="30.0856" y="55.4182" />
-                <point2f x="34.7764" y="65.5706" />
-                <point2f x="33.4698" y="70.6665" />
+                <vector2f 0="-58.8916" 1="83.7373" />
+                <vector2f 0="-61.2476" 1="77.599" />
+                <vector2f 0="-59.4263" 1="67.1385" />
+                <vector2f 0="-51.8479" 1="57.3389" />
+                <vector2f 0="-34.1027" 1="49.3451" />
+                <vector2f 0="-3.63943" 1="44.7947" />
+                <vector2f 0="20.5338" 1="48.3226" />
+                <vector2f 0="30.0856" 1="55.4182" />
+                <vector2f 0="34.7764" 1="65.5706" />
+                <vector2f 0="33.4698" 1="70.6665" />
             </points>
         </curve2f>
         <curve2f name="block_neck">
@@ -102,90 +102,90 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="160" y="15" />
-                <point2f x="135" y="15" />
-                <point2f x="135" y="-15" />
-                <point2f x="160" y="-15" />
+                <vector2f 0="160" 1="15" />
+                <vector2f 0="135" 1="15" />
+                <vector2f 0="135" 1="-15" />
+                <vector2f 0="160" 1="-15" />
             </points>
         </curve2f>
         <curve2f name="rib_internal_upper_bout">
             <order value="2" />
             <knot>
-                <double value="23" />
-                <double value="23" />
-                <double value="23" />
-                <double value="24" />
-                <double value="25" />
-                <double value="26" />
-                <double value="27" />
-                <double value="28" />
-                <double value="29" />
-                <double value="30" />
-                <double value="31" />
-                <double value="32" />
-                <double value="33" />
-                <double value="34" />
-                <double value="35" />
-                <double value="36" />
-                <double value="37" />
-                <double value="38" />
-                <double value="39" />
-                <double value="40" />
-                <double value="40" />
-                <double value="40" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0.0588235" />
+                <double value="0.117647" />
+                <double value="0.176471" />
+                <double value="0.235294" />
+                <double value="0.294118" />
+                <double value="0.352941" />
+                <double value="0.411765" />
+                <double value="0.470588" />
+                <double value="0.529412" />
+                <double value="0.588235" />
+                <double value="0.647059" />
+                <double value="0.705882" />
+                <double value="0.764706" />
+                <double value="0.823529" />
+                <double value="0.882353" />
+                <double value="0.941176" />
+                <double value="1" />
+                <double value="1" />
+                <double value="1" />
             </knot>
             <points>
-                <point2f x="33.4698" y="70.6665" />
-                <point2f x="39.2231" y="68.3147" />
-                <point2f x="49.9382" y="68.7067" />
-                <point2f x="62.352" y="72.2348" />
-                <point2f x="80.3746" y="77.3669" />
-                <point2f x="104.69" y="76.0243" />
-                <point2f x="130.824" y="62.9572" />
-                <point2f x="146.843" y="38.3903" />
-                <point2f x="151.417" y="16.6573" />
-                <point2f x="152.332" y="-3.72824" />
-                <point2f x="150.112" y="-30.1782" />
-                <point2f x="144.231" y="-49.5188" />
-                <point2f x="134.561" y="-64.6777" />
-                <point2f x="118.357" y="-77.1055" />
-                <point2f x="98.3624" y="-82.7247" />
-                <point2f x="75.5378" y="-82.9868" />
-                <point2f x="55.4125" y="-76.4526" />
-                <point2f x="38.0315" y="-73.3162" />
-                <point2f x="31.6188" y="-77.056" />
+                <vector2f 0="33.4698" 1="70.6665" />
+                <vector2f 0="39.2231" 1="68.3147" />
+                <vector2f 0="49.9382" 1="68.7067" />
+                <vector2f 0="62.352" 1="72.2348" />
+                <vector2f 0="80.3746" 1="77.3669" />
+                <vector2f 0="104.69" 1="76.0243" />
+                <vector2f 0="130.824" 1="62.9572" />
+                <vector2f 0="146.843" 1="38.3903" />
+                <vector2f 0="151.417" 1="16.6573" />
+                <vector2f 0="152.332" 1="-3.72824" />
+                <vector2f 0="150.112" 1="-30.1782" />
+                <vector2f 0="144.231" 1="-49.5188" />
+                <vector2f 0="134.561" 1="-64.6777" />
+                <vector2f 0="118.357" 1="-77.1055" />
+                <vector2f 0="98.3624" 1="-82.7247" />
+                <vector2f 0="75.5378" 1="-82.9868" />
+                <vector2f 0="55.4125" 1="-76.4526" />
+                <vector2f 0="38.0315" 1="-73.3162" />
+                <vector2f 0="31.6188" 1="-77.056" />
             </points>
         </curve2f>
         <curve2f name="rib_internal_centre_bout_trbl">
             <order value="2" />
             <knot>
-                <double value="40" />
-                <double value="40" />
-                <double value="40" />
-                <double value="41" />
-                <double value="42" />
-                <double value="43" />
-                <double value="44" />
-                <double value="45" />
-                <double value="46" />
-                <double value="47" />
-                <double value="48" />
-                <double value="49" />
-                <double value="49" />
-                <double value="49" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0" />
+                <double value="0.111111" />
+                <double value="0.222222" />
+                <double value="0.333333" />
+                <double value="0.444444" />
+                <double value="0.555556" />
+                <double value="0.666667" />
+                <double value="0.777778" />
+                <double value="0.888889" />
+                <double value="1" />
+                <double value="1" />
+                <double value="1" />
             </knot>
             <points>
-                <point2f x="31.6188" y="-77.056" />
-                <point2f x="32.2814" y="-72.2707" />
-                <point2f x="29.5371" y="-64.4297" />
-                <point2f x="23.3949" y="-56.5886" />
-                <point2f x="3.40027" y="-50.4465" />
-                <point2f x="-22.4904" y="-52.5373" />
-                <point2f x="-45.4914" y="-60.2479" />
-                <point2f x="-54.7702" y="-69.7881" />
-                <point2f x="-58.4295" y="-79.459" />
-                <point2f x="-58.9522" y="-85.8627" />
-                <point2f x="-58.1591" y="-89.5509" />
+                <vector2f 0="31.6188" 1="-77.056" />
+                <vector2f 0="32.2814" 1="-72.2707" />
+                <vector2f 0="29.5371" 1="-64.4297" />
+                <vector2f 0="23.3949" 1="-56.5886" />
+                <vector2f 0="3.40027" 1="-50.4465" />
+                <vector2f 0="-22.4904" 1="-52.5373" />
+                <vector2f 0="-45.4914" 1="-60.2479" />
+                <vector2f 0="-54.7702" 1="-69.7881" />
+                <vector2f 0="-58.4295" 1="-79.459" />
+                <vector2f 0="-58.9522" 1="-85.8627" />
+                <vector2f 0="-58.1591" 1="-89.5509" />
             </points>
         </curve2f>
         <curve2f name="block_bass_lower_bout">
@@ -198,9 +198,9 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="-40" y="65" />
-                <point2f x="-70" y="65" />
-                <point2f x="-70" y="120" />
+                <vector2f 0="-40" 1="65" />
+                <vector2f 0="-70" 1="65" />
+                <vector2f 0="-70" 1="120" />
             </points>
         </curve2f>
         <curve2f name="block_trbl_lower_bout">
@@ -213,9 +213,9 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="-40" y="-70" />
-                <point2f x="-70" y="-70" />
-                <point2f x="-70" y="-120" />
+                <vector2f 0="-40" 1="-70" />
+                <vector2f 0="-70" 1="-70" />
+                <vector2f 0="-70" 1="-120" />
             </points>
         </curve2f>
         <curve2f name="block_bottom">
@@ -229,10 +229,10 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="-210" y="15" />
-                <point2f x="-185" y="15" />
-                <point2f x="-185" y="-25" />
-                <point2f x="-210" y="-25" />
+                <vector2f 0="-210" 1="15" />
+                <vector2f 0="-185" 1="15" />
+                <vector2f 0="-185" 1="-25" />
+                <vector2f 0="-210" 1="-25" />
             </points>
         </curve2f>
         <curve2f name="block_trbl_upper_bout">
@@ -245,9 +245,9 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="20" y="-60" />
-                <point2f x="50" y="-60" />
-                <point2f x="50" y="-120" />
+                <vector2f 0="20" 1="-60" />
+                <vector2f 0="50" 1="-60" />
+                <vector2f 0="50" 1="-120" />
             </points>
         </curve2f>
         <curve2f name="centre_line">
@@ -259,8 +259,8 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="-210" y="0" />
-                <point2f x="160" y="0" />
+                <vector2f 0="-210" 1="0" />
+                <vector2f 0="160" 1="0" />
             </points>
         </curve2f>
         <curve2f name="clamp_hole">
@@ -275,11 +275,11 @@
                 <double value="1" />
             </knot>
             <points>
-                <point2f x="-150" y="-35" />
-                <point2f x="105" y="-35" />
-                <point2f x="105" y="35" />
-                <point2f x="-150" y="35" />
-                <point2f x="-150" y="-35" />
+                <vector2f 0="-150" 1="-35" />
+                <vector2f 0="105" 1="-35" />
+                <vector2f 0="105" 1="35" />
+                <vector2f 0="-150" 1="35" />
+                <vector2f 0="-150" 1="-35" />
             </points>
         </curve2f>
         <float name="rib_mould_depth" value="15" />

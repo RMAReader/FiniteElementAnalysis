@@ -44,7 +44,7 @@ namespace geometry
 		////move assignment operator
 		//matrix& matrix::operator=(matrix&& other)
 		//{
-		//	if (this != &&other)
+		//	if (this != &other)
 		//	{
 		//		for (int i = 0; i < N; i++){
 		//			this->data[i] = other.data[i];
@@ -117,6 +117,7 @@ namespace geometry
 		{
 			return _COLS;
 		}
+
 
 
 	};

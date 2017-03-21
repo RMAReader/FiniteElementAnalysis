@@ -5,6 +5,19 @@
 #include "geometry_matrix.h"
 #include "geometry_bspline_basis.h"
 #include "geometry_bspline_curve.h"
+#include "geometry_bspline_knot.h"
+#include "geometry_bspline_algorithms.h"
+#include "geometry_mesh.h"
+#include "geometry_bspline_surface.h"
+
+#define geoCURVE2F geometry::bspline::curve<geometry::vector<float, 2>, double>
+#define geoCURVE3F geometry::bspline::curve<geometry::vector<float, 3>, double>
+#define geoVEC2F geometry::vector<float, 2>
+#define geoVEC3F geometry::vector<float, 3>
+#define geoVEC2D geometry::vector<double, 2>
+#define geoVEC3D geometry::vector<double, 3>
+#define geoSURFACE3F geometry::bspline::surface<geometry::vector<float, 3>, double, double>
+#define geoLATTICE3F geometry::lattice<geometry::vector<float,3>>
 
 namespace geometry
 {

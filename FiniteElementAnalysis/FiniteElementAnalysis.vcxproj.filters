@@ -96,6 +96,15 @@
     <ClInclude Include="tinyxml.h">
       <Filter>Source Files\TinyXML</Filter>
     </ClInclude>
+    <ClInclude Include="geometry_mesh.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_lattice.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_bspline_surface.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -140,9 +149,6 @@
     <ClCompile Include="toolpath_BackRough.cpp">
       <Filter>Source Files\ToolPaths</Filter>
     </ClCompile>
-    <ClCompile Include="mesh3.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="violin_model.cpp">
       <Filter>Source Files\Violin</Filter>
     </ClCompile>
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="tinyxmlparser.cpp">
       <Filter>Source Files\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="geometry_mesh.cpp">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
