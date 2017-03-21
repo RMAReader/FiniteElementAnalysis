@@ -289,7 +289,7 @@
 	</violin_ribs>
 </violin_model>
 <toolpath type="toolpath_RibMould">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath3_RibMould.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath3_RibMould.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="10.0" />
 		<string type="EndMill" />
@@ -304,7 +304,7 @@
 	<float name="step_z" value="5.0" />
 </toolpath>
 <toolpath type="toolpath_TrimBlocksCentreBout">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath4_TrimBlocksCentreBout.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath4_TrimBlocksCentreBout.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="0.0" />
 		<string type="EndMill" />
@@ -319,7 +319,7 @@
 	<float name="step_z" value="5.0" />
 </toolpath>
 <toolpath type="toolpath_TrimBlocksEndBouts">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath5_TrimBlocksEndBouts.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath5_TrimBlocksEndBouts.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="6.35" />
 		<string type="EndMill" />
@@ -334,7 +334,7 @@
 	<float name="step_z" value="5.0" />
 </toolpath>
 <toolpath type="toolpath_BackRough">
-	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\ToolPath6_BackRough.txt" />
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath6_BackRough.txt" />
 	<tool name="6.35mm End Mill">
 		<float name="diameter" value="6.35" />
 		<string type="EndMill" />

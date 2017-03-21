@@ -50,6 +50,8 @@ bool NotEqual(double p, double q, double error){
 	return true;
 }
 
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	int TestsPassed = 0;
@@ -1603,52 +1605,11 @@ bool TestToolPath4(bool verbose){
 	toolpath.parameters.insert(std::make_pair("xy_feedrate", 1000));
 
 	toolpath.tool = &tool;
-	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpath4_BackRough.txt";
+	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\Toolpath6_BackRough.txt";
 	toolpath.violin = &violin;
 
 	toolpath.calculate();
 	toolpath.save_gcode();
-
-
-	geometry::vector<float, 2> p;
-	p[0] = 1;
-	p[1] = -1;
-	geometry::vector<float, 2> q;
-	q[0] = 2;
-	q[1] = 4;
-	geometry::vector<float, 2> r = p;
-	r += q;
-	r *= q;
-	r /= q;
-	//r -= q;
-	geometry::vector<float, 2> s(p);
-	s = (r + q) * q / r;
-
-	float n1 = s.L1norm();
-	float n2 = s.L2norm();
-	s.normalise();
-	float n3 = s.L2norm();
-
-	std::vector<geometry::vector<float, 2>> list;
-	list.push_back(p);
-	list.push_back(q);
-	auto it = list.begin();
-	list.insert(it+1,r);
-	list.push_back(s);
-
-	geometry::matrix<float, 2, 2> m;
-	m(0,0) = 2;
-	m(1,1) = 5;
-
-	geometry::vector<float, 2> a = geometry::product(m, s);
-
-	int d = s.size();
-	
-	geometry::vector<float, 3> v1, v2;
-	v1[0] = 1;
-	v2[1] = 1;
-	auto v3 = geometry::cross_product(v1, v2);
-
 
 	return true;
 }
