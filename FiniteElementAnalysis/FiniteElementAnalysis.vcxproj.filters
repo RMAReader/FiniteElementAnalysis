@@ -105,6 +105,9 @@
     <ClInclude Include="geometry_bspline_surface.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="geometry_circle.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

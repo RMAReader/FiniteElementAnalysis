@@ -14,7 +14,7 @@ class violin_ribs
 public:
 	std::unordered_map < std::string, geoCURVE2F > curves;
 	std::unordered_map < std::string, float > floats;
-	std::vector<circle2f> rib_mould_locator_holes;
+	std::vector<geoCIRCLE2F> rib_mould_locator_holes;
 
 	void scale_model(double ratio);
 	void rotate_model(double angle);

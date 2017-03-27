@@ -15,38 +15,27 @@
 #include "app_model.h"
 #include "geometry.h"
 
-//#ifdef FEADLL_EXPORTS
-//#define FEADLL_API __declspec(dllexport) 
-//#else
-//#define FEADLL_API __declspec(dllimport) 
-//#endif
 
 class IO
 {
 public:
 	
 	static void ReadInput(const char*, BSplineSolid*, double*, double&);
-	static bool LoadModelJava(const char*, std::vector<geometry::bspline::curve<geometry::vector<float, 2>, double>>&, std::vector<geometry::bspline::surface<geometry::vector<float, 3>, double, double>>&, bool);
+	static bool LoadModelJava(const char*, std::vector<geoCURVE2F>&, std::vector<geoSURFACE3F>&, bool);
 	static app_model* LoadModelXML(const char*, bool);
 
-	static void SaveModel(const char*, std::vector<bspline::curve<bspline::vec2<float>>>&);
-	static void SaveModelXML(const char*, std::vector<bspline::curve<bspline::vec2<float>>>&);
+	//static void SaveModel(const char*, std::vector<geoCURVE2F>&);
+	//static void SaveModelXML(const char*, std::vector<geoCURVE2F>&);
 	static void SaveModelXML(const char*, violin_model*, bool);
 
 private:
-	static void ToString(std::fstream& out, bspline::curve<bspline::vec2<float>>& curve);
-	static bool FromString(std::fstream& in, bspline::curve<bspline::vec2<float>>* curve);
 	
 	static std::string IO::ToString(double d);
 	static TiXmlElement* IO::NewXmlElement(float x, std::string);
-	static TiXmlElement* IO::NewXmlElement(bspline::vec2<float>& point);
-	static TiXmlElement* IO::NewXmlElement(bspline::curve<bspline::vec2<float>>*, std::string);
-	static TiXmlElement* IO::NewXmlElement(bspline::offsetCurve2f& curve);
+	static TiXmlElement* IO::NewXmlElement(geoVEC2F& point);
+	static TiXmlElement* IO::NewXmlElement(geoCURVE2F&, std::string);
 	static TiXmlElement* IO::NewXmlElement(violin_ribs*,std::string);
 	
-	static TiXmlElement* IO::NewXmlElement(geometry::vector<float, 2>& point);
-	static TiXmlElement* IO::NewXmlElement(geometry::bspline::curve<geometry::vector<float, 2>, double>&, std::string);
-
 	static int IO::NewInteger(TiXmlElement&);
 	static float IO::NewFloat(TiXmlElement&);
 	static geoVEC2F NewPoint2f(TiXmlElement&);

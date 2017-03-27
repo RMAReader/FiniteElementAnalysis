@@ -1,6 +1,8 @@
 #ifndef _GEOMETRY_H_
 #define _GEOMETRY_H_
 
+#include <iostream>
+
 #include "geometry_vector.h"
 #include "geometry_matrix.h"
 #include "geometry_bspline_basis.h"
@@ -9,6 +11,7 @@
 #include "geometry_bspline_algorithms.h"
 #include "geometry_mesh.h"
 #include "geometry_bspline_surface.h"
+#include "geometry_circle.h"
 
 #define geoCURVE2F geometry::bspline::curve<geometry::vector<float, 2>, double>
 #define geoCURVE3F geometry::bspline::curve<geometry::vector<float, 3>, double>
@@ -18,7 +21,7 @@
 #define geoVEC3D geometry::vector<double, 3>
 #define geoSURFACE3F geometry::bspline::surface<geometry::vector<float, 3>, double, double>
 #define geoLATTICE3F geometry::lattice<geometry::vector<float,3>>
-
+#define geoCIRCLE2F geometry::circle<float,2>
 namespace geometry
 {
 

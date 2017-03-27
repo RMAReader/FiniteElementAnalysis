@@ -14,7 +14,6 @@ namespace geometry
 		
 		std::array<T, _N> data;
 
-
 	public:
 
 		vector()

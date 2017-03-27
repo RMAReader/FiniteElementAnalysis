@@ -94,11 +94,11 @@ namespace geometry {
 			}
 
 			T evaluate(double u, double v){
-				std::vector<T> c(points.cols);
-				for (int j = 0; j < points.cols; j++){
-					c[j] = evaluate_curve(p, *(knotx.data()), knotx.size(), *(points.GetCol(j).data()), u);
+				std::vector<T> c(_points.cols);
+				for (int j = 0; j < _points.cols; j++){
+					c[j] = evaluate_curve(_p, _knotx.data(), _knotx.size(), _points.GetCol(j).data(), u);
 				}
-				return evaluate_curve(q, *(knoty.data()), knoty.size(), *(c.data()), v);
+				return evaluate_curve(_q, _knoty.data(), _knoty.size(), c.data(), v);
 			}
 
 

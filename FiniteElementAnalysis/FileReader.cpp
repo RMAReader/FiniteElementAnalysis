@@ -143,7 +143,7 @@ bool IO::LoadModelJava(const char* filepath, std::vector<geometry::bspline::curv
 				std::vector<float> Px;
 				std::vector<float> Py;
 				std::vector<float> Pz;
-				LATTICE3F lattice;
+				geoLATTICE3F lattice;
 				m = 0;
 				n = 0;
 				while (line.find("End") != 0)
@@ -274,102 +274,6 @@ bool IO::LoadModelJava(const char* filepath, std::vector<geometry::bspline::curv
 
 
 
-void IO::ToString(std::fstream& out, bspline::curve<bspline::vec2<float>>& curve)
-{
-	out << "begin curve2f\n";
-	out << "\tp=\"" << curve.getOrder() << "\"\n";
-	for (int i = 0; i < curve.lKnot(); i++){
-		out << "\tknot=\"" << curve.getKnot(i) << "\"\n";
-	}
-	for (int i = 0; i < curve.nPoints(); i++){
-		out << "\tpoint2f ";
-		out << "\tx=\"" << curve.get(i).x << "\" ";
-		out << "\ty=\"" << curve.get(i).y << "\"\n";
-	}
-	out << "end curve2f\n";
-}
-
-bool IO::FromString(std::fstream& in, bspline::curve<bspline::vec2<float>>* curve)
-{
-	std::string line, word;
-
-	try
-	{
-		std::getline(in, line, '\n');
-
-		if (line.find("begin curve2f") == 0)
-		{
-			int p;
-			std::vector<double>  knot;
-			std::vector<point2f> points;
-
-			while (line.find("end curve2f") != 0){
-
-				std::getline(in, line, '\n');
-				std::istringstream iss(line);
-
-				if (line.find("\tp") == 0){
-					std::getline(iss, word, '\"');
-					std::getline(iss, word, '\"');
-					p = stoi(word);
-				}
-				else if (line.find("\tknot") == 0)
-				{
-					std::getline(iss, word, '\"');
-					while (std::getline(iss, word, '\"'))
-					{
-						knot.push_back(stod(word));
-					}
-				}
-				else if (line.find("\tpoint2f") == 0)
-				{
-					float x, y;
-					std::getline(iss, word, '\"');
-					std::getline(iss, word, '\"');
-					x = stof(word);
-					std::getline(iss, word, '\"');
-					std::getline(iss, word, '\"');
-					y = stof(word);
-					points.push_back(point2f(x, y));
-				}
-			}
-			curve->initialise(p, (int)points.size(), (int)knot.size(), knot.data(), points.data());
-			return true;
-		}
-	}
-	catch (std::exception e){}
-	
-	return false;
-
-}
-
-void IO::SaveModel(const char* filepath, std::vector<bspline::curve<bspline::vec2<float>>>& curves)
-{
-	
-	std::fstream out;
-	out.open(filepath, std::ios::out);
-	if (out.is_open()){
-		for (int i = 0; i < curves.size(); i++)
-		{
-			ToString(out, curves[i]);
-		}
-	}
-
-}
-void IO::SaveModelXML(const char* filepath, std::vector<bspline::curve<bspline::vec2<float>>>& curves)
-{
-	TiXmlDocument doc;
-	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
-	doc.LinkEndChild(decl);
-		
-	std::string name = "";
-	for (int i = 0; i < curves.size(); i++)
-	{
-		doc.LinkEndChild(NewXmlElement(&(curves[i]), name));
-	}
-	doc.SaveFile(filepath);
-}
-
 void IO::SaveModelXML(const char* filepath, violin_model* violin, bool verbose){
 	
 	TiXmlDocument doc;
@@ -406,15 +310,9 @@ TiXmlElement* IO::NewXmlElement(float x, std::string name){
 	return result;
 }
 
-TiXmlElement* IO::NewXmlElement(bspline::vec2<float>& point)
-{
-	TiXmlElement* result = new TiXmlElement("point2f");
-	result->SetDoubleAttribute("x", point.x);
-	result->SetDoubleAttribute("y", point.y);
-	return result;
-}
 
-TiXmlElement* IO::NewXmlElement(geometry::vector<float, 2>& point)
+
+TiXmlElement* IO::NewXmlElement(geoVEC2F& point)
 {
 	TiXmlElement* result = new TiXmlElement("vector2f");
 	result->SetDoubleAttribute("0", point[0]);
@@ -422,36 +320,9 @@ TiXmlElement* IO::NewXmlElement(geometry::vector<float, 2>& point)
 	return result;
 }
 
-TiXmlElement* IO::NewXmlElement(bspline::curve<bspline::vec2<float>>* curve, std::string name)
-{
-	TiXmlElement* result = new TiXmlElement("curve2f");
-	result->SetAttribute("name", name);
-
-	TiXmlElement* order = new TiXmlElement("order");
-	order->SetAttribute("value", ToString(curve->getOrder()));
-	result->LinkEndChild(order);
-
-	TiXmlElement* knot = new TiXmlElement("knot");
-	result->LinkEndChild(knot);
-	for (int i = 0; i < curve->lKnot(); i++)
-	{
-		TiXmlElement* value = new TiXmlElement("double");
-		value->SetDoubleAttribute("value", curve->getKnot(i));
-		knot->LinkEndChild(value);
-	}
-
-	TiXmlElement* points = new TiXmlElement("points");
-	result->LinkEndChild(points);
-	for (int i = 0; i < curve->nPoints(); i++)
-	{
-		TiXmlElement* value = NewXmlElement(curve->get(i));
-		points->LinkEndChild(value);
-	}
-	return result;
-}
 
 
-TiXmlElement* IO::NewXmlElement(geometry::bspline::curve<geometry::vector<float,2>,double>& curve, std::string name)
+TiXmlElement* IO::NewXmlElement(geoCURVE2F& curve, std::string name)
 {
 	TiXmlElement* result = new TiXmlElement("curve2f");
 	result->SetAttribute("name", name);
@@ -697,20 +568,6 @@ geoCURVE2F IO::NewCurve2f(TiXmlElement& root)
 	return geoCURVE2F(knot.p, knot, points);
 }
 
-TiXmlElement* IO::NewXmlElement(bspline::offsetCurve2f& curve)
-{
-	TiXmlElement* result = new TiXmlElement("offsetCurve2f");
-
-	TiXmlElement* offset = new TiXmlElement("offset");
-	offset->SetAttribute("value", ToString(curve.GetOffset()));
-	result->LinkEndChild(offset);
-
-	TiXmlElement* baseID = new TiXmlElement("baseID");
-	baseID->SetAttribute("value", ToString(1));
-	result->LinkEndChild(baseID);
-
-	return result;
-}
 
 
 cnc_tool* IO::NewCNCTool(TiXmlElement& e, bool verbose){

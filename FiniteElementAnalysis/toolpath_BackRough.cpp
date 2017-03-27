@@ -2,7 +2,6 @@
 
 void toolpath_BackRough::calculate()
 {
-	using namespace bspline;
 
 	if (violin == nullptr) { return; }
 

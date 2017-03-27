@@ -214,13 +214,13 @@ bool TestDeBoor(bool verbose){
 		std::cout << "p=" << p1 << endl;
 		for (int i = 0; i < 5; i++){
 			std::cout << "t = " << evaluation_points[i];
-			std::cout << "b(t) = " << bspline::deboor_value(0, p1, knot1, lknot1, evaluation_points[i]);
+			std::cout << "b(t) = " << geometry::deboor_value(0, p1, knot1, lknot1, evaluation_points[i]);
 			std::cout << endl;
 		}
 	}
 
 	for (int i = 0; i < 6; i++){
-		x = bspline::deboor_value(0, p1, knot1, lknot1, evaluation_points[i]);
+		x = geometry::deboor_value(0, p1, knot1, lknot1, evaluation_points[i]);
 		if (AreEqual(x, expected_values[i], tol) == false){ return false; }
 	}
 
@@ -1008,7 +1008,6 @@ void TestOptimizer(){
 
 bool TestOlsoAlgorithm(bool verbose){
 	//create simple Bspline curve
-	using namespace bspline;
 
 	double tol = 0.0000001;
 
@@ -1016,10 +1015,10 @@ bool TestOlsoAlgorithm(bool verbose){
 	double cx[3] = { 0.0, 0.0, 1.0 };
 	double cy[3] = { 0.0, 1.0, 1.0 };
 
-	vec2<double> c[3];
-	c[0] = vec2<double>(0.0, 0.0);
-	c[1] = vec2<double>(0.0, 1.0);
-	c[2] = vec2<double>(1.0, 1.0);
+	geoVEC2D c[3];
+	c[0] = geoVEC2D(std::array < double, 2 > {{ 0.0, 0.0 }});
+	c[1] = geoVEC2D(std::array < double, 2 > {{ 0.0, 1.0 }});
+	c[2] = geoVEC2D(std::array < double, 2 > {{ 1.0, 1.0 }});
 	int p = 2;
 	int n = 3;
 
@@ -1027,7 +1026,7 @@ bool TestOlsoAlgorithm(bool verbose){
 	double* new_knot = new double[new_n + p + 1];
 	double* new_cx = new double[new_n];
 	double* new_cy = new double[new_n];
-	vec2<double>* new_c = new vec2<double>[new_n];
+	geoVEC2D* new_c = new geoVEC2D[new_n];
 	for (int i = 0; i < new_n + p + 1; i++){
 		double val = (double)(i - p) / (new_n - n + 1);
 		if (val < 0){ new_knot[i] = 0; }
@@ -1035,9 +1034,9 @@ bool TestOlsoAlgorithm(bool verbose){
 		else{ new_knot[i] = val; }
 	}
 
-	bspline::olso_insertion(n - 1, cx, p + 1, knot, new_knot, new_n + p, new_cx);
-	bspline::olso_insertion(n - 1, cy, p + 1, knot, new_knot, new_n + p, new_cy);
-	bspline::olso_insertion(n - 1, c, p + 1, knot, new_knot, new_n + p, new_c);
+	geometry::olso_insertion(n - 1, cx, p + 1, knot, new_knot, new_n + p, new_cx);
+	geometry::olso_insertion(n - 1, cy, p + 1, knot, new_knot, new_n + p, new_cy);
+	geometry::olso_insertion(n - 1, c, p + 1, knot, new_knot, new_n + p, new_c);
 
 	if (verbose){
 		for (int i = 0; i < n; i++){
@@ -1051,14 +1050,14 @@ bool TestOlsoAlgorithm(bool verbose){
 			double curve = 0;
 			double new_curve = 0;
 			for (int j = 0; j < n; j++){
-				curve += cx[j] * bspline::deboor_value(j, p, knot, n + p + 1, x);
+				curve += cx[j] * geometry::deboor_value(j, p, knot, n + p + 1, x);
 			}
 			for (int j = 0; j < new_n; j++){
-				new_curve += new_cx[j] * bspline::deboor_value(j, p, new_knot, new_n + p + 1, x);
+				new_curve += new_cx[j] * geometry::deboor_value(j, p, new_knot, new_n + p + 1, x);
 			}
 			std::cout << x << ": ";
-			std::cout << bspline::evaluate_curve(p, *knot, n + p + 1, *cx, x) << ", ";
-			std::cout << bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_cx, x) << ", ";
+			std::cout << geometry::evaluate_curve(p, knot, n + p + 1, cx, x) << ", ";
+			std::cout << geometry::evaluate_curve(p, new_knot, new_n + p + 1, new_cx, x) << ", ";
 			std::cout << curve << ", ";
 			std::cout << new_curve << endl;
 		}
@@ -1067,18 +1066,18 @@ bool TestOlsoAlgorithm(bool verbose){
 
 	for (int i = 0; i < 20; i++){
 		double x = (double)i / 19;
-		double px = bspline::evaluate_curve(p, *knot, n + p + 1, *cx, x);
-		double py = bspline::evaluate_curve(p, *knot, n + p + 1, *cy, x);
-		vec2<double> pv = bspline::evaluate_curve(p, *knot, n + p + 1, *c, x);
+		double px = geometry::evaluate_curve(p, knot, n + p + 1, cx, x);
+		double py = geometry::evaluate_curve(p, knot, n + p + 1, cy, x);
+		geoVEC2D pv = geometry::evaluate_curve(p, knot, n + p + 1, c, x);
 
-		double qx = bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_cx, x);
-		double qy = bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_cy, x);
-		vec2<double> qv = bspline::evaluate_curve(p, *new_knot, new_n + p + 1, *new_c, x);
+		double qx = geometry::evaluate_curve(p, new_knot, new_n + p + 1, new_cx, x);
+		double qy = geometry::evaluate_curve(p, new_knot, new_n + p + 1, new_cy, x);
+		geoVEC2D qv = geometry::evaluate_curve(p, new_knot, new_n + p + 1, new_c, x);
 
 		if (AreEqual(px, qx, tol)==false){ return false; }
 		if (AreEqual(py, qy, tol) == false){ return false; }
-		if (AreEqual(px, qv.x, tol) == false){ return false; }
-		if (AreEqual(py, qv.y, tol) == false){ return false; }
+		if (AreEqual(px, qv[0], tol) == false){ return false; }
+		if (AreEqual(py, qv[1], tol) == false){ return false; }
 
 	}
 
@@ -1093,44 +1092,44 @@ bool TestOlsoAlgorithm(bool verbose){
 	//p = 1 spline
 	double knot2[5] = { 0.0, 0.0, 0.5, 1.0, 1.0 };
 
-	vec2<double> c2[3];
-	c2[0] = vec2<double>(0.0, 0.0);
-	c2[1] = vec2<double>(0.0, 1.0);
-	c2[2] = vec2<double>(1.0, 1.0);
+	geoVEC2D c2[3];
+	c2[0] = geoVEC2D(std::array < double, 2 > {{ 0.0, 0.0 }});
+	c2[1] = geoVEC2D(std::array < double, 2 > {{ 0.0, 1.0 }});
+	c2[2] = geoVEC2D(std::array < double, 2 > {{ 1.0, 1.0 }});
 	p = 1;
 	n = 3;
 	 
 	new_n = 7;
 	double new_knot2[9] = { 0.0, 0.0, 0.25,0.25, 0.5, 0.75, 0.75, 1.0, 1.0 };
-	vec2<double>* new_c2 = new vec2<double>[new_n];
+	geoVEC2D* new_c2 = new geoVEC2D[new_n];
 
-	bspline::olso_insertion(n - 1, c2, p + 1, knot2, new_knot2, new_n + p, new_c2);
+	geometry::olso_insertion(n - 1, c2, p + 1, knot2, new_knot2, new_n + p, new_c2);
 
 	if (verbose){
 		for (int i = 0; i < n; i++){
-			std::cout << "old(cx, cy) = " << c2[i].x << "," << c2[i].y << endl;
+			std::cout << "old(cx, cy) = " << c2[i][0] << "," << c2[i][1] << endl;
 		}
 		for (int i = 0; i < new_n; i++){
-			std::cout << "new(cx, cy) = " << new_c2[i].x << "," << new_c2[i].y << endl;
+			std::cout << "new(cx, cy) = " << new_c2[i][0] << "," << new_c2[i][1] << endl;
 		}
 		for (int i = 0; i < 20; i++){
 			double x = (double)i / 19;
 
-			vec2<double> c_old = bspline::evaluate_curve(p, *knot2, n + p + 1, *c2, x);
-			vec2<double> c_new = bspline::evaluate_curve(p, *new_knot2, new_n + p + 1, *new_c2, x);
+			geoVEC2D c_old = geometry::evaluate_curve(p, knot2, n + p + 1, c2, x);
+			geoVEC2D c_new = geometry::evaluate_curve(p, new_knot2, new_n + p + 1, new_c2, x);
 
-			std::cout << x << ": " << c_old.x << ", " << c_old.y << ", " << c_new.x << ", " << c_new.y << endl;;
+			std::cout << x << ": " << c_old[0] << ", " << c_old[1] << ", " << c_new[0] << ", " << c_new[1] << endl;;
 		}
 
 	}
 
 	for (int i = 0; i < 20; i++){
 		double x = (double)i / 19;
-		vec2<double> pv = bspline::evaluate_curve(p, *knot2, n + p + 1, *c2, x);
-		vec2<double> qv = bspline::evaluate_curve(p, *new_knot2, new_n + p + 1, *new_c2, x);
+		geoVEC2D pv = geometry::evaluate_curve(p, knot2, n + p + 1, c2, x);
+		geoVEC2D qv = geometry::evaluate_curve(p, new_knot2, new_n + p + 1, new_c2, x);
 
-		if (AreEqual(pv.x, qv.x, tol) == false){ return false; }
-		if (AreEqual(pv.y, qv.y, tol) == false){ return false; }
+		if (AreEqual(pv[0], qv[0], tol) == false){ return false; }
+		if (AreEqual(pv[1], qv[1], tol) == false){ return false; }
 	}
 	delete[] new_c2;
 
@@ -1154,24 +1153,7 @@ bool TestOlsoAlgorithm(bool verbose){
 		std::cout << output2.npoints() * 3 << endl;
 	}
 
-	bspline::curve<double> curve(2,0.5);
-	curve.append(1.0);
-	curve.append(2.5);
-	double x = curve.evaluate(0.5);
-
-	bspline::vec2<float> v1(0.5f, 0.5f);
-	bspline::vec2<float> v2(0.1f, 1.0f);
-	bspline::vec2<float> v3(1.0f, 2.5f);
-	bspline::curve<bspline::vec2<float>> curve2(2, v1);
-	curve2.append(v2);
-	curve2.append(v3);
-
-	bspline::vec2<float> v4 = curve2.evaluate(0.5);
-
-	//bspline::vec2<float> res1 = curve2.evaluate(0.25);
-	//bspline::vec2<float> res2 = curve2.evaluate(0.5);
-	//bspline::vec2<float> res3 = curve2.evaluate(0.75);
-
+	
 	return true;
 }
 
@@ -1180,22 +1162,29 @@ bool TestOlsoAlgorithm(bool verbose){
 bool TestSurface(bool verbose)
 {
 
-	SURFACE3F s1(
+	geoSURFACE3F s1(
 		2,
 		1,
-		std::vector<double>{ 0, 0, 0, 1, 1, 1 },
-		std::vector<double>{ 0, 0, 1, 1 },
-		LATTICE3F(std::vector<VEC3F>{ VEC3F(0, 0, 0), VEC3F(0.3, 0, 0), VEC3F(1.0, 0, 0), VEC3F(0, 1.0, 0), VEC3F(0.3, 1.0, 0), VEC3F(1.0, 1.0, 0) }, 3, 2)
+		geometry::bspline::knot<double>::create_uniform_closed(2, 6),
+		geometry::bspline::knot<double>::create_uniform_closed(1, 4),
+		geoLATTICE3F(std::vector<geoVEC3F>{ 
+		geoVEC3F(std::array < float, 3 > {{0, 0, 0}}),
+			geoVEC3F(std::array < float, 3 > {{0.3, 0, 0}}),
+			geoVEC3F(std::array < float, 3 > {{1.0, 0, 0}}),
+			geoVEC3F(std::array < float, 3 > {{0, 1.0, 0}}),
+			geoVEC3F(std::array < float, 3 > {{0.3, 1.0, 0}}),
+			geoVEC3F(std::array < float, 3 > {{1.0, 1.0, 0}}) }
+		, 3, 2)
 	);
 	
-	SURFACE3F s2(s1);
-	s2.p = 4;
-	s2.knotx[0] = -1;
-	s2.points.data[0].x = -2;
+	geoSURFACE3F s2(s1);
+	s2._p = 4;
+	s2._knotx[0] = -1;
+	s2._points.data[0][0] = -2;
 
-	VEC3F p1 = s1.evaluate(0, 0);
-	VEC3F p2 = s1.evaluate(1, 1);
-	VEC3F p3 = s1.evaluate(0.5, 0.5);
+	geoVEC3F p1 = s1.evaluate(0, 0);
+	geoVEC3F p2 = s1.evaluate(1, 1);
+	geoVEC3F p3 = s1.evaluate(0.5, 0.5);
 
 
 	if (true){
@@ -1210,13 +1199,11 @@ bool TestSurface(bool verbose)
 
 bool TestCurve_InsertKnots(bool verbose){
 
-	using namespace bspline;
 
 	int p = 2;
 	int n = 5;
 	float r = 1;
 	float theta = 0;
-	curve<vec2<float>>* c = new curve<vec2<float>>(p, vec2<float>(r*cosf(theta), r*sinf(theta)));
 
 	std::array < float, 2 > _d1 = { r*cosf(theta), r*sinf(theta) };
 
@@ -1226,22 +1213,16 @@ bool TestCurve_InsertKnots(bool verbose){
 	for (int i = 0; i < n - 1; i++){
 		theta += 0.1;
 		std::array < float, 2 > d = { r*cosf(theta), r*sinf(theta) };
-		c->append(vec2<float>(d[0],d[1]));
 		_c.push_back_closed(geometry::vector < float, 2 >(d));
 	}
 
 	auto _x = _c.evaluate(0.5);
-	auto x = c->evaluate(0.5);
 
 	double newKnots[] = { 0.1, 0.9 };
-	curve<vec2<float>>* d;
-	d = c->insert_knots(newKnots, 2);
 	auto _d = _c;
 	std::vector < double > _newKnots = {0.1, 0.9};
 	_d.insert_knots(_newKnots);
 
-	curve<vec2<float>>* e;
-	e = c->trim_curve(newKnots[0], newKnots[1]);
 	auto _e = _d;
 	_e.trim_curve(newKnots[0], newKnots[1]);
 
@@ -1250,26 +1231,26 @@ bool TestCurve_InsertKnots(bool verbose){
 
 	if (verbose){
 		for (int i = 0; i <= neval; i++){
-			t = (i * c->maxParam() + neval * c->minParam()) / neval;
+			t = (i * _c.maxParam() + neval * _c.minParam()) / neval;
 			std::cout << t << ": ";
-			std::cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
+			std::cout << "(" << _c.evaluate(t)[0] << "," << _c.evaluate(t)[1] << ") ";
 			std::cout << "(" << _d.evaluate(t)[0] << "," << _d.evaluate(t)[1] << ") ";
 			std::cout << endl;
 		}
 
 
-		for (int i = 0; i < c->lKnot(); i++){
-			std::cout << "c: " << c->getKnot(i) << endl;
+		for (int i = 0; i < _c._knot.size(); i++){
+			std::cout << "c: " << _c._knot[i] << endl;
 		}
 		std::cout << endl;
-		for (int i = 0; i < d->lKnot(); i++){
+		for (int i = 0; i < _d._knot.size(); i++){
 			std::cout << "d: " << _d._knot[i] << endl;
 		}
 
-		for (int i = 0; i < c->nPoints(); i++){
-			std::cout << "c[" << i << "] = (" << c->get(i).x << "," << c->get(i).y << ") " << endl;
+		for (int i = 0; i < _c._points.size(); i++){
+			std::cout << "c[" << i << "] = (" << _c._points[i][0] << "," << _c._points[i][1] << ") " << endl;
 		}
-		for (int i = 0; i < d->nPoints(); i++){
+		for (int i = 0; i < _d._points.size(); i++){
 			std::cout << "d[" << i << "] = (" << _d._points[i][0] << "," << _d._points[i][1] << ") " << endl;
 		}
 
@@ -1278,34 +1259,34 @@ bool TestCurve_InsertKnots(bool verbose){
 		for (int i = 0; i <= neval; i++){
 			t = (i * _e.maxParam() + (neval - i) * _e.minParam()) / neval;
 			std::cout << t << ": ";
-			std::cout << "(" << c->evaluate(t).x << "," << c->evaluate(t).y << ") ";
+			std::cout << "(" << _c.evaluate(t)[0] << "," << _c.evaluate(t)[1] << ") ";
 			std::cout << "(" << _e.evaluate(t)[0] << "," << _e.evaluate(t)[1] << ") ";
 			std::cout << endl;
 		}
 	}
 
 	double tol = 0.000001;
-	if (c->maxParam() != _d.maxParam()){ return false; }
-	if (c->minParam() != _d.minParam()){ return false; }
+	if (_c.maxParam() != _d.maxParam()){ return false; }
+	if (_c.minParam() != _d.minParam()){ return false; }
 	if (_e.minParam() != newKnots[0]){ return false; }
 	if (_e.maxParam() != newKnots[1]){ return false; }
-	if (c->nPoints() != _d.nPoints() - 2){ return false; }
+	if (_c._points.size() != _d._points.size() - 2){ return false; }
 	//if (c->lKnot() != d->lKnot() - 2){ return false; }
 	for (int i = 0; i <= neval; i++){
-		t = (i * c->maxParam() + neval * c->minParam()) / neval;
-		vec2<float> p = c->evaluate(t);
+		t = (i * _c.maxParam() + neval * _c.minParam()) / neval;
+		geoVEC2F p = _c.evaluate(t);
 		auto q = _d.evaluate(t);
-		if (AreEqual(p.x, q[0], tol)==false){ 
+		if (AreEqual(p[0], q[0], tol)==false){ 
 			return false; }
-		if (AreEqual(p.y, q[1], tol) == false){ 
+		if (AreEqual(p[1], q[1], tol) == false){ 
 			return false; }
 	}
 	for (int i = 0; i <= neval; i++){
-		t = (i * e->maxParam() + neval * e->minParam()) / neval;
-		vec2<float> p = c->evaluate(t);
+		t = (i * _e.maxParam() + neval * _e.minParam()) / neval;
+		geoVEC2F p = _c.evaluate(t);
 		auto q = _e.evaluate(t);
-		if (AreEqual(p.x, q[0], tol) == false){ return false; }
-		if (AreEqual(p.y, q[1], tol) == false){ return false; }
+		if (AreEqual(p[0], q[0], tol) == false){ return false; }
+		if (AreEqual(p[1], q[1], tol) == false){ return false; }
 	}
 	//double tol = 0.000001;
 	//if (c->maxParam() != d->maxParam()){ return false; }
@@ -1425,7 +1406,6 @@ bool TestCurve_LineIntersection(bool verbose){
 
 bool TestCurve_CurveIntersection(bool verbose){
 
-	using namespace bspline;
 
 	int p = 2;
 	int n = 5;
@@ -1559,10 +1539,10 @@ bool TestToolPath3(bool verbose){
 	if (model == nullptr){ return false; }
 	if (model->violin == nullptr){ return false; }
 
-	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(-140, -65, 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(-140, 65, 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(110, 45, 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(circle2f(110, -45, 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, -65}}), 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, 65}}), 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, 45}}), 10));
+	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, -45}}), 10));
 
 	for (auto path : model->paths){
 		path.second->calculate();

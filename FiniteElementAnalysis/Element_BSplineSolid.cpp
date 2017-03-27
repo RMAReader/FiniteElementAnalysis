@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Element_BSplineSolid.h"
 #include "BSplineSolid.h"
-#include "bspline_utils.h"
+#include "geometry.h"
 #include "iostream"
 #include "gauss_legendre.h"
 #include <omp.h>
@@ -81,7 +81,7 @@ int Element_BSplineSolid::buildBasisFunctions(double knot[], int lknot, int p, d
 			//iterate over each point whose basis funtion is non-zero in knot span
 			for (int cp = span; cp <= span + p; cp++){
 
-				bspline::deboor_values(cp, p, knot, lknot, abisca, values);
+				geometry::deboor_values(cp, p, knot, lknot, abisca, values);
 				db[index] = values[0];
 				db_1[index] = values[1];
 				weights[index] = weight;

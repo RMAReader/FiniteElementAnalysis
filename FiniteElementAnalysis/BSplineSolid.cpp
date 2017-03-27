@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BSplineSolid.h"
 #include "math.h"
-#include "bspline_utils.h"
+#include "geometry.h"
 
 BSplineSolid::BSplineSolid()
 {
@@ -185,7 +185,7 @@ void BSplineSolid::olso_split_spans_x(BSplineSolid *input, BSplineSolid *output,
 	for (int i = 0; i < input->lknotz(); i++){
 		output->knotz[i] = input->knotz[i];
 	}
-	bspline::split_knots(input->p(), input->knotx, input->lknotx(), factor, output->knotx, output->lknotx());
+	split_knots(input->p(), input->knotx, input->lknotx(), factor, output->knotx, output->lknotx());
 
 
 	int index;
@@ -199,9 +199,9 @@ void BSplineSolid::olso_split_spans_x(BSplineSolid *input, BSplineSolid *output,
 				cz[i] = input->cx[index];
 			}
 			
-			bspline::olso_insertion(input->nx() - 1, cx, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dx);
-			bspline::olso_insertion(input->nx() - 1, cy, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dy);
-			bspline::olso_insertion(input->nx() - 1, cz, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dz);
+			geometry::olso_insertion(input->nx() - 1, cx, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dx);
+			geometry::olso_insertion(input->nx() - 1, cy, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dy);
+			geometry::olso_insertion(input->nx() - 1, cz, input->p() + 1, input->knotx, output->knotx, output->lknotx(), dz);
 			
 			for (int i = 0; i < new_nx; i++){
 				index = i*input->coffsetx() + j*input->coffsety() + k*input->coffsetz();
@@ -244,7 +244,7 @@ void BSplineSolid::olso_split_spans_y(BSplineSolid *input, BSplineSolid *output,
 	for (int i = 0; i < input->lknotz(); i++){
 		output->knotz[i] = input->knotz[i];
 	}
-	bspline::split_knots(input->q(), input->knoty, input->lknoty(), factor, output->knoty, output->lknoty());
+	split_knots(input->q(), input->knoty, input->lknoty(), factor, output->knoty, output->lknoty());
 
 
 	int index;
@@ -258,9 +258,9 @@ void BSplineSolid::olso_split_spans_y(BSplineSolid *input, BSplineSolid *output,
 				cz[j] = input->cx[index];
 			}
 
-			bspline::olso_insertion(input->ny() - 1, cx, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dx);
-			bspline::olso_insertion(input->ny() - 1, cy, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dy);
-			bspline::olso_insertion(input->ny() - 1, cz, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dz);
+			geometry::olso_insertion(input->ny() - 1, cx, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dx);
+			geometry::olso_insertion(input->ny() - 1, cy, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dy);
+			geometry::olso_insertion(input->ny() - 1, cz, input->q() + 1, input->knoty, output->knoty, output->lknoty(), dz);
 
 			for (int j = 0; j < new_ny; j++){
 				index = i*input->coffsetx() + j*input->coffsety() + k*input->coffsetz();
@@ -279,4 +279,32 @@ void BSplineSolid::olso_split_spans_y(BSplineSolid *input, BSplineSolid *output,
 	delete[] dy;
 	delete[] dz;
 
+}
+
+
+
+	/*creates a new knot vector with each span split evenly into n spans*/
+void BSplineSolid::split_knots(int p, double* input_knot, int lknot, int n, double* output_knot, int output_lknot){
+	if (n < 1) return;
+	int spans = number_spans(p, lknot);
+	if (spans < 1)return;
+
+	/*output_lknot = lknot + spans * (n - 1);
+	output_knot = new double[output_lknot];*/
+
+	for (int i = 0; i <= p; i++){
+			output_knot[i] = input_knot[i];
+			output_knot[output_lknot - i - 1] = input_knot[lknot - i - 1];
+	}
+		for (int i = 0; i < spans; i++){
+			for (int j = 0; j < n; j++){
+				output_knot[p + n * i + j] = (double)j / n * input_knot[i + 1] + (1 - (double)j / n)*input_knot[i];
+			}
+		}
+
+}
+
+	/*Returns the number of knot spans covered by a knot vector*/
+int BSplineSolid::number_spans(int p, int lknot){
+	return lknot - 2 * p - 1;
 }

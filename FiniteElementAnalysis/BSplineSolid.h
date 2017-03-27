@@ -25,6 +25,9 @@ public:
 	static void olso_split_spans_x(BSplineSolid *input, BSplineSolid *output, int n);
 	static void olso_split_spans_y(BSplineSolid *input, BSplineSolid *output, int n);
 
+	static void BSplineSolid::split_knots(int p, double* input_knot, int lknot, int n, double* output_knot, int output_lknot);
+	static int BSplineSolid::number_spans(int p, int lknot);
+
 	double *knotx, *knoty, *knotz;	//knot vectors
 	double *cx, *cy, *cz;			//control points
 

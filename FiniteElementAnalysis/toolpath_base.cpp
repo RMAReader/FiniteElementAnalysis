@@ -530,7 +530,7 @@ void toolpath_base::rough_surface_scanning_stl(std::vector<geoVEC3F>* path, floa
 		//2.2 move over strip in x direction 
 		int steps_x = (int)((max_x - min_x) / step_x + 1);
 
-		VEC2F p1, p2, p3;
+		geoVEC2F p1, p2, p3;
 
 		for (int i = 0; i < steps_x; i++)
 		{
@@ -576,7 +576,6 @@ void toolpath_base::rough_surface_scanning_stl(std::vector<geoVEC3F>* path, floa
 
 void toolpath_base::rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float margin_z, geometry::mesh3f& mesh)
 {
-	using namespace bspline;
 	
 	if (step_y > tool_diameter * 0.5) return;
 	if (margin_z < 0) return;
@@ -603,7 +602,7 @@ void toolpath_base::rough_surface_grid(std::vector<geoVEC3F>* path, float tool_d
 		y += step_y;
 	} while (y < max[1] + step_y);
 
-	lattice<float> grid_mesh_heights(grid_x.size() - 1, grid_y.size() - 1);
+	geometry::lattice<float> grid_mesh_heights(grid_x.size() - 1, grid_y.size() - 1);
 
 	for (int g = 0; g < grid_mesh_heights.data.size(); g++)
 	{

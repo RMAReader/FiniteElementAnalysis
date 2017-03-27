@@ -14,9 +14,9 @@ void toolpath_RibMould::calculate()
 	for (int i = 0; i < violin->ribs.rib_mould_locator_holes.size(); i++)
 	{
 		geoVEC2F c;
-		c[0] = violin->ribs.rib_mould_locator_holes[i].centre.x;
-		c[1] = violin->ribs.rib_mould_locator_holes[i].centre.y;
-		float d = violin->ribs.rib_mould_locator_holes[i].diameter;
+		c[0] = violin->ribs.rib_mould_locator_holes[i].centre[0];
+		c[1] = violin->ribs.rib_mould_locator_holes[i].centre[1];
+		float d = violin->ribs.rib_mould_locator_holes[i].radius*2;
 
 		bore_hole(c, d, safe_z, mould_top_z, mould_bottom_z, step_z);
 	}
