@@ -5,8 +5,9 @@
 </description>
 	<violin_ribs>
 		<curve2f name="rib_internal_lower_bout">
-			<order value="2" />
-			<knot>
+            <knot name="knot">
+                <order value="2" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0" />
@@ -27,30 +28,32 @@
 				<double value="15" />
 				<double value="15" />
 				<double value="15" />
+				</data>
 			</knot>
 			<points>
-					<point2f x="-58.1599" y="-89.3271" />
-					<point2f x="-65.1033" y="-87.0126" />
-					<point2f x="-76.4298" y="-89.622" />
-					<point2f x="-90.7" y="-95.7231" />
-					<point2f x="-110.755" y="-102.921" />
-					<point2f x="-139.515" y="-105.143" />
-					<point2f x="-173.898" y="-92.3707" />
-					<point2f x="-196.906" y="-60.3028" />
-					<point2f x="-203.824" y="-10.5502" />
-					<point2f x="-199.25" y="33.0879" />
-					<point2f x="-184.483" y="70.1441" />
-					<point2f x="-156.394" y="93.1415" />
-					<point2f x="-126.994" y="98.1069" />
-					<point2f x="-107.432" y="94.4476" />
-					<point2f x="-81.894" y="85.5671" />
-					<point2f x="-67.187" y="81.9037" />
-					<point2f x="-58.8916" y="83.7373" />
+					<vector2f x="-58.1599" y="-89.3271" />
+					<vector2f x="-65.1033" y="-87.0126" />
+					<vector2f x="-76.4298" y="-89.622" />
+					<vector2f x="-90.7" y="-95.7231" />
+					<vector2f x="-110.755" y="-102.921" />
+					<vector2f x="-139.515" y="-105.143" />
+					<vector2f x="-173.898" y="-92.3707" />
+					<vector2f x="-196.906" y="-60.3028" />
+					<vector2f x="-203.824" y="-10.5502" />
+					<vector2f x="-199.25" y="33.0879" />
+					<vector2f x="-184.483" y="70.1441" />
+					<vector2f x="-156.394" y="93.1415" />
+					<vector2f x="-126.994" y="98.1069" />
+					<vector2f x="-107.432" y="94.4476" />
+					<vector2f x="-81.894" y="85.5671" />
+					<vector2f x="-67.187" y="81.9037" />
+					<vector2f x="-58.8916" y="83.7373" />
 			</points>
 		</curve2f>
 		<curve2f name="rib_internal_centre_bout_bass">
-			<order value="2" />
-			<knot>
+            <knot name="knot">
+                <order value="2" />
+                <data>
 				<double value="15" />
 				<double value="15" />
 				<double value="15" />
@@ -64,23 +67,25 @@
 				<double value="23" />
 				<double value="23" />
 				<double value="23" />
+				</data>
 			</knot>
 			<points>
-					<point2f x="-58.8916" y="83.7373" />
-					<point2f x="-61.2476" y="77.599" />
-					<point2f x="-59.4263" y="67.1385" />
-					<point2f x="-51.8479" y="57.3389" />
-					<point2f x="-34.1027" y="49.3451" />
-					<point2f x="-3.63943" y="44.7947" />
-					<point2f x="20.5338" y="48.3226" />
-					<point2f x="30.0856" y="55.4182" />
-					<point2f x="34.7764" y="65.5706" />
-					<point2f x="33.4698" y="70.6665" />
+					<vector2f x="-58.8916" y="83.7373" />
+					<vector2f x="-61.2476" y="77.599" />
+					<vector2f x="-59.4263" y="67.1385" />
+					<vector2f x="-51.8479" y="57.3389" />
+					<vector2f x="-34.1027" y="49.3451" />
+					<vector2f x="-3.63943" y="44.7947" />
+					<vector2f x="20.5338" y="48.3226" />
+					<vector2f x="30.0856" y="55.4182" />
+					<vector2f x="34.7764" y="65.5706" />
+					<vector2f x="33.4698" y="70.6665" />
 			</points>
 		</curve2f>
 		<curve2f name="rib_internal_upper_bout">
-			<order value="2" />
-			<knot>
+            <knot name="knot">
+                <order value="2" />
+                <data>
 				<double value="23" />
 				<double value="23" />
 				<double value="23" />
@@ -103,47 +108,51 @@
 				<double value="40" />
 				<double value="40" />
 				<double value="40" />
+				</data>
 			</knot>
 			<points>
-					<point2f x="33.4698" y="70.6665" />
-					<point2f x="39.2231" y="68.3147" />
-					<point2f x="49.9382" y="68.7067" />
-					<point2f x="62.352" y="72.2348" />
-					<point2f x="80.3746" y="77.3669" />
-					<point2f x="104.69" y="76.0243" />
-					<point2f x="130.824" y="62.9572" />
-					<point2f x="146.843" y="38.3903" />
-					<point2f x="151.417" y="16.6573" />
-					<point2f x="152.332" y="-3.72824" />
-					<point2f x="150.112" y="-30.1782" />
-					<point2f x="144.231" y="-49.5188" />
-					<point2f x="134.561" y="-64.6777" />
-					<point2f x="118.357" y="-77.1055" />
-					<point2f x="98.3624" y="-82.7247" />
-					<point2f x="75.5378" y="-82.9868" />
-					<point2f x="55.4125" y="-76.4526" />
-					<point2f x="38.0315" y="-73.3162" />
-					<point2f x="31.6188" y="-77.056" />
+					<vector2f x="33.4698" y="70.6665" />
+					<vector2f x="39.2231" y="68.3147" />
+					<vector2f x="49.9382" y="68.7067" />
+					<vector2f x="62.352" y="72.2348" />
+					<vector2f x="80.3746" y="77.3669" />
+					<vector2f x="104.69" y="76.0243" />
+					<vector2f x="130.824" y="62.9572" />
+					<vector2f x="146.843" y="38.3903" />
+					<vector2f x="151.417" y="16.6573" />
+					<vector2f x="152.332" y="-3.72824" />
+					<vector2f x="150.112" y="-30.1782" />
+					<vector2f x="144.231" y="-49.5188" />
+					<vector2f x="134.561" y="-64.6777" />
+					<vector2f x="118.357" y="-77.1055" />
+					<vector2f x="98.3624" y="-82.7247" />
+					<vector2f x="75.5378" y="-82.9868" />
+					<vector2f x="55.4125" y="-76.4526" />
+					<vector2f x="38.0315" y="-73.3162" />
+					<vector2f x="31.6188" y="-77.056" />
 			</points>
 		</curve2f>
 		<curve2f name="block_bass_upper_bout">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.5" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="20" y="55" />
-				<point2f x="50" y="55" />
-				<point2f x="50" y="90" />
+				<vector2f x="20" y="55" />
+				<vector2f x="50" y="55" />
+				<vector2f x="50" y="90" />
 			</points>
 		</curve2f>
 		<curve2f name="rib_internal_centre_bout_trbl">
-			<order value="2" />
-			<knot>
+            <knot name="knot">
+                <order value="2" />
+                <data>
 				<double value="40" />
 				<double value="40" />
 				<double value="40" />
@@ -158,116 +167,130 @@
 				<double value="49" />
 				<double value="49" />
 				<double value="49" />
+				</data>
 			</knot>
 			<points>
-					<point2f x="31.6188" y="-77.056" />
-					<point2f x="32.2814" y="-72.2707" />
-					<point2f x="29.5371" y="-64.4297" />
-					<point2f x="23.3949" y="-56.5886" />
-					<point2f x="3.40027" y="-50.4465" />
-					<point2f x="-22.4904" y="-52.5373" />
-					<point2f x="-45.4914" y="-60.2479" />
-					<point2f x="-54.7702" y="-69.7881" />
-					<point2f x="-58.4295" y="-79.459" />
-					<point2f x="-58.9522" y="-85.8627" />
-					<point2f x="-58.1591" y="-89.5509" />
+					<vector2f x="31.6188" y="-77.056" />
+					<vector2f x="32.2814" y="-72.2707" />
+					<vector2f x="29.5371" y="-64.4297" />
+					<vector2f x="23.3949" y="-56.5886" />
+					<vector2f x="3.40027" y="-50.4465" />
+					<vector2f x="-22.4904" y="-52.5373" />
+					<vector2f x="-45.4914" y="-60.2479" />
+					<vector2f x="-54.7702" y="-69.7881" />
+					<vector2f x="-58.4295" y="-79.459" />
+					<vector2f x="-58.9522" y="-85.8627" />
+					<vector2f x="-58.1591" y="-89.5509" />
 			</points>
 		</curve2f>
 		<curve2f name="block_bass_lower_bout">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.5" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="-40" y="65" />
-				<point2f x="-70" y="65" />
-				<point2f x="-70" y="120" />
+				<vector2f x="-40" y="65" />
+				<vector2f x="-70" y="65" />
+				<vector2f x="-70" y="120" />
 			</points>
 		</curve2f>
 		<curve2f name="block_trbl_lower_bout">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.5" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="-40" y="-70" />
-				<point2f x="-70" y="-70" />
-				<point2f x="-70" y="-120" />
+				<vector2f x="-40" y="-70" />
+				<vector2f x="-70" y="-70" />
+				<vector2f x="-70" y="-120" />
 			</points>
 		</curve2f>
 		<curve2f name="block_trbl_upper_bout">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.5" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="20" y="-60" />
-				<point2f x="50" y="-60" />
-				<point2f x="50" y="-120" />
+				<vector2f x="20" y="-60" />
+				<vector2f x="50" y="-60" />
+				<vector2f x="50" y="-120" />
 			</points>
 		</curve2f>
 		<curve2f name="block_neck">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.333333" />
 				<double value="0.666667" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="160" y="15" />
-				<point2f x="135" y="15" />
-				<point2f x="135" y="-15" />
-				<point2f x="160" y="-15" />
+				<vector2f x="160" y="15" />
+				<vector2f x="135" y="15" />
+				<vector2f x="135" y="-15" />
+				<vector2f x="160" y="-15" />
 			</points>
 		</curve2f>
 		<curve2f name="block_bottom">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.333333" />
 				<double value="0.666667" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="-210" y="15" />
-				<point2f x="-185" y="15" />
-				<point2f x="-185" y="-25" />
-				<point2f x="-210" y="-25" />
+				<vector2f x="-210" y="15" />
+				<vector2f x="-185" y="15" />
+				<vector2f x="-185" y="-25" />
+				<vector2f x="-210" y="-25" />
 			</points>
 		</curve2f>
 		<curve2f name="centre_line">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="-210" y="0" />
-				<point2f x="160" y="0" />
+				<vector2f x="-210" y="0" />
+				<vector2f x="160" y="0" />
 			</points>
 		</curve2f>
 		<curve2f name="clamp_hole">
-			<order value="1" />
-			<knot>
+            <knot name="knot">
+                <order value="1" />
+                <data>
 				<double value="0" />
 				<double value="0" />
 				<double value="0.25" />
@@ -275,18 +298,235 @@
 				<double value="0.75" />
 				<double value="1" />
 				<double value="1" />
+				</data>
 			</knot>
 			<points>
-				<point2f x="-150" y="-35" />
-				<point2f x="105" y="-35" />
-				<point2f x="105" y="35" />
-				<point2f x="-150" y="35" />
-				<point2f x="-150" y="-35" />
+				<vector2f x="-150" y="-35" />
+				<vector2f x="105" y="-35" />
+				<vector2f x="105" y="35" />
+				<vector2f x="-150" y="35" />
+				<vector2f x="-150" y="-35" />
 			</points>
 		</curve2f>
 		<float name="rib_mould_depth" value="15" />
 		<float name="rib_mould_thickness" value="10" />
 	</violin_ribs>
+	<violin_belly />
+    <violin_back>
+        <surface3f name="exterior">
+            <knot name="knotx">
+                <order value="2" />
+                <data>
+                    <double value="0.5" />
+                    <double value="1" />
+                    <double value="1.5" />
+                    <double value="2" />
+                    <double value="3" />
+                    <double value="4" />
+                    <double value="5" />
+                    <double value="6" />
+                    <double value="7" />
+                    <double value="7.5" />
+                    <double value="8" />
+                    <double value="8.5" />
+                </data>
+            </knot>
+            <knot name="knoty">
+                <order value="2" />
+                <data>
+                    <double value="1" />
+                    <double value="1.25" />
+                    <double value="1.5" />
+                    <double value="1.75" />
+                    <double value="2" />
+                    <double value="2.5" />
+                    <double value="3" />
+                    <double value="3.5" />
+                    <double value="4" />
+                    <double value="4.5" />
+                    <double value="5" />
+                    <double value="5.5" />
+                    <double value="6" />
+                    <double value="6.5" />
+                    <double value="7" />
+                    <double value="7.5" />
+                    <double value="8" />
+                    <double value="8.25" />
+                    <double value="8.5" />
+                    <double value="8.75" />
+                    <double value="9" />
+                </data>
+            </knot>
+            <lattice3f>
+                <rows value="9" />
+				<cols value="18" />
+				<points>
+                    <vector3f x="-43.5672" y="84.5787" z="2.46018" />
+                    <vector3f x="-53.2327" y="102.529" z="2.46018" />
+                    <vector3f x="-55.3038" y="101.247" z="2.46018" />
+                    <vector3f x="-66.9419" y="95.0332" z="2.46018" />
+                    <vector3f x="-81.6126" y="100.841" z="2.46018" />
+                    <vector3f x="-118.58" y="112.867" z="2.46018" />
+                    <vector3f x="-154.564" y="108.232" z="2.46018" />
+                    <vector3f x="-193.567" y="84.7261" z="2.46018" />
+                    <vector3f x="-217.551" y="28.5851" z="2.46018" />
+                    <vector3f x="-215.61" y="-41.1838" z="2.46018" />
+                    <vector3f x="-192.825" y="-90.9631" z="2.46018" />
+                    <vector3f x="-156.357" y="-116.305" z="2.46018" />
+                    <vector3f x="-119.226" y="-117.961" z="2.46018" />
+                    <vector3f x="-87.8714" y="-107.277" z="2.46018" />
+                    <vector3f x="-68.0375" y="-98.4646" z="2.46018" />
+                    <vector3f x="-54.0582" y="-105.725" z="2.46018" />
+                    <vector3f x="-51.1323" y="-105.833" z="2.46018" />
+                    <vector3f x="-44.9554" y="-93.1546" z="2.46018" />
+                    <vector3f x="-53.4288" y="79.0551" z="2.05015" />
+                    <vector3f x="-57.1731" y="78.1669" z="1.23009" />
+                    <vector3f x="-60.4239" y="78.0678" z="0.683385" />
+                    <vector3f x="-67.4748" y="79.1596" z="0.273354" />
+                    <vector3f x="-86.4726" y="83.4285" z="4.0099e-013" />
+                    <vector3f x="-120.491" y="94.7924" z="9.96557e-014" />
+                    <vector3f x="-153.154" y="91.985" z="5.91793e-016" />
+                    <vector3f x="-180.042" y="69.8354" z="0" />
+                    <vector3f x="-196.515" y="31.7866" z="0" />
+                    <vector3f x="-200.962" y="-38.6848" z="-5.91793e-016" />
+                    <vector3f x="-185.392" y="-81.7437" z="0" />
+                    <vector3f x="-154.062" y="-99.1494" z="0" />
+                    <vector3f x="-119.25" y="-103.327" z="5.75353e-013" />
+                    <vector3f x="-90.451" y="-95.5421" z="-4.0099e-013" />
+                    <vector3f x="-68.2591" y="-84.8108" z="0.273354" />
+                    <vector3f x="-59.1605" y="-85.8938" z="0.683385" />
+                    <vector3f x="-55.9099" y="-86.977" z="1.23009" />
+                    <vector3f x="-50.2711" y="-88.3858" z="2.05015" />
+                    <vector3f x="-53.7241" y="69.4918" z="1.84514" />
+                    <vector3f x="-56.3822" y="69.0979" z="0.615046" />
+                    <vector3f x="-59.9398" y="69.0652" z="0" />
+                    <vector3f x="-65.072" y="69.9608" z="0" />
+                    <vector3f x="-85.7512" y="73.7467" z="0" />
+                    <vector3f x="-121.576" y="81.7939" z="0" />
+                    <vector3f x="-150.255" y="77.0617" z="0" />
+                    <vector3f x="-169.834" y="58.4671" z="0" />
+                    <vector3f x="-182.698" y="24.81" z="0" />
+                    <vector3f x="-182.985" y="-27.1587" z="0" />
+                    <vector3f x="-172.317" y="-63.7763" z="0" />
+                    <vector3f x="-150.692" y="-85.0429" z="0" />
+                    <vector3f x="-117.623" y="-91.2841" z="-8.0198e-013" />
+                    <vector3f x="-84.7274" y="-82.7971" z="0" />
+                    <vector3f x="-63.9808" y="-78.3464" z="0" />
+                    <vector3f x="-59.0574" y="-78.3147" z="0" />
+                    <vector3f x="-55.5889" y="-78.5299" z="0.615046" />
+                    <vector3f x="-50.7061" y="-78.7438" z="1.84514" />
+                    <vector3f x="-42.482" y="58.7481" z="1.84514" />
+                    <vector3f x="-45.5177" y="57.4679" z="0.615046" />
+                    <vector3f x="-48.0851" y="56.1877" z="0.154268" />
+                    <vector3f x="-52.5721" y="55.0189" z="0.617071" />
+                    <vector3f x="-62.2487" y="51.3092" z="2.46394" />
+                    <vector3f x="-78.5856" y="45.1686" z="7.00216" />
+                    <vector3f x="-93.1239" y="35.3199" z="10.1841" />
+                    <vector3f x="-105.864" y="22.8052" z="12.1219" />
+                    <vector3f x="-112.211" y="5.78542" z="13.0555" />
+                    <vector3f x="-112.165" y="-14.5609" z="13.0399" />
+                    <vector3f x="-105.965" y="-31.2729" z="11.6109" />
+                    <vector3f x="-93.6103" y="-43.2916" z="9.63275" />
+                    <vector3f x="-79.0363" y="-52.4314" z="6.03406" />
+                    <vector3f x="-62.2425" y="-57.5732" z="1.85712" />
+                    <vector3f x="-51.7147" y="-61.0515" z="0.442857" />
+                    <vector3f x="-47.9045" y="-62.0731" z="0.110714" />
+                    <vector3f x="-45.4094" y="-63.8021" z="0.615046" />
+                    <vector3f x="-42.906" y="-65.7437" z="1.84514" />
+                    <vector3f x="-11.1375" y="51.2575" z="1.84514" />
+                    <vector3f x="-11.1377" y="49.1915" z="0.615046" />
+                    <vector3f x="-11.3675" y="46.63" z="0" />
+                    <vector3f x="-11.5995" y="43.8462" z="0" />
+                    <vector3f x="-11.4375" y="39.0912" z="2.33747" />
+                    <vector3f x="-11.4087" y="29.9163" z="7.0124" />
+                    <vector3f x="-11.3534" y="20.4221" z="10.6044" />
+                    <vector3f x="-11.2716" y="10.6085" z="13.1134" />
+                    <vector3f x="-11.2652" y="1.08264" z="14.4326" />
+                    <vector3f x="-11.3342" y="-8.15564" z="14.562" />
+                    <vector3f x="-11.3757" y="-17.6241" z="13.2679" />
+                    <vector3f x="-11.3896" y="-27.3229" z="10.5504" />
+                    <vector3f x="-11.4273" y="-36.18" z="6.89377" />
+                    <vector3f x="-11.489" y="-44.1956" z="2.29792" />
+                    <vector3f x="-11.3679" y="-49.0355" z="5.75353e-013" />
+                    <vector3f x="-11.895" y="-51.8" z="5.75353e-013" />
+                    <vector3f x="-11.7871" y="-54.4849" z="0.615046" />
+                    <vector3f x="-11.3745" y="-57.1477" z="1.84514" />
+                    <vector3f x="18.9933" y="54.6905" z="1.84514" />
+                    <vector3f x="20.0083" y="51.2685" z="0.615046" />
+                    <vector3f x="20.9272" y="49.718" z="0.216093" />
+                    <vector3f x="22.484" y="47.2572" z="0.864374" />
+                    <vector3f x="33.9724" y="43.9703" z="2.17635" />
+                    <vector3f x="53.1796" y="39.8031" z="7.1574" />
+                    <vector3f x="66.3676" y="31.1982" z="9.95688" />
+                    <vector3f x="73.5363" y="18.6644" z="11.0153" />
+                    <vector3f x="77.1251" y="4.0391" z="11.3956" />
+                    <vector3f x="77.1338" y="-12.2487" z="11.1879" />
+                    <vector3f x="73.4306" y="-27.0988" z="10.5236" />
+                    <vector3f x="66.0157" y="-39.4319" z="9.02279" />
+                    <vector3f x="52.7676" y="-48.2132" z="6.3495" />
+                    <vector3f x="33.6862" y="-51.2491" z="1.46866" />
+                    <vector3f x="24.5961" y="-53.2084" z="0.563771" />
+                    <vector3f x="21.1127" y="-54.8348" z="0.140943" />
+                    <vector3f x="18.5634" y="-57.3849" z="0.615046" />
+                    <vector3f x="16.9457" y="-59.7012" z="1.84514" />
+                    <vector3f x="27.0418" y="62.8236" z="1.84514" />
+                    <vector3f x="29.1766" y="62.4088" z="0.615046" />
+                    <vector3f x="31.815" y="61.8523" z="0" />
+                    <vector3f x="35.4829" y="60.9894" z="0" />
+                    <vector3f x="48.3382" y="62.9506" z="0.0831151" />
+                    <vector3f x="78.501" y="69.1497" z="0.249345" />
+                    <vector3f x="109.276" y="61.6973" z="0.249345" />
+                    <vector3f x="127.745" y="41.1932" z="0.0831151" />
+                    <vector3f x="137.023" y="13.7451" z="0" />
+                    <vector3f x="137.111" y="-20.647" z="0" />
+                    <vector3f x="127.844" y="-46.7805" z="0.108169" />
+                    <vector3f x="109.222" y="-64.6554" z="0.324506" />
+                    <vector3f x="77.9101" y="-70.457" z="0.324506" />
+                    <vector3f x="52.7026" y="-67.858" z="0.108169" />
+                    <vector3f x="34.6663" y="-66.8201" z="-1.33663e-013" />
+                    <vector3f x="30.937" y="-66.9173" z="-5.75353e-013" />
+                    <vector3f x="27.7741" y="-67.5873" z="0.615046" />
+                    <vector3f x="23.7995" y="-69.1971" z="1.84514" />
+                    <vector3f x="27.263" y="69.4107" z="2.05015" />
+                    <vector3f x="29.217" y="69.0773" z="1.23009" />
+                    <vector3f x="32.2034" y="68.7142" z="0.683385" />
+                    <vector3f x="38.4074" y="66.916" z="0.273354" />
+                    <vector3f x="50.2379" y="68.8967" z="0" />
+                    <vector3f x="79.9281" y="77.5074" z="5.75353e-013" />
+                    <vector3f x="114.204" y="72.8755" z="0" />
+                    <vector3f x="140.618" y="54.6848" z="0" />
+                    <vector3f x="154.208" y="22.1909" z="-5.00646e-013" />
+                    <vector3f x="154.008" y="-29.4113" z="-7.02325e-013" />
+                    <vector3f x="139.916" y="-61.2644" z="-5.75353e-013" />
+                    <vector3f x="116.471" y="-78.2675" z="0" />
+                    <vector3f x="81.6632" y="-81.9792" z="5.75353e-013" />
+                    <vector3f x="56.2392" y="-75.0451" z="4.0099e-013" />
+                    <vector3f x="36.3162" y="-73.7085" z="0.273354" />
+                    <vector3f x="32.7962" y="-74.633" z="0.683385" />
+                    <vector3f x="29.1171" y="-75.4555" z="1.23009" />
+                    <vector3f x="23.9112" y="-75.0223" z="2.05015" />
+                    <vector3f x="21.2648" y="76.1467" z="2.46018" />
+                    <vector3f x="27.1873" y="86.511" z="2.46018" />
+                    <vector3f x="28.486" y="87.4384" z="2.46018" />
+                    <vector3f x="38.6621" y="81.0327" z="2.46018" />
+                    <vector3f x="50.0629" y="79.1079" z="2.46018" />
+                    <vector3f x="80.6269" y="89.7689" z="2.46018" />
+                    <vector3f x="114.83" y="85.697" z="2.46018" />
+                    <vector3f x="146.467" y="61.2654" z="2.46018" />
+                    <vector3f x="161.498" y="22.3881" z="2.46018" />
+                    <vector3f x="159.648" y="-32.3759" z="2.46018" />
+                    <vector3f x="146.47" y="-68.7377" z="2.46018" />
+                    <vector3f x="116.627" y="-92.5772" z="2.46018" />
+                    <vector3f x="78.8892" y="-98.0094" z="2.46018" />
+                    <vector3f x="52.532" y="-88.711" z="2.46018" />
+                    <vector3f x="39.8803" y="-84.0002" z="2.46018" />
+                    <vector3f x="26.9593" y="-94.5658" z="2.46018" />
+                    <vector3f x="25.2769" y="-93.6909" z="2.46018" />
+                    <vector3f x="20.4315" y="-80.7027" z="2.46018" />
+                </points>
+            </lattice3f>
+        </surface3f>
+    </violin_back>
 </violin_model>
 <toolpath type="toolpath_RibMould">
 	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath3_RibMould.txt" />

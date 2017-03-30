@@ -39,6 +39,8 @@ bool TestCurve_LineIntersection(bool verbose);
 bool TestCurve_CurveIntersection(bool verbose);
 bool TestToolPath3(bool verbose);
 bool TestToolPath4(bool verbose);
+bool TestToolPath5(bool verbose);
+bool TestToolPath6(bool verbose);
 bool TestTriangle(bool verbose);
 
 bool AreEqual(double p, double q, double error){
@@ -182,6 +184,20 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else{
 		std::cout << "TestToolPath4 failed" << endl; TestsFailed++;
+	}
+	if (TestToolPath5(verbose))
+	{
+		std::cout << "TestToolPath5 passed" << endl; TestsPassed++;
+	}
+	else{
+		std::cout << "TestToolPath5 failed" << endl; TestsFailed++;
+	}
+	if (TestToolPath6(verbose))
+	{
+		std::cout << "TestToolPath6 passed" << endl; TestsPassed++;
+	}
+	else{
+		std::cout << "TestToolPath6 failed" << endl; TestsFailed++;
 	}
 
 	std::cout << endl;
@@ -869,13 +885,16 @@ bool TestFileLoader_LoadModelJava(bool verbose){
 	std::vector<geoSURFACE3F> surfaces;
 	bool successful = IO::LoadModelJava(filepath, curves, surfaces, verbose);
 	
-	violin_model* violin = new violin_model();
+	app_model* model = new app_model();
+	model->violin = new violin_model();
 	//violin->ribs = new violin_ribs();
 	std::string name = "rib_internal_lower_bout";
-	violin->ribs.curves.insert(std::make_pair(name, curves[0]));
+	model->violin->ribs.curves.insert(std::make_pair(name, curves[0]));
+	name = "back_outside_surface";
+	model->violin->back.surfaces.insert(std::make_pair(name, surfaces[0]));
 
 	char filepath2[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model saved.xml";
-	IO::SaveModelXML(filepath2, violin, verbose);
+	IO::SaveModelXML(filepath2, model, verbose);
 
 
 	if (successful == true && curves.size() == 16){ 
@@ -897,7 +916,7 @@ bool TestFileLoader_LoadViolinXML(bool verbose){
 	app_model* model = IO::LoadModelXML(filepath, verbose);
 	if (model == nullptr){ return false; }
 
-	IO::SaveModelXML(filepath2, model->violin, verbose);
+	IO::SaveModelXML(filepath2, model, verbose);
 
 	return true;
 }
@@ -1529,7 +1548,28 @@ bool TestTriangle(bool verbose){
 }
 
 
-
+//
+//
+//bool TestToolPath3(bool verbose){
+//
+//	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+//
+//	app_model* model = IO::LoadModelXML(filepath, verbose);
+//	if (model == nullptr){ return false; }
+//	if (model->violin == nullptr){ return false; }
+//
+//	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, -65}}), 10));
+//	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, 65}}), 10));
+//	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, 45}}), 10));
+//	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, -45}}), 10));
+//
+//	for (auto path : model->paths){
+//		path.second->calculate();
+//		path.second->save_gcode();
+//	}
+//
+//	return true;
+//}
 
 bool TestToolPath3(bool verbose){
 
@@ -1539,15 +1579,9 @@ bool TestToolPath3(bool verbose){
 	if (model == nullptr){ return false; }
 	if (model->violin == nullptr){ return false; }
 
-	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, -65}}), 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{-140, 65}}), 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, 45}}), 10));
-	model->violin->ribs.rib_mould_locator_holes.push_back(geoCIRCLE2F(geoVEC2F(std::array < float, 2 > {{110, -45}}), 10));
-
-	for (auto path : model->paths){
-		path.second->calculate();
-		path.second->save_gcode();
-	}
+	toolpath_base* toolpath = model->paths["toolpath_RibMould"];
+	toolpath->calculate();
+	toolpath->save_gcode();
 
 	return true;
 }
@@ -1555,42 +1589,86 @@ bool TestToolPath3(bool verbose){
 
 bool TestToolPath4(bool verbose){
 
-	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
 
-	std::vector<geoCURVE2F> curves;
-	std::vector<geoSURFACE3F> surfaces;
-	bool successful = IO::LoadModelJava(filepath, curves, surfaces, verbose);
+	app_model* model = IO::LoadModelXML(filepath, verbose);
+	if (model == nullptr){ return false; }
+	if (model->violin == nullptr){ return false; }
 
-	violin_model violin;
-	violin.back.surfaces.insert(std::make_pair("exterior", surfaces[0]));
-	violin.back.rotate_model(3.1415926/2);
-
-	cnc_tool tool;
-	tool.diameter = 6.35;
-	tool.name = "End Mill";
-	tool.type = "End Mill";
-
-	toolpath_BackRough toolpath;
-	toolpath.parameters.insert(std::make_pair("safe_z",30));
-	toolpath.parameters.insert(std::make_pair("minimum_z", 0));
-	toolpath.parameters.insert(std::make_pair("margin_z", 2));
-	toolpath.parameters.insert(std::make_pair("step_x", 1.5));
-	toolpath.parameters.insert(std::make_pair("step_y", 3));
-	toolpath.parameters.insert(std::make_pair("mesh_nx", 350));
-	toolpath.parameters.insert(std::make_pair("mesh_ny", 200));
-
-	toolpath.parameters.insert(std::make_pair("spindle_speed", 24000));
-	toolpath.parameters.insert(std::make_pair("z_feedrate", 500));
-	toolpath.parameters.insert(std::make_pair("max_feedrate", 6000));
-	toolpath.parameters.insert(std::make_pair("xy_feedrate", 1000));
-
-	toolpath.tool = &tool;
-	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\Toolpath6_BackRough.txt";
-	toolpath.violin = &violin;
-
-	toolpath.calculate();
-	toolpath.save_gcode();
+	toolpath_base* toolpath = model->paths["toolpath_TrimBlocksCentreBout"];
+	toolpath->calculate();
+	toolpath->save_gcode();
 
 	return true;
 }
 
+bool TestToolPath5(bool verbose){
+
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+
+	app_model* model = IO::LoadModelXML(filepath, verbose);
+	if (model == nullptr){ return false; }
+	if (model->violin == nullptr){ return false; }
+
+	toolpath_base* toolpath = model->paths["toolpath_TrimBlocksEndBouts"];
+	toolpath->calculate();
+	toolpath->save_gcode();
+
+	return true;
+}
+
+bool TestToolPath6(bool verbose){
+
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+
+	app_model* model = IO::LoadModelXML(filepath, verbose);
+	if (model == nullptr){ return false; }
+	if (model->violin == nullptr){ return false; }
+
+	toolpath_base* toolpath = model->paths["toolpath_BackRough"];
+	toolpath->calculate();
+	toolpath->save_gcode();
+
+	return true;
+}
+//bool TestToolPath4(bool verbose){
+//
+//	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad belly full v24 high wide v5.dat";
+//
+//	std::vector<geoCURVE2F> curves;
+//	std::vector<geoSURFACE3F> surfaces;
+//	bool successful = IO::LoadModelJava(filepath, curves, surfaces, verbose);
+//
+//	violin_model violin;
+//	violin.back.surfaces.insert(std::make_pair("exterior", surfaces[0]));
+//	violin.back.rotate_model(3.1415926/2);
+//
+//	cnc_tool tool;
+//	tool.diameter = 6.35;
+//	tool.name = "End Mill";
+//	tool.type = "End Mill";
+//
+//	toolpath_BackRough toolpath;
+//	toolpath.parameters.insert(std::make_pair("safe_z",30));
+//	toolpath.parameters.insert(std::make_pair("minimum_z", 0));
+//	toolpath.parameters.insert(std::make_pair("margin_z", 2));
+//	toolpath.parameters.insert(std::make_pair("step_x", 1.5));
+//	toolpath.parameters.insert(std::make_pair("step_y", 3));
+//	toolpath.parameters.insert(std::make_pair("mesh_nx", 350));
+//	toolpath.parameters.insert(std::make_pair("mesh_ny", 200));
+//
+//	toolpath.parameters.insert(std::make_pair("spindle_speed", 24000));
+//	toolpath.parameters.insert(std::make_pair("z_feedrate", 500));
+//	toolpath.parameters.insert(std::make_pair("max_feedrate", 6000));
+//	toolpath.parameters.insert(std::make_pair("xy_feedrate", 1000));
+//
+//	toolpath.tool = &tool;
+//	toolpath.gcode_filepath = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\Toolpath6_BackRough.txt";
+//	toolpath.violin = &violin;
+//
+//	toolpath.calculate();
+//	toolpath.save_gcode();
+//
+//	return true;
+//}
+//

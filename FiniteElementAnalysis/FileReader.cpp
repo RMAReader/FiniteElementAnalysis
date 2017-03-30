@@ -273,28 +273,75 @@ bool IO::LoadModelJava(const char* filepath, std::vector<geometry::bspline::curv
 
 
 
+//
+//void IO::SaveModelXML(const char* filepath, violin_model* violin, bool verbose){
+//	
+//	TiXmlDocument doc;
+//	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
+//	doc.LinkEndChild(decl);
+//
+//	TiXmlElement* violin_element = new TiXmlElement("Violin");
+//	doc.LinkEndChild(violin_element);
+//
+//	violin_element->SetAttribute("name", violin->name);
+//	TiXmlElement* description = new TiXmlElement("Description");
+//	TiXmlText* text = new TiXmlText(violin->description);
+//	description->LinkEndChild(text);
+//	violin_element->LinkEndChild(description);
+//
+//	std::string name = "violin_ribs";
+//	TiXmlElement* ribs = IO::NewXmlElement(&(violin->ribs), name);
+//	violin_element->LinkEndChild(ribs);
+//
+//	doc.SaveFile(filepath);
+//
+//}
 
-void IO::SaveModelXML(const char* filepath, violin_model* violin, bool verbose){
-	
+
+void IO::SaveModelXML(const char* filepath, app_model* model, bool verbose){
+
 	TiXmlDocument doc;
 	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
 	doc.LinkEndChild(decl);
 
-	TiXmlElement* violin_element = new TiXmlElement("Violin");
-	doc.LinkEndChild(violin_element);
+	TiXmlElement* violin = NewXmlElement(*(model->violin));
+	doc.LinkEndChild(violin);
 
-	violin_element->SetAttribute("name", violin->name);
-	TiXmlElement* description = new TiXmlElement("Description");
-	TiXmlText* text = new TiXmlText(violin->description);
-	description->LinkEndChild(text);
-	violin_element->LinkEndChild(description);
-
-	std::string name = "violin_ribs";
-	TiXmlElement* ribs = IO::NewXmlElement(&(violin->ribs), name);
-	violin_element->LinkEndChild(ribs);
+	for each(auto item in model->paths)
+	{
+		TiXmlElement* path = IO::NewXmlElement(*(item.second));
+		violin->LinkEndChild(path);
+	}
 
 	doc.SaveFile(filepath);
 
+}
+
+
+TiXmlElement* IO::NewXmlElement(violin_model& model){
+	
+	TiXmlElement* violin = new TiXmlElement("Violin_model");
+
+	violin->SetAttribute("name", model.name);
+
+	TiXmlElement* description = new TiXmlElement("Description");
+	TiXmlText* text = new TiXmlText(model.description);
+	description->LinkEndChild(text);
+	violin->LinkEndChild(description);
+
+	std::string name = "violin_ribs";
+	TiXmlElement* ribs = IO::NewXmlElement(&(model.ribs), name);
+	violin->LinkEndChild(ribs);
+
+	name = "violin_belly";
+	TiXmlElement* belly = IO::NewXmlElement(model.belly, name);
+	violin->LinkEndChild(belly);
+
+	name = "violin_back";
+	TiXmlElement* back = IO::NewXmlElement(model.back, name);
+	violin->LinkEndChild(back);
+
+	return violin;
 }
 
 
@@ -302,6 +349,8 @@ std::string IO::ToString(double d)
 {
 	std::ostringstream s; s << d; return s.str();
 }
+
+
 
 TiXmlElement* IO::NewXmlElement(float x, std::string name){
 	TiXmlElement* result = new TiXmlElement("float");
@@ -315,30 +364,27 @@ TiXmlElement* IO::NewXmlElement(float x, std::string name){
 TiXmlElement* IO::NewXmlElement(geoVEC2F& point)
 {
 	TiXmlElement* result = new TiXmlElement("vector2f");
-	result->SetDoubleAttribute("0", point[0]);
-	result->SetDoubleAttribute("1", point[1]);
+	result->SetDoubleAttribute("x", point[0]);
+	result->SetDoubleAttribute("y", point[1]);
 	return result;
 }
 
-
+TiXmlElement* IO::NewXmlElement(geoVEC3F& point)
+{
+	TiXmlElement* result = new TiXmlElement("vector3f");
+	result->SetDoubleAttribute("x", point[0]);
+	result->SetDoubleAttribute("y", point[1]);
+	result->SetDoubleAttribute("z", point[2]);
+	return result;
+}
 
 TiXmlElement* IO::NewXmlElement(geoCURVE2F& curve, std::string name)
 {
 	TiXmlElement* result = new TiXmlElement("curve2f");
 	result->SetAttribute("name", name);
 
-	TiXmlElement* order = new TiXmlElement("order");
-	order->SetAttribute("value", ToString(curve._p));
-	result->LinkEndChild(order);
-
-	TiXmlElement* knot = new TiXmlElement("knot");
+	TiXmlElement* knot = NewXmlElement(curve._knot, "knot");
 	result->LinkEndChild(knot);
-	for (int i = 0; i < curve._knot.size(); i++)
-	{
-		TiXmlElement* value = new TiXmlElement("double");
-		value->SetDoubleAttribute("value", curve._knot[i]);
-		knot->LinkEndChild(value);
-	}
 
 	TiXmlElement* points = new TiXmlElement("points");
 	result->LinkEndChild(points);
@@ -349,6 +395,100 @@ TiXmlElement* IO::NewXmlElement(geoCURVE2F& curve, std::string name)
 	}
 	return result;
 }
+
+TiXmlElement* IO::NewXmlElement(geoCURVE3F& curve, std::string name)
+{
+	TiXmlElement* result = new TiXmlElement("curve3f");
+	result->SetAttribute("name", name);
+
+	TiXmlElement* order = new TiXmlElement("order");
+	order->SetAttribute("value", ToString(curve._p));
+	result->LinkEndChild(order);
+
+	TiXmlElement* knot = NewXmlElement(curve._knot,"knot");
+	result->LinkEndChild(knot);
+
+	TiXmlElement* points = new TiXmlElement("points");
+	result->LinkEndChild(points);
+	for (int i = 0; i < curve._points.size(); i++)
+	{
+		TiXmlElement* value = NewXmlElement(curve._points[i]);
+		points->LinkEndChild(value);
+	}
+	return result;
+}
+
+
+TiXmlElement* IO::NewXmlElement(geoKNOT& knot, std::string name)
+{
+	TiXmlElement* result = new TiXmlElement("knot");
+	result->SetAttribute("name", name);
+
+	TiXmlElement* order = new TiXmlElement("order");
+	order->SetAttribute("value", ToString(knot.p));
+	result->LinkEndChild(order);
+
+	TiXmlElement* data = new TiXmlElement("data");
+	result->LinkEndChild(data);
+	for (int i = 0; i < knot._data.size(); i++)
+	{
+		TiXmlElement* value = new TiXmlElement("double");
+		value->SetDoubleAttribute("value", knot._data[i]);
+		data->LinkEndChild(value);
+	}
+	return result;
+}
+
+
+TiXmlElement* IO::NewXmlElement(geoLATTICE3F& lattice, std::string name)
+{
+	TiXmlElement* result = new TiXmlElement("lattice3f");
+	
+	TiXmlElement* rows = new TiXmlElement("rows");
+	rows->SetAttribute("value", lattice.rows);
+	result->LinkEndChild(rows);
+
+	TiXmlElement* cols = new TiXmlElement("cols");
+	cols->SetAttribute("value", lattice.cols);
+	result->LinkEndChild(cols);
+
+	TiXmlElement* points = new TiXmlElement("points");
+	result->LinkEndChild(points);
+	for (int i = 0; i < lattice.data.size(); i++)
+	{
+		TiXmlElement* value = NewXmlElement(lattice.data[i]);
+		points->LinkEndChild(value);
+	}
+	return result;
+}
+
+
+
+TiXmlElement* IO::NewXmlElement(geoSURFACE3F& surface, std::string name)
+{
+	TiXmlElement* result = new TiXmlElement("surface3f");
+	result->SetAttribute("name", name);
+
+	//TiXmlElement* p = new TiXmlElement("p");
+	//p->SetAttribute("value", ToString(surface._p));
+	//result->LinkEndChild(p);
+
+	//TiXmlElement* q = new TiXmlElement("q");
+	//q->SetAttribute("value", ToString(surface._q));
+	//result->LinkEndChild(q);
+
+	TiXmlElement* knotx = NewXmlElement(surface._knotx, "knotx");
+	result->LinkEndChild(knotx);
+
+	TiXmlElement* knoty = NewXmlElement(surface._knoty, "knoty");
+	result->LinkEndChild(knoty);
+
+	TiXmlElement* points = NewXmlElement(surface._points,"");
+	result->LinkEndChild(points);
+
+	return result;
+}
+
 
 
 TiXmlElement* IO::NewXmlElement(violin_ribs* ribs, std::string name)
@@ -364,7 +504,22 @@ TiXmlElement* IO::NewXmlElement(violin_ribs* ribs, std::string name)
 	return result;
 }
 
-
+TiXmlElement* IO::NewXmlElement(violin_component& component, std::string name)
+{
+	TiXmlElement* result = new TiXmlElement(name);
+	for (auto it = component.curves.begin(); it != component.curves.end(); ++it){
+		TiXmlElement* e = NewXmlElement(it->second, it->first);
+		result->LinkEndChild(e);
+	}
+	for (auto it = component.surfaces.begin(); it != component.surfaces.end(); ++it){
+		TiXmlElement* e = NewXmlElement(it->second, it->first);
+		result->LinkEndChild(e);
+	}
+	for (auto it = component.floats.begin(); it != component.floats.end(); ++it){
+		result->LinkEndChild(NewXmlElement(it->second, it->first));
+	}
+	return result;
+}
 
 
 app_model* IO::LoadModelXML(const char* filepath,  bool verbose)
@@ -429,6 +584,14 @@ violin_model* IO::NewViolin(TiXmlElement* doc, bool verbose)
 		{
 			violin->ribs = *NewRibs(*e, verbose);
 		}
+		else if (type == "violin_back")
+		{
+			violin->back = NewComponent(*e, verbose);
+		}
+		else if (type == "violin_belly")
+		{
+			violin->belly = NewComponent(*e, verbose);
+		}
 		else if (type == "description"){
 			violin->description = e->GetText();
 		}
@@ -460,6 +623,36 @@ violin_ribs* IO::NewRibs(TiXmlElement& root,  bool verbose)
 		}
 	}
 	return ribs;
+}
+
+
+violin_component IO::NewComponent(TiXmlElement& root, bool verbose)
+{
+	violin_component component;
+
+	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	{
+		std::string type = e->Value();
+		if (type == "curve3f")
+		{
+			std::string name = e->Attribute("name");
+			component.curves.insert(std::make_pair(name, NewCurve3f(*e)));
+		}
+		if (type == "surface3f")
+		{
+			std::string name = e->Attribute("name");
+			component.surfaces.insert(std::make_pair(name, NewSurface3f(*e)));
+		}
+		else if (type == "float"){
+
+			std::string name = e->Attribute("name");
+			double d;
+			bool invalid = e->QueryValueAttribute("value", &d);
+
+			component.floats.insert(std::make_pair(name, d));
+		}
+	}
+	return component;
 }
 
 
@@ -533,10 +726,41 @@ geoVEC2F IO::NewPoint2f(TiXmlElement& e)
 	e.QueryValueAttribute("y", &(point[1]));
 	return point;
 }
+geoVEC3F IO::NewPoint3f(TiXmlElement& e)
+{
+	geoVEC3F point;
+	e.QueryValueAttribute("x", &(point[0]));
+	e.QueryValueAttribute("y", &(point[1]));
+	e.QueryValueAttribute("z", &(point[2]));
+	return point;
+}
 geoCURVE2F IO::NewCurve2f(TiXmlElement& root)
 {
-	geometry::bspline::knot<double> knot;
-	std::vector<geometry::vector<float,2>> points;
+	geoCURVE2F curve;
+	std::string name;
+
+	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	{
+		name = e->Value();
+		if (name == "knot")
+		{
+			curve._knot = NewKnot(*e);
+			curve._p = curve._knot.p;
+		}
+		else if (name == "points")
+		{
+			for (TiXmlElement* ke = e->FirstChildElement(); ke != NULL; ke = ke->NextSiblingElement())
+			{
+				curve._points.push_back(NewPoint2f(*ke));
+			}
+		}
+	}
+	return curve;
+}
+
+geoKNOT IO::NewKnot(TiXmlElement& root)
+{
+	geoKNOT knot;
 	std::string name;
 
 	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
@@ -546,7 +770,7 @@ geoCURVE2F IO::NewCurve2f(TiXmlElement& root)
 		{
 			bool valid = e->QueryValueAttribute("value", &(knot.p));
 		}
-		else if (name == "knot")
+		else if (name == "data")
 		{
 			for (TiXmlElement* ke = e->FirstChildElement(); ke != NULL; ke = ke->NextSiblingElement())
 			{
@@ -555,17 +779,110 @@ geoCURVE2F IO::NewCurve2f(TiXmlElement& root)
 				bool valid = ke->QueryValueAttribute("value", &d);
 				knot._data.push_back(d);
 			}
-			knot.normalise();
+		}
+	}
+	return knot;
+}
+
+geoCURVE3F IO::NewCurve3f(TiXmlElement& root)
+{
+	geoCURVE3F curve;
+	std::string name;
+
+	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	{
+		name = e->Value();
+		if (name == "knot")
+		{
+			curve._knot = NewKnot(*e);
+			curve._p = curve._knot.p;
 		}
 		else if (name == "points")
 		{
 			for (TiXmlElement* ke = e->FirstChildElement(); ke != NULL; ke = ke->NextSiblingElement())
 			{
-				points.push_back(NewPoint2f(*ke));
+				curve._points.push_back(NewPoint3f(*ke));
 			}
 		}
 	}
-	return geoCURVE2F(knot.p, knot, points);
+	return curve;
+}
+
+geoLATTICE3F IO::NewLattice3f(TiXmlElement& root){
+	std::string name;
+	geoLATTICE3F result;
+
+	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	{
+		name = e->Value();
+		if (name == "rows")
+		{
+			bool valid = e->QueryValueAttribute("value", &(result.rows));
+		}
+		else if (name == "cols")
+		{
+			bool valid = e->QueryValueAttribute("value", &(result.cols));
+		}
+		else if (name == "points")
+		{
+			for (TiXmlElement* ke = e->FirstChildElement(); ke != NULL; ke = ke->NextSiblingElement())
+			{
+				result.data.push_back(NewPoint3f(*ke));
+			}
+		}
+	}
+	return result;
+}
+
+geoSURFACE3F IO::NewSurface3f(TiXmlElement& root)
+{
+	geoSURFACE3F surface;
+	std::string name;
+	std::string type;
+
+	for (TiXmlElement* e = root.FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	{
+		type = e->Value();
+		if (type == "knot")
+		{
+			name = e->Attribute("name");
+			if (name == "knotx")
+			{
+				surface._knotx = NewKnot(*e);
+				surface._p = surface._knotx.p;
+			}
+			else if (name == "knoty")
+			{
+				surface._knoty = NewKnot(*e);
+				surface._q = surface._knoty.p;
+			}
+		}
+		else if (type == "lattice3f")
+		{
+			surface._points = NewLattice3f(*e);
+		}
+	}
+	return surface;
+}
+
+
+
+
+
+TiXmlElement* IO::NewXmlElement(cnc_tool& tool)
+{
+	TiXmlElement* result = new TiXmlElement("tool");
+	result->SetAttribute("name", tool.name);
+		
+	std::string diameter = "diameter";
+	TiXmlElement* d = NewXmlElement(tool.diameter, diameter);
+	result->LinkEndChild(d);
+	
+	TiXmlElement* t = new TiXmlElement("string");
+	t->SetAttribute("type", tool.type);
+	result->LinkEndChild(t);
+
+	return result;
 }
 
 
@@ -593,6 +910,29 @@ cnc_tool* IO::NewCNCTool(TiXmlElement& e, bool verbose){
 		}
 	}
 	return tool;
+}
+
+
+
+TiXmlElement* IO::NewXmlElement(toolpath_base& toolpath)
+{
+	TiXmlElement* result = new TiXmlElement("toolpath");
+	result->SetAttribute("type", toolpath.path_name);
+
+	TiXmlElement* gcodefile = new TiXmlElement("string");
+	gcodefile->SetAttribute("name", "gcodefile");
+	gcodefile->SetAttribute("value", toolpath.gcode_filepath);
+	result->LinkEndChild(gcodefile);
+
+	TiXmlElement* tool = NewXmlElement(*(toolpath.tool));
+	result->LinkEndChild(tool);
+
+	for each(auto item in toolpath.parameters)
+	{
+		TiXmlElement* param = NewXmlElement(item.second, item.first);
+		result->LinkEndChild(param);
+	}
+	return result;
 }
 
 

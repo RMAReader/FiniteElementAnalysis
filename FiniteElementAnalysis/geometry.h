@@ -13,6 +13,7 @@
 #include "geometry_bspline_surface.h"
 #include "geometry_circle.h"
 
+#define geoKNOT geometry::bspline::knot<double>
 #define geoCURVE2F geometry::bspline::curve<geometry::vector<float, 2>, double>
 #define geoCURVE3F geometry::bspline::curve<geometry::vector<float, 3>, double>
 #define geoVEC2F geometry::vector<float, 2>
@@ -22,6 +23,7 @@
 #define geoSURFACE3F geometry::bspline::surface<geometry::vector<float, 3>, double, double>
 #define geoLATTICE3F geometry::lattice<geometry::vector<float,3>>
 #define geoCIRCLE2F geometry::circle<float,2>
+
 namespace geometry
 {
 
