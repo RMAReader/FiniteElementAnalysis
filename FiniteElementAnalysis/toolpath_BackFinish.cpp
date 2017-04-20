@@ -1,6 +1,6 @@
 #include "toolpath_base.h"
 
-void toolpath_BackRough::calculate()
+void toolpath_BackFinish::calculate()
 {
 
 	if (violin == nullptr) { return; }
@@ -20,5 +20,7 @@ void toolpath_BackRough::calculate()
 
 	points.push_back(geoVEC3F(std::array < float, 3 > {{0, 0, safe_z}}));
 
-	rough_surface_grid(&points, tool->diameter, step_x, step_y, minimum_z, safe_z, margin_z, mesh);
+	finish_surface_point_cloud(&points, tool->diameter, step_x, step_y, minimum_z, mesh);
+
+	finish_surface_scanning_stl(&points, tool->diameter, step_x, step_y, minimum_z, mesh);
 }

@@ -41,6 +41,7 @@ bool TestToolPath3(bool verbose);
 bool TestToolPath4(bool verbose);
 bool TestToolPath5(bool verbose);
 bool TestToolPath6(bool verbose);
+bool TestToolPath7(bool verbose);
 bool TestTriangle(bool verbose);
 
 bool AreEqual(double p, double q, double error){
@@ -198,6 +199,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else{
 		std::cout << "TestToolPath6 failed" << endl; TestsFailed++;
+	}
+	if (TestToolPath7(verbose))
+	{
+		std::cout << "TestToolPath7 passed" << endl; TestsPassed++;
+	}
+	else{
+		std::cout << "TestToolPath7 failed" << endl; TestsFailed++;
 	}
 
 	std::cout << endl;
@@ -1626,6 +1634,22 @@ bool TestToolPath6(bool verbose){
 	if (model->violin == nullptr){ return false; }
 
 	toolpath_base* toolpath = model->paths["toolpath_BackRough"];
+	toolpath->calculate();
+	toolpath->save_gcode();
+
+	return true;
+}
+
+
+bool TestToolPath7(bool verbose){
+
+	char filepath[] = "C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Perlman Strad Violin Model.xml";
+
+	app_model* model = IO::LoadModelXML(filepath, verbose);
+	if (model == nullptr){ return false; }
+	if (model->violin == nullptr){ return false; }
+
+	toolpath_base* toolpath = model->paths["toolpath_BackFinish"];
 	toolpath->calculate();
 	toolpath->save_gcode();
 

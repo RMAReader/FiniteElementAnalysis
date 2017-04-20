@@ -107,6 +107,7 @@ namespace geometry
 		}
 	}
 
+	//returns true if point lies on or within circle
 	template <class T>
 	static bool interior_circle_point(vector<T, 2>& c, T r, vector<T, 2> p1){
 		p1 -= c;
@@ -150,7 +151,7 @@ namespace geometry
 
 	//returns true if circle and triangle overlap
 	template <class T>
-	static bool interior_triangle(vector<T, 2>& c, float r, vector<T, 2>& p1, vector<T, 2>& p2, vector<T, 2>& p3){
+	static bool interior_triangle(vector<T, 2>& c, T r, vector<T, 2>& p1, vector<T, 2>& p2, vector<T, 2>& p3){
 
 		//1. check if any triangle vertices are inside cirlce (cheap)
 		if (interior_circle_point(c, r, p1) == true){ return true; }
@@ -163,6 +164,172 @@ namespace geometry
 		if (interior_triangle_edge(c, r, p2, p3, p1) == false){ return false; }
 
 		return true;
+	}
+
+	template <class T>
+	static T min_height_sphere_on_point(T x, T y, T r, vector<T, 3>& p)
+	{
+		vector<T, 2> c2; c2[0] = x; c2[1] = y;
+		vector<T, 2> p2; p2 << p;
+
+		T distance = (p2 - c2).L2norm();
+		
+		if (distance <= r)
+		{
+			return p[2] - r + sqrt(r * r - distance * distance);
+		}
+		else
+		{
+			return DBL_MIN;
+		}
+	}
+
+	template <class T>
+	static T min_height_sphere_on_line(T x, T y, T r, vector<T, 3>& p1, vector<T, 3>& p2)
+	{
+		return DBL_MIN;
+	}
+
+	template <class T>
+	static T min_height_sphere_on_triangle(T x, T y, T r, vector<T, 3>& p1, vector<T, 3>& p2, vector<T, 3>& p3)
+	{
+		
+		//1. tool tip touches triangle surface
+		vector<T, 3> q1;
+		vector<T, 3> q2 = p2 - p1;
+		vector<T, 3> q3 = p3 - p1;
+
+		vector<T, 3> n = geometry::cross_product(q2, q3);
+
+		T det = n[2];
+
+		n.normalise();
+
+		q1[0] = x - n[0] - p1[0];
+		q1[1] = y - n[1] - p1[1];
+
+		T alpha = (q3[1] * q1[0] - q3[0] * q1[1]) / det;
+		T beta = (-q2[1] * q1[0] + q2[0] * q1[1]) / det;
+
+		if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
+		{
+			return p1[2] + (r - n[0] * (x - p1[0]) - n1[0] * (y - p1[1])) / n[2];
+		}
+
+		//2. tool tip touches triangle edge
+		T d,r2;
+		r2 = r * r;
+		
+		q1[0] = x - p1[0];
+		q1[1] = y - p1[1];
+		q2 = (p2 - p1);
+		det = q2.L2norm();
+		q2 /= det;
+		d = q2[2] * q2[2] - 4 * (q1[0]*q1[0] + q1[1]*q1[1] - q1[0]*q2[0] - q1[1]*q2[1] - r2);
+		if (d >= 0)
+		{
+			q1[2] = (q2[2] + sqrtf(d)) / 2;
+			alpha = (q1[0] * q2[0] + q1[1] * q2[1] + q1[2] * q2[2]) / det;
+			if (0 <= alpha && alpha <= 1){
+				return p1[2] + q1[2];
+			}
+		}
+
+		q1[0] = x - p2[0];
+		q1[1] = y - p2[1];
+		q2 = (p3 - p2);
+		det = q2.L2norm();
+		q2 /= det;
+		d = q2[2] * q2[2] - 4 * (q1[0] * q1[0] + q1[1] * q1[1] - q1[0] * q2[0] - q1[1] * q2[1] - r2);
+		if (d >= 0)
+		{
+			q1[2] = (q2[2] + sqrtf(d)) / 2;
+			alpha = (q1[0] * q2[0] + q1[1] * q2[1] + q1[2] * q2[2]) / det;
+			if (0 <= alpha && alpha <= 1){
+				return p2[2] + q1[2];
+			}
+		}
+
+		q1[0] = x - p3[0];
+		q1[1] = y - p3[1];
+		q2 = (p1 - p3);
+		det = q2.L2norm();
+		q2 /= det;
+		d = q2[2] * q2[2] - 4 * (q1[0] * q1[0] + q1[1] * q1[1] - q1[0] * q2[0] - q1[1] * q2[1] - r2);
+		if (d >= 0)
+		{
+			q1[2] = (q2[2] + sqrtf(d)) / 2;
+			alpha = (q1[0] * q2[0] + q1[1] * q2[1] + q1[2] * q2[2]) / det;
+			if (0 <= alpha && alpha <= 1){
+				return p3[2] + q1[2];
+			}
+		}
+
+
+		//3. tool tip touches triangle vertex
+		T  x2, y2;
+		
+		x2 = x - p1[0]; x2 *= x2;
+		y2 = y - p1[1]; y2 *= y2;
+		d = r2 - x2 - y2;
+		if (d >= 0)
+		{
+			return p1[2] + sqrtf(d);
+		}
+		x2 = x - p2[0]; x2 *= x2;
+		y2 = y - p2[1]; y2 *= y2;
+		d = r2 - x2 - y2;
+		if (d >= 0)
+		{
+			return p2[2] + sqrtf(d);
+		}
+		x2 = x - p3[0]; x2 *= x2;
+		y2 = y - p3[1]; y2 *= y2;
+		d = r2 - x2 - y2;
+		if (d >= 0)
+		{
+			return p3[2] + sqrtf(d);
+		}
+		return DBL_MIN;
+	}
+
+	template <class T>
+	static std::vector<vector<T, 3>> intersection_triangle_plane_xz(T y, vector<T, 3>& p1, vector<T, 3>& p2, vector<T, 3>& p3)
+	{
+		std::vector<vector<T, 3>> segment(2);
+		vector<T, 3> intersect;
+
+		if (intersection_line_plane_xz(y, p1, p2, intersect))
+		{
+			segment.push_back(intersect);
+		}
+		if (intersection_line_plane_xz(y, p2, p3, intersect))
+		{
+			segment.push_back(intersect);
+		}
+		if (intersection_line_plane_xz(y, p3, p1, intersect))
+		{
+			segment.push_back(intersect);
+		}
+		return segment;
+	}
+
+	template <class T>
+	static bool intersection_line_plane_xz(T y, vector<T, 3>& p1, vector<T, 3>& p2, vector<T, 3>& intersect)
+	{
+		if (p1[1] <= y && p2[1] > y)
+		{
+			T s = (y - p1[1]) / (p2[1] - p1[1]);
+			intersect = s * p1 + (1 - s) * p2;
+			return true;
+		}
+		else if (p2[1] <= y && p1[1] > y)
+		{
+			T s = (p1[1] - y) / (p1[1] - p2[1]);
+			intersect = s * p1 + (1 - s) * p2;
+			return true;
+		}
+		return false;
 	}
 
 

@@ -55,7 +55,8 @@ public:
 	void trim_corner_block(geoCURVE2F& c_bout, geoCURVE2F& bout, geoCURVE2F& block, float block_top_z, float block_bottom_z, float step_z, float resolution);
 	void trim_end_block(geoCURVE2F& rib, geoCURVE2F& centre_line, geoCURVE2F& block, float block_top_z, float block_bottom_z, float step_z, float resolution);
 
-	void rough_surface_scanning_stl(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f&);
+	void finish_surface_point_cloud(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f& mesh);
+	void finish_surface_scanning_stl(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f&);
 	void rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, geometry::mesh3f&);
 };
 
@@ -87,6 +88,12 @@ public:
 
 
 class toolpath_BackRough : public toolpath_base
+{
+public:
+	void calculate();
+};
+
+class toolpath_BackFinish : public toolpath_base
 {
 public:
 	void calculate();

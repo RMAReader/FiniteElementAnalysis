@@ -591,4 +591,22 @@
 	<float name="mesh_nx" value="350" />
 	<float name="mesh_ny" value="200" />
 </toolpath>
+<toolpath type="toolpath_BackFinish">
+	<string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath7_BackFinish.txt" />
+	<tool name="6.35mm Ball Nose">
+		<float name="diameter" value="6.35" />
+		<string type="BallNose" />
+	</tool>
+	<float name="max_feedrate" value="6000" />
+	<float name="z_feedrate" value="500" />
+	<float name="xy_feedrate" value="1000" />
+	<float name="spindle_speed" value="22000" />
+	<float name="safe_z" value="30" />
+	<float name="minimum_z" value="0" />
+	<float name="margin_z" value="0" />
+	<float name="step_x" value="0.5" />
+	<float name="step_y" value="1.0" />
+	<float name="mesh_nx" value="350" />
+	<float name="mesh_ny" value="200" />
+</toolpath>
 

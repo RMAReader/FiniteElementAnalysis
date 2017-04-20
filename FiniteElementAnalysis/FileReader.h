@@ -65,6 +65,7 @@ private:
 	static toolpath_TrimBlocksCentreBout* IO::NewToolPath_TrimBlocksCentreBout(TiXmlElement&, bool);
 	static toolpath_TrimBlocksEndBouts* IO::NewToolPath_TrimBlocksEndBouts(TiXmlElement&, bool);
 	static toolpath_BackRough* IO::NewToolPath_BackRough(TiXmlElement& , bool);
+	static toolpath_BackFinish* IO::NewToolPath_BackFinish(TiXmlElement& , bool);
 };
 
 

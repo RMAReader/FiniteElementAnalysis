@@ -192,6 +192,20 @@ namespace geometry
 		out += b;
 		return out;
 	}
+	template <class T, int N>
+	static vector<T, N> operator+(T a, vector<T, N>& b)
+	{
+		vector<T, N> out = b;
+		out += a;
+		return out;
+	}
+	template <class T, int N>
+	static vector<T, N> operator+(vector<T, N>& a, T b)
+	{
+		vector<T, N> out = a;
+		out += b;
+		return out;
+	}
 
 	template <class T, int N>
 	static vector<T, N> operator-(vector<T, N>& a, vector<T, N>& b)
@@ -206,6 +220,20 @@ namespace geometry
 	{
 		vector<T, N> out = a;
 		out *= b;
+		return out;
+	}
+	template <class T, int N>
+	static vector<T, N> operator*(vector<T, N>& a, T b)
+	{
+		vector<T, N> out = a;
+		out *= b;
+		return out;
+	}
+	template <class T, int N>
+	static vector<T, N> operator*(T a, vector<T, N>& b)
+	{
+		vector<T, N> out = b;
+		out *= a;
 		return out;
 	}
 
