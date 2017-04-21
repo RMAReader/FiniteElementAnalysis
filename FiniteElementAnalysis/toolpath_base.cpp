@@ -582,12 +582,12 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 							z = fmaxf(z, geometry::min_height_sphere_on_point(x, y, r, q3));
 
 							//find heights at which tool tip touches edges of triangle.  If no touches, DBL_MIN is returned
-							z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q1, q2));
-							z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q2, q3));
-							z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q3, q1));
+							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q1, q2));
+							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q2, q3));
+							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q3, q1));
 
-							//find height at which tool tip touches triangle
-							z = fmaxf(z, geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3));
+							////find height at which tool tip touches triangle
+							//z = fmaxf(z, geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3));
 						}
 
 					}
@@ -639,7 +639,7 @@ void toolpath_base::finish_surface_point_cloud(std::vector<geoVEC3F>* path, floa
 		}
 
 	}
-	std::sort(dense_points.begin(), dense_points.begin(), [](geoVEC3F const& a, geoVEC3F const& b){return a[1]<b[1]; });
+	//std::sort(dense_points.begin(), dense_points.begin(), [](geoVEC3F const& a, geoVEC3F const& b){return a[1]<b[1]; });
 
 
 }

@@ -18,6 +18,7 @@
 #include "violin_model.h"
 #include "toolpath_base.h"
 #include "geometry.h"
+#include "test_base.h"
 
 //void TestHarwellBoeing();
 bool TestDeBoor(bool verbose);
@@ -60,6 +61,22 @@ int _tmain(int argc, _TCHAR* argv[])
 	int TestsPassed = 0;
 	int TestsFailed = 0;
 	bool verbose = false;
+
+
+	std::vector<test_base*> tests;
+	tests.push_back(new test_geometry());
+
+	for each(auto test in tests)
+	{
+		test->run();
+		if (test->errors.size() == 0)
+		{
+			std::cout << test->name << " passed" << endl; TestsPassed++;
+		}
+		else{
+			std::cout << test->name << " failed" << endl; TestsFailed++;
+		}
+	}
 
 
 	if (TestDeBoor(verbose))

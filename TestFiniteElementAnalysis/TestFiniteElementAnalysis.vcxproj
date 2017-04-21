@@ -159,10 +159,13 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="test_base.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestFiniteElementAnalysis.cpp" />
+    <ClCompile Include="test_base.cpp" />
+    <ClCompile Include="test_geometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiniteElementAnalysis\FiniteElementAnalysis.vcxproj">
