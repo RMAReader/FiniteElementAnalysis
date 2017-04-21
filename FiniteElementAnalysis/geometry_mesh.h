@@ -41,26 +41,30 @@ namespace geometry
 	{
 		vector<T, 3> t;
 		vector<T, 3> p1;
-		T u1;
+		T u1,u3;
 		T a;
 	public:
 		void initialise(vector<T, 3>& v1, vector<T, 3>& v2)
 		{
 			p1 = v1;
 			t = v2 - v1;
+
 			u1 = (t[0] * t[0] + t[1] * t[1]) / t[2];
+
 			a = t[0] * t[0] + t[1] * t[1] + u1 * u1;
 		}
 
 		bool min_height_sphere(T x, T y, T r, T& h)
 		{
-			vector<T, 3> p = p1; p[0] -= x; p[1] -= y;
+			vector<T, 2> p;  
+			p[0] = p1[0] - x; 
+			p[1] = p1[1] - y;
 
 			T u2 = (p[0] * t[0] + p[1] * t[1]) / t[2];
 
 			T b = 2 * (p[0] * t[0] + p[1] * t[1] + u1 * u2);
 			T c = p[0] * p[0] + p[1] * p[1] + u2 * u2 - r * r;
-
+			
 			T d = b * b - 4 * a * c;
 			T alpha;
 			T h1 = 0;
