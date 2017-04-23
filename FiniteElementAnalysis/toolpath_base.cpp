@@ -476,6 +476,8 @@ void toolpath_base::trim_end_block(geoCURVE2F& rib, geoCURVE2F& centre_line, geo
 
 }
 
+
+
 /*
 This method calculates tool path over surface.  It takes passes parallel to x axis, with each pass incrementing y coordinate.
 
@@ -491,10 +493,6 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 	if (step_y > tool_diameter * 0.5) return;
 	
 	mesh.build_nodes(50, 50);
-
-
-
-
 
 	float min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
 	
@@ -566,28 +564,23 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 
 						if (geometry::interior_triangle(geoVEC2F(std::array < float, 2 > {{x, y}}), (float) 0.5 * tool_diameter, p1, p2, p3))
 						{
-							//z = fmaxf(z, mesh.get_vertex(e, 0)[2]);
-							//z = fmaxf(z, mesh.get_vertex(e, 1)[2]);
-							//z = fmaxf(z, mesh.get_vertex(e, 2)[2]);
-
 							geoVEC3F q1 = mesh.get_vertex(e, 0);
 							geoVEC3F q2 = mesh.get_vertex(e, 1);
 							geoVEC3F q3 = mesh.get_vertex(e, 2);
 
+							//z = fmaxf(z, q1[2]);
+							//z = fmaxf(z, q2[2]);
+							//z = fmaxf(z, q3[2]);
+
 							float r = (float) 0.5 * tool_diameter;
+							float h;
 
-							//find heights at which tool tip touches vertices of triangle.  If no touches, DBL_MIN is returned
-							z = fmaxf(z, geometry::min_height_sphere_on_point(x, y, r, q1));
-							z = fmaxf(z, geometry::min_height_sphere_on_point(x, y, r, q2));
-							z = fmaxf(z, geometry::min_height_sphere_on_point(x, y, r, q3));
-
-							//find heights at which tool tip touches edges of triangle.  If no touches, DBL_MIN is returned
-							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q1, q2));
-							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q2, q3));
-							//z = fmaxf(z, geometry::min_height_sphere_on_line(x, y, r, q3, q1));
-
-							////find height at which tool tip touches triangle
-							//z = fmaxf(z, geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3));
+							//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
+							if (geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3, h))
+							{
+								z = fmaxf(z, h);
+							}
+							
 						}
 
 					}
@@ -606,43 +599,6 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 }
 
 
-
-/*
-Method calculates finishing toolpath by tracing over mesh in x,y plane.  For each row, many points are calculated which lie on each 
-triangle in regin of tool tip.  The z coordinate is calculated to be the minimum z such that the tool is above all points.
-
-Enough points must be created so that the tool tip doesn't significanty dip into the surface if between points
-*/
-void toolpath_base::finish_surface_point_cloud(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f& mesh)
-{
-
-	int n = 20;
-	float u;
-	float v;
-
-	std::vector<geoVEC3F> dense_points;
-	for (int e = 0; e < mesh.elements.size(); e++)
-	{
-		geoVEC3F p1 = mesh.get_vertex(e, 0);
-		geoVEC3F p2 = mesh.get_vertex(e, 1);
-		geoVEC3F p3 = mesh.get_vertex(e, 2);
-		geoVEC3F new_p;
-		for (int i = 0; i <= n; i++)
-		{
-			u = (float)i / n;
-			for (int j = 0; j <= n - i; j++)
-			{
-				v = (double)j / n;
-				new_p = (1 - u - v) * p1 + u * p2 + v * p3;
-				dense_points.push_back(new_p);
-			}
-		}
-
-	}
-	//std::sort(dense_points.begin(), dense_points.begin(), [](geoVEC3F const& a, geoVEC3F const& b){return a[1]<b[1]; });
-
-
-}
 
 
 void toolpath_base::rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float margin_z, geometry::mesh3f& mesh)

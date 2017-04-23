@@ -1,4 +1,5 @@
 #include "toolpath_base.h"
+#include <chrono>
 
 void toolpath_BackFinish::calculate()
 {
@@ -20,7 +21,12 @@ void toolpath_BackFinish::calculate()
 
 	points.push_back(geoVEC3F(std::array < float, 3 > {{0, 0, safe_z}}));
 
-	finish_surface_point_cloud(&points, tool->diameter, step_x, step_y, minimum_z, mesh);
+	auto t1 = std::chrono::high_resolution_clock::now();
 
 	finish_surface_scanning_stl(&points, tool->diameter, step_x, step_y, minimum_z, mesh);
+	
+	auto t2 = std::chrono::high_resolution_clock::now();
+	std::cout << "finish_surface_scanning_stl() took "
+		<< std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count()
+		<< " seconds\n";
 }
