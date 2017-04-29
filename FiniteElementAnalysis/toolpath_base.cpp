@@ -495,52 +495,35 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 	mesh.build_nodes(50, 50);
 
 	float min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
-	
+	int min_col, max_col, min_row, max_row;
+
 	//1. find ranges of stl
+	min_x = mesh.node_x.front() - 0.5 * tool_diameter;
+	max_x = mesh.node_x.back() + 0.5 * tool_diameter;
+
 	min_y = mesh.node_y.front() - 0.5 * tool_diameter;
 	max_y = mesh.node_y.back() + 0.5 * tool_diameter;
 
-
 	//2. move over stl taking steps in y direction
+	int steps_x = (int)((max_x - min_x) / step_x + 1);
 	int steps_y = (int)((max_y - min_y) / step_y + 1);
 
 	float x, x_plus, x_minus, y, y_plus, y_minus, z;
 
-	std::vector<int> node_cols;
+	min_col = 0;
+	max_col = 0;
 
 	for (int j = 0; j <= steps_y; j++)
 	{
-		
-		//2.1 add all triangles that could overlap current y strip to strip vector
 		y = (1 - (float) j / steps_y) * min_y + (float)j / steps_y * max_y;
 		y_plus = y + 0.5 * tool_diameter;
 		y_minus = y - 0.5 * tool_diameter;
 
-		node_cols.clear();
+		while (min_col <mesh.node_y.size() - 2 && y_minus > mesh.node_y[min_col + 1]) min_col++;
+		while (max_col <mesh.node_y.size() - 2 && y_plus > mesh.node_y[max_col + 1]) max_col++;
 
-		for (int col = 0; col < mesh.node_y.size()-1; col++)
-		{
-			if (y_plus < mesh.node_y[col] || y_minus > mesh.node_y[col + 1]) continue;
-			
-			node_cols.push_back(col); 
-			min_x = FLT_MAX; 
-			max_x = FLT_MIN;
-			for (int row = 0; row < mesh.node_x.size() - 1; row++)
-			{
-				if (mesh.nodes.GetPoint(row, col).size() > 0){
-					min_x = fminf(min_x, mesh.node_x[row]);
-					max_x = fmaxf(max_x, mesh.node_x[row+1]);
-				}
-			}
-			
-		}
-		min_x -= 0.5 * tool_diameter;
-		max_x += 0.5 * tool_diameter;
-
-		//2.2 move over strip in x direction 
-		int steps_x = (int)((max_x - min_x) / step_x + 1);
-
-		geoVEC2F p1, p2, p3;
+		min_row = 0;
+		max_row = 0;
 
 		for (int i = 0; i < steps_x; i++)
 		{
@@ -548,15 +531,16 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 			x_plus = x + 0.5 * tool_diameter;
 			x_minus = x - 0.5 * tool_diameter;
 
+			while (min_row < mesh.node_x.size() - 2 && x_minus > mesh.node_x[min_row + 1]) min_row++;
+			while (max_row < mesh.node_x.size() - 2 && x_plus > mesh.node_x[max_row + 1]) max_row++;
+
 			z = minimum_z;
 
-			for (int row = 0; row < mesh.node_x.size() - 1; row++)
+			for (int row = min_row; row <= max_row; row++)
 			{
-				if (x_plus < mesh.node_x[row] || x_minus > mesh.node_x[row + 1]) continue;
-				
-				for (int col : node_cols)
+				for (int col = min_col; col <= max_col; col++)
 				{
-					for (int e : mesh.nodes.GetPoint(row, col))
+					for each(auto e in mesh.nodes.GetPoint(row, col))
 					{
 						geoVEC2F p1; p1 << mesh.get_vertex(e, 0);
 						geoVEC2F p2; p2 << mesh.get_vertex(e, 1);
@@ -568,19 +552,25 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 							geoVEC3F q2 = mesh.get_vertex(e, 1);
 							geoVEC3F q3 = mesh.get_vertex(e, 2);
 
-							//z = fmaxf(z, q1[2]);
-							//z = fmaxf(z, q2[2]);
-							//z = fmaxf(z, q3[2]);
+							float zz=0;
+							zz = fmaxf(zz, q1[2]);
+							zz = fmaxf(zz, q2[2]);
+							zz = fmaxf(zz, q3[2]);
+							zz += 0.5 * tool_diameter;
 
 							float r = (float) 0.5 * tool_diameter;
 							float h;
 
-							//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
+								//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
 							if (geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3, h))
 							{
+								if (h > zz)
+								{
+									bool error = true;
+								}
 								z = fmaxf(z, h);
 							}
-							
+
 						}
 
 					}
@@ -591,11 +581,7 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 				path->push_back(geoVEC3F(std::array < float, 3 > {{x, y, z}}));
 			}
 		}
-
-
 	}
-
-
 }
 
 

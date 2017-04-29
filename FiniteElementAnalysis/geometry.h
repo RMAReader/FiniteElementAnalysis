@@ -187,6 +187,62 @@ namespace geometry
 
 
 	template <class T>
+	static bool min_height_sphere_on_line(T x, T y, T r, vector<T, 3>& p1, vector<T, 3>& p2, T& h)
+	{
+		vector<T, 2> q;
+		q[0] = p1[0] - x;
+		q[1] = p1[1] - y;
+
+		vector<T, 3> t = p2 - p1;
+		T l = t[0] * t[0] + t[1] * t[1] + t[2] * t[2];
+
+		T m = -t[2] / l;
+		T n = -(q[0] * t[0] + q[1] * t[1]) / l;
+		
+		T ux = m * t[0];
+		T uy = m * t[1];
+		T uz = m * t[2] + 1;
+		
+		T vx = n * t[0] + q[0];
+		T vy = n * t[1] + q[1];
+		T vz = n * t[2];
+
+		T a = ux*ux + uy*uy + uz*uz;
+		T b = 2 * (ux*vx + uy*vy + uz*vz);
+		T c = vx*vx + vy*vy + vz*vz - r*r;
+
+		T d = b*b - 4 * a*c;
+		bool contact = false;
+		if (d >= 0)
+		{
+			d = sqrtf(d);
+			T z1 = (-b + d) / (2 * a);
+			T alpha1 = m * z1 + n;
+			z1 = p1[2] - z1;
+			T z2 = (-b - d) / (2 * a);
+			T alpha2 = m * z2 + n;
+			z2 = p1[2] - z2;
+
+			if (0 <= alpha1 && alpha1 <= 1){
+				h = z1;
+				contact = true;
+			}
+			if (0 <= alpha2 && alpha2 <= 1){
+				if (contact)
+				{
+					h = fmaxf(h,z2);
+				}
+				else{
+					h = z2;
+					contact = true;
+				}
+			}
+		}
+		return contact;
+	}
+
+
+	template <class T>
 	static bool min_height_sphere_on_triangle(T x, T y, T r, vector<T, 3>& p1, vector<T, 3>& p2, vector<T, 3>& p3, T& h)
 	{
 		
@@ -210,7 +266,8 @@ namespace geometry
 
 		if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
 		{
-			h= p1[2] + (r - n[0] * (x - p1[0]) - n[1] * (y - p1[1])) / n[2];
+			h = p1[2] + alpha * q2[2] + beta * q3[2] + r * n[2];
+			//h = p1[2] + (r - n[0] * (x - p1[0]) - n[1] * (y - p1[1])) / n[2];
 			return true;
 		}
 
@@ -218,23 +275,22 @@ namespace geometry
 		T z;
 		bool contact = false;
 
-		geometry::mesh_edge<float> e;
-		e.initialise(p1, p2);
-		if (e.min_height_sphere(x, y, r, z))
+		//geometry::mesh_edge<float> e;
+		//e.initialise(p1, p2);
+		if (min_height_sphere_on_line(x, y, r, p1,p2,z))
 		{
-			if (contact){ h = fmaxf(h, z); }
-			else{ h = z; }
+			h = z;
 			contact = true;
 		}
-		e.initialise(p2, p3);
-		if (e.min_height_sphere(x, y, r, z))
+		//e.initialise(p2, p3);
+		if (min_height_sphere_on_line(x, y, r,p2,p3, z))
 		{
 			if (contact){h = fmaxf(h, z);}
 			else{ h = z; }
 			contact = true;
 		}
-		e.initialise(p3, p1);
-		if (e.min_height_sphere(x, y, r, z))
+		//e.initialise(p3, p1);
+		if (min_height_sphere_on_line(x, y, r,p3,p1, z))
 		{
 			if (contact){ h = fmaxf(h, z); }
 			else{ h = z; }
