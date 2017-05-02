@@ -167,21 +167,19 @@ namespace geometry
 	}
 
 	template <class T>
-	static T min_height_sphere_on_point(T x, T y, T r, vector<T, 3>& p)
+	static bool min_height_sphere_on_point(T x, T y, T r, vector<T, 3>& p, T&h)
 	{
-		vector<T, 2> c2; c2[0] = x; c2[1] = y;
-		vector<T, 2> p2; p2 << p;
-
-		T distance = (p2 - c2).L2norm();
-		
-		if (distance <= r)
+		T d2 = r * r;
+		T a = p[0] - x; 
+		d2 -= a*a;
+		a = p[1] - y;
+		d2 -= a*a;
+		if (d2 >= 0)
 		{
-			return p[2] - r + sqrt(r * r - distance * distance);
+			h = p[2] + sqrt(d2) - r;
+			return true;
 		}
-		else
-		{
-			return DBL_MIN;
-		}
+		return false;
 	}
 
 
@@ -224,16 +222,16 @@ namespace geometry
 			z2 = p1[2] - z2;
 
 			if (0 <= alpha1 && alpha1 <= 1){
-				h = z1;
+				h = z1 - r;
 				contact = true;
 			}
 			if (0 <= alpha2 && alpha2 <= 1){
 				if (contact)
 				{
-					h = fmaxf(h,z2);
+					h = fmaxf(h,z2 - r);
 				}
 				else{
-					h = z2;
+					h = z2 - r;
 					contact = true;
 				}
 			}
@@ -266,66 +264,55 @@ namespace geometry
 
 		if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
 		{
-			h = p1[2] + alpha * q2[2] + beta * q3[2] + r * n[2];
-			//h = p1[2] + (r - n[0] * (x - p1[0]) - n[1] * (y - p1[1])) / n[2];
+			h = p1[2] + alpha * q2[2] + beta * q3[2] + r * (n[2] - 1);
 			return true;
 		}
 
-		//2. tool tip touches triangle edge
-		T z;
-		bool contact = false;
+		////2. tool tip touches triangle edge
+		//T z;
+		//bool contact = false;
 
-		//geometry::mesh_edge<float> e;
-		//e.initialise(p1, p2);
-		if (min_height_sphere_on_line(x, y, r, p1,p2,z))
-		{
-			h = z;
-			contact = true;
-		}
-		//e.initialise(p2, p3);
-		if (min_height_sphere_on_line(x, y, r,p2,p3, z))
-		{
-			if (contact){h = fmaxf(h, z);}
-			else{ h = z; }
-			contact = true;
-		}
-		//e.initialise(p3, p1);
-		if (min_height_sphere_on_line(x, y, r,p3,p1, z))
-		{
-			if (contact){ h = fmaxf(h, z); }
-			else{ h = z; }
-			contact = true;
-		}
-		if (contact)return true;
+		////geometry::mesh_edge<float> e;
+		////e.initialise(p1, p2);
+		//if (min_height_sphere_on_line(x, y, r, p1,p2,z))
+		//{
+		//	h = z;
+		//	contact = true;
+		//}
+		////e.initialise(p2, p3);
+		//if (min_height_sphere_on_line(x, y, r,p2,p3, z))
+		//{
+		//	if (contact){h = fmaxf(h, z);}
+		//	else{ h = z; }
+		//	contact = true;
+		//}
+		////e.initialise(p3, p1);
+		//if (min_height_sphere_on_line(x, y, r,p3,p1, z))
+		//{
+		//	if (contact){ h = fmaxf(h, z); }
+		//	else{ h = z; }
+		//	contact = true;
+		//}
+		//if (contact)return true;
 
-		//3. tool tip touches triangle vertex
-		T  x2, y2,d,r2;
-		r2 = r*r;
-
-		x2 = x - p1[0]; x2 *= x2;
-		y2 = y - p1[1]; y2 *= y2;
-		d = r2 - x2 - y2;
-		if (d >= 0)
-		{
-			h= p1[2] + sqrtf(d);
-			return true;
-		}
-		x2 = x - p2[0]; x2 *= x2;
-		y2 = y - p2[1]; y2 *= y2;
-		d = r2 - x2 - y2;
-		if (d >= 0)
-		{
-			h= p2[2] + sqrtf(d);
-			return true;
-		}
-		x2 = x - p3[0]; x2 *= x2;
-		y2 = y - p3[1]; y2 *= y2;
-		d = r2 - x2 - y2;
-		if (d >= 0)
-		{
-			h= p3[2] + sqrtf(d);
-			return true;
-		}
+		////3. tool tip touches triangle vertex
+		//if (min_height_sphere_on_point(x, y, r, p1, z))
+		//{
+		//	z = h;
+		//	return true;
+		//}
+		//if (min_height_sphere_on_point(x, y, r, p2, z))
+		//{
+		//	if (contact){ h = fmaxf(h, z); }
+		//	else{ h = z; }
+		//	contact = true;
+		//}
+		//if (min_height_sphere_on_point(x, y, r, p3, z))
+		//{
+		//	if (contact){ h = fmaxf(h, z); }
+		//	else{ h = z; }
+		//	contact = true;
+		//}
 		return false;
 	}
 

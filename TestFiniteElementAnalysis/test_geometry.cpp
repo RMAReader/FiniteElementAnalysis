@@ -1,29 +1,95 @@
 #include "test_base.h"
 #include "geometry.h"
 
-void test_geometry::run()
+void geometry_min_height_sphere_on_point::run()
 {
-	name = "test_geometry";
+	name = "geometry_min_height_sphere_on_point";
+	float tolerance = 0.000001;
+
+	geoVEC3F p1(std::array < float, 3 > {{0, 0, 0}});
+	
+	float r = 5;
+	float x, y, h;
+
+	y = -3;
+
+	x = 5;
+	AssertIsFalse(geometry::min_height_sphere_on_point(x, y, r, p1, h));
+
+	x = 4;
+	AssertIsTrue(geometry::min_height_sphere_on_point(x, y, r, p1, h));
+	AssertAreEqual(h, -5, tolerance);
+
+	x = 0;
+	AssertIsTrue(geometry::min_height_sphere_on_point(x, y, r, p1, h));
+	AssertAreEqual(h, -1, tolerance);
+}
+
+
+void geometry_min_height_sphere_on_line::run()
+{
+	name = "geometry_min_height_sphere_on_line";
+	float tolerance = 0.000001;
+
+	geoVEC3F p1(std::array < float, 3 > {{0, 0, 0}});
+	geoVEC3F p2(std::array < float, 3 > {{10, 0, 0}});
+
+	float r = 5;
+	float x, y, h;
+
+	y = -3;
+
+	x = -0.1;
+	AssertIsFalse(geometry::min_height_sphere_on_line(x, y, r, p1, p2, h));
+
+	x = 0;
+	AssertIsTrue(geometry::min_height_sphere_on_line(x, y, r, p1, p2, h));
+	AssertAreEqual(h, -1, tolerance);
+
+	x = 5;
+	AssertIsTrue(geometry::min_height_sphere_on_line(x, y, r, p1, p2, h));
+	AssertAreEqual(h, -1, tolerance);
+
+	x = 10;
+	AssertIsTrue(geometry::min_height_sphere_on_line(x, y, r, p1, p2, h));
+	AssertAreEqual(h, -1, tolerance);
+
+	x = 10.1;
+	AssertIsFalse(geometry::min_height_sphere_on_line(x, y, r, p1, p2, h));
+}
+
+
+
+void geometry_min_height_sphere_on_triangle::run()
+{
+	name = "geometry_min_height_sphere_on_triangle";
+	float tolerance = 0.000001;
 
 	geoVEC3F p1(std::array < float, 3 > {{0, 0, 0}});
 	geoVEC3F p2(std::array < float, 3 > {{10, 0, 0}});
 	geoVEC3F p3(std::array < float, 3 > {{0, 10, 0}});
-	
-	float r = 5;
 
-	for (int i = -2 * r; i <= 10 + 2 * r; i++)
-	{
-		float h;
-		float x = i;
-		float y = -3;
-		if (geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h))
-		{
-			std::cout << "point (" << x << "," << y << "," << h << ")" << std::endl;
-		}
-		else
-		{
-			std::cout << "point (" << x << "," << y << ", - )" << std::endl;
-		}
-	}
+	float r = 5;
+	float x, y, h;
+
+	y = 1;
+
+	x = -0.1;
+	AssertIsFalse(geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h));
+
+	x = 0;
+	AssertIsTrue(geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h));
+	AssertAreEqual(h, 0, tolerance);
+
+	x = 5;
+	AssertIsTrue(geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h));
+	AssertAreEqual(h, 0, tolerance);
+
+	x = 9;
+	AssertIsTrue(geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h));
+	AssertAreEqual(h, 0, tolerance);
+
+	x = 9.1;
+	AssertIsFalse(geometry::min_height_sphere_on_triangle(x, y, r, p1, p2, p3, h));
 
 }

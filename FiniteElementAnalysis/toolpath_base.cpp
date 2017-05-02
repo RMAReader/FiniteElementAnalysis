@@ -552,25 +552,38 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 							geoVEC3F q2 = mesh.get_vertex(e, 1);
 							geoVEC3F q3 = mesh.get_vertex(e, 2);
 
-							float zz=0;
-							zz = fmaxf(zz, q1[2]);
-							zz = fmaxf(zz, q2[2]);
-							zz = fmaxf(zz, q3[2]);
-							zz += 0.5 * tool_diameter;
-
 							float r = (float) 0.5 * tool_diameter;
 							float h;
 
 								//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
 							if (geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3, h))
 							{
-								if (h > zz)
-								{
-									bool error = true;
-								}
 								z = fmaxf(z, h);
 							}
-
+							else if (geometry::min_height_sphere_on_line(x, y, r, q1, q2, h))
+							{
+								z = fmaxf(z, h);
+							}
+							else if (geometry::min_height_sphere_on_line(x, y, r, q2, q3, h))
+							{
+								z = fmaxf(z, h);
+							}
+							else if (geometry::min_height_sphere_on_line(x, y, r, q3, q1, h))
+							{
+								z = fmaxf(z, h);
+							}
+							else if (geometry::min_height_sphere_on_point(x, y, r, q1, h))
+							{
+								z = fmaxf(z, h);
+							}
+							else if (geometry::min_height_sphere_on_point(x, y, r, q2, h))
+							{
+								z = fmaxf(z, h);
+							}
+							else if (geometry::min_height_sphere_on_point(x, y, r, q3, h))
+							{
+								z = fmaxf(z, h);
+							}
 						}
 
 					}

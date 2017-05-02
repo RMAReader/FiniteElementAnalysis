@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-
+#include <sstream>
 
 class test_base
 {
@@ -16,14 +16,16 @@ public:
 	std::string name;
 	std::vector < std::string > errors;
 
+	void AssertIsTrue(bool);
+	void AssertIsFalse(bool);
+	void AssertAreEqual(float,float,float);
+
 };
 
 
-class test_geometry : public test_base
-{
-public:
-	void run();
-};
+class geometry_min_height_sphere_on_point : public test_base { public:void run(); };
+class geometry_min_height_sphere_on_line : public test_base { public:void run(); };
+class geometry_min_height_sphere_on_triangle : public test_base { public:void run(); };
 
 
 #endif _TEST_BASE_H_

@@ -64,7 +64,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	std::vector<test_base*> tests;
-	tests.push_back(new test_geometry());
+	tests.push_back(new geometry_min_height_sphere_on_point());
+	tests.push_back(new geometry_min_height_sphere_on_line());
+	tests.push_back(new geometry_min_height_sphere_on_triangle());
 
 	for each(auto test in tests)
 	{
@@ -74,7 +76,12 @@ int _tmain(int argc, _TCHAR* argv[])
 			std::cout << test->name << " passed" << endl; TestsPassed++;
 		}
 		else{
-			std::cout << test->name << " failed" << endl; TestsFailed++;
+			std::cout << test->name << " failed" << endl;
+			for each(auto error in test->errors)
+			{
+				std::cout << error << endl;
+			}
+			TestsFailed++;
 		}
 	}
 
