@@ -522,19 +522,31 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 		while (min_col <mesh.node_y.size() - 2 && y_minus > mesh.node_y[min_col + 1]) min_col++;
 		while (max_col <mesh.node_y.size() - 2 && y_plus > mesh.node_y[max_col + 1]) max_col++;
 
-		min_row = 0;
-		max_row = 0;
+		min_row = (j % 2 == 0) ? 0 : mesh.node_x.size() - 2;
+		max_row = (j % 2 == 0) ? 0 : mesh.node_x.size() - 2;
 
-		for (int i = 0; i < steps_x; i++)
+		int start = (j % 2 == 0) ? 0 : steps_x + 1;
+		int end = (j % 2 == 0) ? steps_x : -1;
+		int incr = (j % 2 == 0) ? 1 : -1;
+
+		for (int i = start; i != end; i += incr)
 		{
 			x = (1 - (float)i / steps_x) * min_x + (float)i / steps_x * max_x;
 			x_plus = x + 0.5 * tool_diameter;
 			x_minus = x - 0.5 * tool_diameter;
 
-			while (min_row < mesh.node_x.size() - 2 && x_minus > mesh.node_x[min_row + 1]) min_row++;
-			while (max_row < mesh.node_x.size() - 2 && x_plus > mesh.node_x[max_row + 1]) max_row++;
+			if (j % 2 == 0)
+			{
+				while (min_row < mesh.node_x.size() - 2 && x_minus > mesh.node_x[min_row + 1]) min_row++;
+				while (max_row < mesh.node_x.size() - 2 && x_plus > mesh.node_x[max_row + 1]) max_row++;
+			}
+			else
+			{
+				while (min_row > 0 && x_minus < mesh.node_x[min_row]) min_row--;
+				while (max_row > 0 && x_plus < mesh.node_x[max_row]) max_row--;
+			}
 
-			z = minimum_z;
+			z = -999;
 
 			for (int row = min_row; row <= max_row; row++)
 			{
@@ -542,54 +554,49 @@ void toolpath_base::finish_surface_scanning_stl(std::vector<geoVEC3F>* path, flo
 				{
 					for each(auto e in mesh.nodes.GetPoint(row, col))
 					{
-						geoVEC2F p1; p1 << mesh.get_vertex(e, 0);
-						geoVEC2F p2; p2 << mesh.get_vertex(e, 1);
-						geoVEC2F p3; p3 << mesh.get_vertex(e, 2);
+						geoVEC3F q1 = mesh.get_vertex(e, 0);
+						geoVEC3F q2 = mesh.get_vertex(e, 1);
+						geoVEC3F q3 = mesh.get_vertex(e, 2);
 
-						if (geometry::interior_triangle(geoVEC2F(std::array < float, 2 > {{x, y}}), (float) 0.5 * tool_diameter, p1, p2, p3))
+						float r = (float) 0.5 * tool_diameter;
+						float h;
+
+						//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
+						if (geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3, h))
 						{
-							geoVEC3F q1 = mesh.get_vertex(e, 0);
-							geoVEC3F q2 = mesh.get_vertex(e, 1);
-							geoVEC3F q3 = mesh.get_vertex(e, 2);
-
-							float r = (float) 0.5 * tool_diameter;
-							float h;
-
-								//find height at which tool tip touches triangle on surface, edges or vertices.  If no touches, false is returned
-							if (geometry::min_height_sphere_on_triangle(x, y, r, q1, q2, q3, h))
+							z = fmaxf(z, h);
+						}
+						else 
+						{
+							if (geometry::min_height_sphere_on_line(x, y, r, q1, q2, h))
 							{
 								z = fmaxf(z, h);
 							}
-							else if (geometry::min_height_sphere_on_line(x, y, r, q1, q2, h))
+							if (geometry::min_height_sphere_on_line(x, y, r, q2, q3, h))
 							{
 								z = fmaxf(z, h);
 							}
-							else if (geometry::min_height_sphere_on_line(x, y, r, q2, q3, h))
+							if (geometry::min_height_sphere_on_line(x, y, r, q3, q1, h))
 							{
 								z = fmaxf(z, h);
 							}
-							else if (geometry::min_height_sphere_on_line(x, y, r, q3, q1, h))
+							if (geometry::min_height_sphere_on_point(x, y, r, q1, h))
 							{
 								z = fmaxf(z, h);
 							}
-							else if (geometry::min_height_sphere_on_point(x, y, r, q1, h))
+							if (geometry::min_height_sphere_on_point(x, y, r, q2, h))
 							{
 								z = fmaxf(z, h);
 							}
-							else if (geometry::min_height_sphere_on_point(x, y, r, q2, h))
-							{
-								z = fmaxf(z, h);
-							}
-							else if (geometry::min_height_sphere_on_point(x, y, r, q3, h))
+							if (geometry::min_height_sphere_on_point(x, y, r, q3, h))
 							{
 								z = fmaxf(z, h);
 							}
 						}
-
 					}
 				}
 			}
-			if (z > DBL_MIN)
+			if (z > -999)
 			{
 				path->push_back(geoVEC3F(std::array < float, 3 > {{x, y, z}}));
 			}

@@ -528,7 +528,7 @@
     <toolpath type="">
         <string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath7_BackFinish.txt" />
         <tool name="6.35mm Ball Nose">
-            <float name="diameter" value="12" />
+            <float name="diameter" value="6.35" />
             <string type="BallNose" />
         </tool>
         <float name="max_feedrate" value="6000" />
@@ -538,10 +538,10 @@
         <float name="margin_z" value="0" />
         <float name="safe_z" value="30" />
         <float name="minimum_z" value="0" />
-        <float name="mesh_nx" value="50" />
-        <float name="step_x" value="5" />
-        <float name="step_y" value="5" />
-        <float name="mesh_ny" value="30" />
+        <float name="mesh_nx" value="300" />
+        <float name="step_x" value="1" />
+        <float name="step_y" value="0.5" />
+        <float name="mesh_ny" value="200" />
     </toolpath>
     <toolpath type="">
         <string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath3_RibMould.txt" />
