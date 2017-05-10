@@ -67,6 +67,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	tests.push_back(new geometry_min_height_sphere_on_point());
 	tests.push_back(new geometry_min_height_sphere_on_line());
 	tests.push_back(new geometry_min_height_sphere_on_triangle());
+	tests.push_back(new geometry_mesh3f_range());
+	tests.push_back(new toolpath_scanning_path_3D());
 
 	for each(auto test in tests)
 	{

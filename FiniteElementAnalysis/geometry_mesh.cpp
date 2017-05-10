@@ -2,25 +2,14 @@
 #include "geometry.h"
 
 
-//inline bspline::triangle3f bspline::mesh3f::get_triangle(int index)
-//{
-//	return bspline::triangle3f(points[elements[index][0]], points[elements[index][1]], points[elements[index][2]]);
-//}
+geometry::mesh3f::mesh3f()
+{}
 
 geoVEC3F geometry::mesh3f::get_vertex(int element, int v){
 	return points[elements[element][v]];
 }
 
 
-//std::vector<bspline::triangle3f>* bspline::mesh3f::triangles()
-//{
-//	std::vector<bspline::triangle3f>* result = new std::vector<bspline::triangle3f>();
-//	for (int i = 0; i < elements.size(); i++)
-//	{
-//		result->push_back(get_triangle(i));
-//	}
-//	return result;
-//}
 
 void geometry::mesh3f::get_mesh_range(geoVEC3F& min, geoVEC3F& max){
 	min = points[0];
@@ -109,6 +98,105 @@ geometry::mesh3f::mesh3f(geoSURFACE3F& surface, int nx, int ny)
 			p4 = p3 - 1;
 			elements.push_back({ p1, p2, p3 });
 			elements.push_back({ p4, p3, p2 });
+		}
+	}
+}
+
+
+
+void geometry::mesh3f::add_triangle(triangle<float, 3>& t)
+{
+	int i = points.size();
+	points.push_back(t.p1);
+	points.push_back(t.p2);
+	points.push_back(t.p3);
+	elements.push_back({i, i+1, i+2});
+}
+
+
+
+geometry::mesh3f_region::mesh3f_region()
+{
+}
+
+geometry::mesh3f_region::mesh3f_region(mesh3f* mesh, int nx, int ny)
+{
+	this->build_nodes(mesh, nx, ny);
+}
+
+void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
+{
+	this->mesh = mesh;
+	this->nodes = lattice<std::vector<int>>(nx, ny);
+
+	geoVEC3F min, max;
+	this->mesh->get_mesh_range(min, max);
+	this->max_x = max[0];
+	this->max_y = max[1];
+	this->min_x = min[0];
+	this->min_y = min[1];
+	this->nx = nx;
+	this->ny = ny;
+
+	std::vector<float> node_x(nx + 1);
+	std::vector<float> node_y(ny + 1);
+
+	for (int i = 0; i <= nx; i++){
+		node_x[i] = (1 - (float)i / nx) * min[0] + (float)i / nx * max[0];
+	}
+	for (int i = 0; i <= ny; i++){
+		node_y[i] = (1 - (float)i / ny) * min[1] + (float)i / ny * max[1];
+	}
+
+	for (int e = 0; e < this->mesh->elements.size(); e++){
+		this->mesh->get_element_range(e, min, max);
+
+		for (int i = 0; i < nx; i++){
+			if (min[0] <= node_x[i + 1] && max[0] >= node_x[i])
+			{
+				for (int j = 0; j < ny; j++){
+					if (min[1] <= node_y[j + 1] && max[1] >= node_y[j])
+					{
+						nodes.GetPoint(i, j).push_back(e);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+void geometry::mesh3f_region::set_region(float low_x, float high_x, float low_y, float high_y)
+{
+	this->points.clear();
+	this->edges.clear();
+	this->triangles.clear();
+	
+	int min_x_index = (int)(nx * (low_x - min_x) / (max_x - min_x));
+	int min_y_index = (int)(ny * (low_y - min_y) / (max_y - min_y));
+	int max_x_index = (int)(nx * (high_x - min_x) / (max_x - min_x));
+	int max_y_index = (int)(ny * (high_y - min_y) / (max_y - min_y));
+
+	if (min_x_index < 0) min_x_index = 0;
+	if (min_y_index < 0) min_y_index = 0;
+	if (max_x_index >= nodes.rows) max_x_index = nodes.rows-1;
+	if (max_y_index >= nodes.cols) max_y_index = nodes.cols-1;
+
+	for (int i = min_x_index; i <= max_x_index; i++)
+	{
+		for (int j = min_y_index; j <= max_y_index; j++)
+		{
+			for each(auto e in nodes.GetPoint(i, j))
+			{
+				this->triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
+				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
+				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 0)));
+				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 1)));
+				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 2)));
+			}
 		}
 	}
 }

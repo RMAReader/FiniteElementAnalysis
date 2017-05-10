@@ -26,6 +26,31 @@ public:
 };
 
 
+
+/*
+interface which provides function to evaluate z coordinate of toolpath, given x and y coordinates
+*/
+class toolpath_height_base
+{
+public:
+	virtual float get_height(float x, float y);
+	virtual float default_height();
+};
+
+class toolpath_mesh_height : public toolpath_height_base
+{
+private:
+	geometry::mesh3f_region region;
+	float r;
+	float default_z;
+public:
+
+	toolpath_mesh_height(geometry::mesh3f* mesh, int nx, int ny, float r, float default_z);
+	float get_height(float x, float y);
+	float default_height();
+};
+
+
 class toolpath_base
 {
 public:
@@ -58,6 +83,9 @@ public:
 	void finish_surface_point_cloud(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f& mesh);
 	void finish_surface_scanning_stl(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f&);
 	void rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, geometry::mesh3f&);
+
+	void scanning_path_2D(std::vector<std::vector<geoVEC2F>>* path, float tool_diameter, float step_y, std::vector<geoVEC2F>& border);
+	static void scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, toolpath_height_base* h);
 };
 
 class toolpath_RibMouldBaseJig : public toolpath_base

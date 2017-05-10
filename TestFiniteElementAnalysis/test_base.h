@@ -26,6 +26,8 @@ public:
 class geometry_min_height_sphere_on_point : public test_base { public:void run(); };
 class geometry_min_height_sphere_on_line : public test_base { public:void run(); };
 class geometry_min_height_sphere_on_triangle : public test_base { public:void run(); };
+class geometry_mesh3f_range : public test_base { public:void run(); };
 
+class toolpath_scanning_path_3D : public test_base { public:void run(); };
 
 #endif _TEST_BASE_H_

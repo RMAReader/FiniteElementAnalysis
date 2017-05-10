@@ -707,4 +707,45 @@ void toolpath_base::rough_surface_grid(std::vector<geoVEC3F>* path, float tool_d
 
 
 
+/*
+Calculates the path in 2D followed by tool when routing area within border
+*/
+void toolpath_base::scanning_path_2D(std::vector<std::vector<geoVEC2F>>* path, float tool_diameter, float step_y, std::vector<geoVEC2F>& border)
+{
+	geometry::rectangle<float, 2> limits;
+	for each (auto p in border)
+	{
+		limits.minimum[0] = (limits.minimum[0] > p[0]) ? p[0] : limits.minimum[0];
+		limits.minimum[1] = (limits.minimum[1] > p[1]) ? p[1] : limits.minimum[1];
+		limits.maximum[0] = (limits.maximum[0] > p[0]) ? p[0] : limits.maximum[0];
+		limits.maximum[1] = (limits.maximum[1] > p[1]) ? p[1] : limits.maximum[1];
+	}
+
+
+
+	throw "not implemented yet";
+
+}
+
+
+void toolpath_base::scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, toolpath_height_base* h)
+{
+	float z;
+	for each(auto curve in path_2D)
+	{
+		geoVEC2F q = curve.front();
+		path->push_back(geoVEC3F(std::array < float, 3 > {{q[0], q[1], h->default_height()}}));
+		for each(auto point in curve)
+		{
+			z = h->get_height(point[0], point[1]);
+			path->push_back(geoVEC3F(std::array < float, 3 > {{point[0], point[1], z}}));
+		}
+		geoVEC2F p = curve.back();
+		path->push_back(geoVEC3F(std::array < float, 3 > {{p[0], p[1], h->default_height()}}));
+	}
+}
+
+float toolpath_height_base::get_height(float x, float y){ return 0; };
+float toolpath_height_base::default_height(){ return 0; };
+
 

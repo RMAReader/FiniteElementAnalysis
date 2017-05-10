@@ -12,6 +12,9 @@
 #include "geometry_mesh.h"
 #include "geometry_bspline_surface.h"
 #include "geometry_circle.h"
+#include "geometry_rectangle.h"
+#include "geometry_triangle.h"
+#include "geometry_line.h"
 
 #define geoKNOT geometry::bspline::knot<double>
 #define geoCURVE2F geometry::bspline::curve<geometry::vector<float, 2>, double>
@@ -354,6 +357,8 @@ namespace geometry
 		}
 		return false;
 	}
+
+
 
 
 }

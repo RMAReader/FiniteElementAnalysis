@@ -166,6 +166,7 @@
     <ClCompile Include="TestFiniteElementAnalysis.cpp" />
     <ClCompile Include="test_base.cpp" />
     <ClCompile Include="test_geometry.cpp" />
+    <ClCompile Include="test_toolpath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiniteElementAnalysis\FiniteElementAnalysis.vcxproj">

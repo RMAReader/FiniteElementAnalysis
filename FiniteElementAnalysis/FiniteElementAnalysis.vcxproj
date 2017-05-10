@@ -179,9 +179,12 @@
     <ClInclude Include="geometry_bspline_surface.h" />
     <ClInclude Include="geometry_circle.h" />
     <ClInclude Include="geometry_lattice.h" />
+    <ClInclude Include="geometry_line.h" />
     <ClInclude Include="geometry_matrix.h" />
     <ClInclude Include="geometry_bspline_basis.h" />
     <ClInclude Include="geometry_mesh.h" />
+    <ClInclude Include="geometry_rectangle.h" />
+    <ClInclude Include="geometry_triangle.h" />
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="supermatrix.h" />
@@ -201,6 +204,7 @@
     <ClCompile Include="gauss_legendre.cpp" />
     <ClCompile Include="geometry_mesh.cpp" />
     <ClCompile Include="Optimizer.cpp" />
+    <ClCompile Include="toolpath_mesh_height.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

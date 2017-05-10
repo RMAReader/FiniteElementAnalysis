@@ -108,6 +108,15 @@
     <ClInclude Include="geometry_circle.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="geometry_rectangle.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_triangle.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_line.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -171,6 +180,9 @@
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="toolpath_BackFinish.cpp">
+      <Filter>Source Files\ToolPaths</Filter>
+    </ClCompile>
+    <ClCompile Include="toolpath_mesh_height.cpp">
       <Filter>Source Files\ToolPaths</Filter>
     </ClCompile>
   </ItemGroup>
