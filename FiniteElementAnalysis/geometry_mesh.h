@@ -2,6 +2,7 @@
 #define _GEOMETRY_MESH_H_
 
 #include <vector>
+#include <unordered_set>
 #include "geometry_vector.h"
 #include "geometry_lattice.h"
 #include "geometry_bspline_surface.h"
@@ -83,6 +84,72 @@ namespace geometry
 
 
 
+
+	////template <class T>
+	//class triangle_iterator : public std::iterator<std::random_access_iterator_tag,
+	//	geometry::triangle<float, 3>,
+	//	ptrdiff_t,
+	//	geometry::triangle<float, 3>*,
+	//	geometry::triangle<float, 3>&>
+	//{
+	//public:
+
+	//	triangle_iterator(mesh3f_region* region = nullptr){ this->region = region; }
+	//	triangle_iterator(const triangle_iterator& rawIterator) = default;
+	//	~triangle_iterator(){}
+
+	//	triangle_iterator& operator=(const triangle_iterator& rawIterator) = default;
+	//	triangle_iterator& operator=(geometry::triangle<float, 3>* ptr){ m_ptr = ptr; return (*this); }
+
+	//	operator bool()const
+	//	{
+	//		if (m_ptr)
+	//			return true;
+	//		else
+	//			return false;
+	//	}
+
+	//	bool operator==(const triangle_iterator& rawIterator)const{ return (m_ptr == rawIterator.getConstPtr()); }
+	//	bool operator!=(const triangle_iterator& rawIterator)const{ return (m_ptr != rawIterator.getConstPtr()); }
+
+	//	triangle_iterator& operator+=(const ptrdiff_t& movement){ m_ptr += movement; return (*this); }
+	//	triangle_iterator& operator-=(const ptrdiff_t& movement){ m_ptr -= movement; return (*this); }
+	//	triangle_iterator& operator++(){ ++m_ptr; return (*this); }
+	//	triangle_iterator& operator--(){ --m_ptr; return (*this); }
+	//	//triangle_iterator  operator++(ptrdiff_t){ auto temp(*this); ++m_ptr; return temp; }
+	//	//triangle_iterator  operator--(ptrdiff_t){ auto temp(*this); --m_ptr; return temp; }
+	//	triangle_iterator  operator+(const ptrdiff_t& movement){ auto oldPtr = m_ptr; m_ptr += movement; auto temp(*this); m_ptr = oldPtr; return temp; }
+	//	triangle_iterator  operator-(const ptrdiff_t& movement){ auto oldPtr = m_ptr; m_ptr -= movement; auto temp(*this); m_ptr = oldPtr; return temp; }
+
+	//	ptrdiff_t operator-(const triangle_iterator& rawIterator){ return std::distance(rawIterator.getPtr(), this->getPtr()); }
+
+	//	geometry::triangle<float, 3>& operator*(){ return *m_ptr; }
+	//	const geometry::triangle<float, 3>& operator*()const{ return *m_ptr; }
+	//	geometry::triangle<float, 3>* operator->(){ return m_ptr; }
+
+	//	geometry::triangle<float, 3>* getPtr()const{ return m_ptr; }
+	//	const geometry::triangle<float, 3>* getConstPtr()const{ return m_ptr; }
+
+	//protected:
+
+	//	int row;
+	//	int col;
+	//	int min_row;
+	//	int max_row;
+	//	int min_col; 
+	//	int max_col;
+	//	mesh3f_region* region;
+
+	//	geometry::triangle<float, 3>* m_ptr;
+	//};
+
+
+
+
+
+
+
+
 	template <class T>
 	struct mesh_edge
 	{
@@ -91,7 +158,7 @@ namespace geometry
 		T u1,u3;
 		T a;
 	public:
-		void initialise(vector<T, 3>& v1, vector<T, 3>& v2)
+		mesh_edge(vector<T, 3>& v1, vector<T, 3>& v2)
 		{
 			p1 = v1;
 			t = v2 - v1;

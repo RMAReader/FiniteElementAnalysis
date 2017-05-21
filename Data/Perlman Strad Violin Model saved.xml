@@ -538,10 +538,10 @@
         <float name="margin_z" value="0" />
         <float name="safe_z" value="30" />
         <float name="minimum_z" value="0" />
-        <float name="mesh_nx" value="300" />
-        <float name="step_x" value="1" />
-        <float name="step_y" value="0.5" />
-        <float name="mesh_ny" value="200" />
+        <float name="mesh_nx" value="150" />
+        <float name="step_x" value="2" />
+        <float name="step_y" value="1" />
+        <float name="mesh_ny" value="100" />
     </toolpath>
     <toolpath type="">
         <string name="gcodefile" value="C:\\Users\\Lizzie\\Documents\\GitHub\\FiniteElementAnalysis\\Data\\Toolpaths\\ToolPath3_RibMould.txt" />

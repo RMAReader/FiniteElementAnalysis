@@ -51,6 +51,67 @@ public:
 };
 
 
+template <class T>
+struct scan_line
+{
+	T y;
+	std::vector<T> x;
+	scan_line();
+	scan_line(T y){ this->y = y; }
+	scan_line(T y, std::vector<T>& x){ this->y = y; this->x = x; }
+};
+
+
+
+template <class T, int N>
+class range
+{
+private:
+	std::vector<geometry::vector<T, N>> _range;
+	geometry::vector<T, N> min;
+	geometry::vector<T, N> max;
+	T step;
+	bool include_back;
+
+	void build_range()
+	{
+		if (include_back)
+		{
+			int n = (int)((max - min).L2norm()) / step + 1;
+			_range.resize(n + 1);
+			for (int i = 0; i <= n; i++)
+			{
+				_range[i] = (1 - (T)i / n) * min + (T)i / n * max;
+			}
+		}
+		else{
+			int n = (int)((max - min).L2norm()) / step + 1;
+			_range.resize(n);
+			for (int i = 0; i < n; i++)
+			{
+				_range[i] = (1 - (T)i / n) * min + (T)i / n * max;
+			}
+		}
+	}
+
+public:
+
+	range(geometry::vector<T, N> min, geometry::vector<T, N> max, float step, bool include_back)
+	{
+		this->min = min;
+		this->max = max;
+		this->step = step;
+		this->include_back = include_back;
+		build_range();
+	}
+	
+	//std::vector<geometry::vector<T, N>>* get_range(){return &_range;}
+	typedef typename std::vector<geometry::vector<T, N>>::iterator range_iterator;
+
+	range_iterator begin(){ return _range.begin(); }
+	range_iterator end(){ return _range.end(); }
+};
+
 class toolpath_base
 {
 public:
@@ -84,8 +145,14 @@ public:
 	void finish_surface_scanning_stl(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, geometry::mesh3f&);
 	void rough_surface_grid(std::vector<geoVEC3F>* path, float tool_diameter, float step_x, float step_y, float minimum_z, float safe_z, float z_margin, geometry::mesh3f&);
 
-	void scanning_path_2D(std::vector<std::vector<geoVEC2F>>* path, float tool_diameter, float step_y, std::vector<geoVEC2F>& border);
-	static void scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, toolpath_height_base* h);
+	static void build_scanlines(std::vector<scan_line<float>>&, std::vector<geometry::line<float, 2>>& border, float step_y);
+	static void scanline_path_2D(std::vector<std::vector<geoVEC2F>>* path, std::vector<scan_line<float>> scan_lines, float tool_diameter);
+
+	static void scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, float step, toolpath_height_base* h);
+
+	static std::vector<float> toolpath_base::get_range(float min, float max, int n);
+	static std::vector<float> toolpath_base::get_range(float min, float max, float step);
+
 };
 
 class toolpath_RibMouldBaseJig : public toolpath_base

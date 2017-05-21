@@ -151,6 +151,19 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 	for (int e = 0; e < this->mesh->elements.size(); e++){
 		this->mesh->get_element_range(e, min, max);
 
+		//int min_x_index = (int)(nx * (min[0] - min_x) / (max_x - min_x));
+		//int min_y_index = (int)(ny * (min[1] - min_y) / (max_y - min_y));
+		//int max_x_index = (int)(nx * (max[0] - min_x) / (max_x - min_x));
+		//int max_y_index = (int)(ny * (max[1] - min_y) / (max_y - min_y));
+
+		//for (int i = min_x_index; i <= max_x_index; i++)
+		//{
+		//	for (int j = min_y_index; j <= max_y_index; j++)
+		//	{
+		//		nodes.GetPoint(i, j).push_back(e);
+		//	}
+		//}
+
 		for (int i = 0; i < nx; i++){
 			if (min[0] <= node_x[i + 1] && max[0] >= node_x[i])
 			{
@@ -183,19 +196,25 @@ void geometry::mesh3f_region::set_region(float low_x, float high_x, float low_y,
 	if (max_x_index >= nodes.rows) max_x_index = nodes.rows-1;
 	if (max_y_index >= nodes.cols) max_y_index = nodes.cols-1;
 
+	std::unordered_set < int > elements;
+
 	for (int i = min_x_index; i <= max_x_index; i++)
 	{
 		for (int j = min_y_index; j <= max_y_index; j++)
 		{
 			for each(auto e in nodes.GetPoint(i, j))
 			{
-				this->triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
-				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-				this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
-				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 0)));
-				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 1)));
-				this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 2)));
+				if (elements.find(e) == elements.end())
+				{
+					elements.insert(e);
+					this->triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
+					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
+					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 0)));
+					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 1)));
+					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 2)));
+				}
 			}
 		}
 	}

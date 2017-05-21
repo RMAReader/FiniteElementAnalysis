@@ -174,6 +174,7 @@ namespace geometry
 	};
 
 
+
 	template <class T, int N, int M>
 	static void operator<<(vector<T, N>& left, vector<T, M>& right)
 	{

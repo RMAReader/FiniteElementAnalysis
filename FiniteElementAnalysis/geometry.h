@@ -359,7 +359,21 @@ namespace geometry
 	}
 
 
-
+	template <class T>
+	static bool intersection_line_y(T y, vector<T, 2>& p1, vector<T, 2> p2, T& x)
+	{
+		if (p1[1] == p2[1])
+		{
+			return false;
+		}
+		else if ((p1[1] <= y && y <= p2[1]) || (p2[1] <= y && y <= p1[1]))
+		{
+			T s = (y - p1[1]) / (p2[1] - p1[1]);
+			x = (1 - s) * p1[0] + s * p2[0];
+			return true;
+		}
+		return false;
+	}
 
 }
 

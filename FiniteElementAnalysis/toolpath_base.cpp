@@ -707,38 +707,129 @@ void toolpath_base::rough_surface_grid(std::vector<geoVEC3F>* path, float tool_d
 
 
 
-/*
-Calculates the path in 2D followed by tool when routing area within border
-*/
-void toolpath_base::scanning_path_2D(std::vector<std::vector<geoVEC2F>>* path, float tool_diameter, float step_y, std::vector<geoVEC2F>& border)
+std::vector<float> toolpath_base::get_range(float min, float max, int n)
 {
-	geometry::rectangle<float, 2> limits;
-	for each (auto p in border)
+	std::vector<float> range(n);
+	--n;
+	for (int i = 0; i <= n; i++)
 	{
-		limits.minimum[0] = (limits.minimum[0] > p[0]) ? p[0] : limits.minimum[0];
-		limits.minimum[1] = (limits.minimum[1] > p[1]) ? p[1] : limits.minimum[1];
-		limits.maximum[0] = (limits.maximum[0] > p[0]) ? p[0] : limits.maximum[0];
-		limits.maximum[1] = (limits.maximum[1] > p[1]) ? p[1] : limits.maximum[1];
+		range[i] = (1 - (float)i / n) * min + (float)i / n * max;
 	}
+	return range;
+}
 
-
-
-	throw "not implemented yet";
-
+std::vector<float> toolpath_base::get_range(float min, float max, float step)
+{
+	int n = (int)(max - min) / step + 1;
+	std::vector<float> range(n+1);
+	for (int i = 0; i <= n; i++)
+	{
+		range[i] = (1 - (float)i / n) * min + (float)i / n * max;
+	}
+	return range;
 }
 
 
-void toolpath_base::scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, toolpath_height_base* h)
+/*
+Calculates the path in 2D followed by tool when routing area within border
+*/
+void toolpath_base::build_scanlines(std::vector<scan_line<float>>& scan_lines, std::vector<geometry::line<float, 2>>& border, float step_y)
+{
+	if (border.size() == 0) return;
+
+	float min_y = border.front().p1[1];
+	float max_y = border.front().p1[1];
+	for each (auto p in border)
+	{
+		min_y = (min_y > p.p1[1]) ? p.p1[1] : min_y;
+		min_y = (min_y > p.p2[1]) ? p.p2[1] : min_y;
+		max_y = (max_y < p.p1[1]) ? p.p1[1] : max_y;
+		max_y = (max_y < p.p2[1]) ? p.p2[1] : max_y;
+	}
+	
+	float x;
+	for each(float y in get_range(min_y, max_y, step_y))
+	{
+		scan_line<float> scan_intersects(y);
+
+		for each(auto segment in border)
+		{
+			if (geometry::intersection_line_y(y, segment.p1, segment.p2, x))
+			{
+				scan_intersects.x.push_back(x);
+			}
+		}
+		std::sort(scan_intersects.x.begin(), scan_intersects.x.end());
+
+		if (scan_intersects.x.size() > 0)
+		{
+			scan_lines.push_back(scan_intersects);
+		}
+	}
+}
+
+
+void toolpath_base::scanline_path_2D(std::vector<std::vector<geoVEC2F>>* path, std::vector<scan_line<float>> scan_lines, float tool_diameter)
+{
+	while (scan_lines.size() > 0)
+	{
+		path->push_back(std::vector<geoVEC2F>());
+		scan_line<float> prev(scan_lines[0].y, std::vector < float > {scan_lines[0].x[0], scan_lines[0].x[1]});
+
+		for (auto it = scan_lines.begin(); it != scan_lines.end(); it++)
+		{
+			scan_line<float> &curr = *it;
+			if (abs(curr.y - prev.y) > tool_diameter) break;
+			bool continue_region = false;
+			for (int j = 0; j < curr.x.size(); j += 2)
+			{
+				if (curr.x[j] < prev.x[1] && curr.x[j + 1] > prev.x[0])
+				{
+					if (path->back().size() > 0 && abs(prev.x[0] - path->back().back()[0]) > abs(prev.x[1] - path->back().back()[0]))
+					{
+						path->back().push_back(geoVEC2F(std::array < float, 2 > {{curr.x[j + 1], curr.y}}));
+						path->back().push_back(geoVEC2F(std::array < float, 2 > {{curr.x[j], curr.y}}));
+					}
+					else{
+						path->back().push_back(geoVEC2F(std::array < float, 2 > {{curr.x[j], curr.y}}));
+						path->back().push_back(geoVEC2F(std::array < float, 2 > {{curr.x[j + 1], curr.y}}));
+					}
+					prev = scan_line<float>(curr.y, std::vector < float > {curr.x[j], curr.x[j + 1]});
+					curr.x.erase(curr.x.begin() + j, curr.x.begin() + j + 2);
+					continue_region = true;
+					break;
+				}
+			}
+			if (!continue_region) break;
+		}
+		
+		//remove all lines with no x values remaining
+		std::vector<scan_line<float>> remaining_scan_lines;
+		for each(auto line in scan_lines)
+		{
+			if (line.x.size() > 0) remaining_scan_lines.push_back(line);
+		}
+		scan_lines = remaining_scan_lines;
+	}
+}
+
+
+void toolpath_base::scanning_path_3D(std::vector<geoVEC3F>* path, std::vector<std::vector<geoVEC2F>>& path_2D, float step, toolpath_height_base* h)
 {
 	float z;
 	for each(auto curve in path_2D)
 	{
 		geoVEC2F q = curve.front();
 		path->push_back(geoVEC3F(std::array < float, 3 > {{q[0], q[1], h->default_height()}}));
-		for each(auto point in curve)
+		for (auto it = curve.begin(); it != curve.end() - 1; it++)
 		{
-			z = h->get_height(point[0], point[1]);
-			path->push_back(geoVEC3F(std::array < float, 3 > {{point[0], point[1], z}}));
+			//std::vector<geometry::vector<float, 2>> points;
+			range<float, 2> points(*it, *(it + 1), step, (it + 1) == curve.end());
+			for (auto p = points.begin(); p != points.end(); p++)
+			{
+				z = h->get_height((*p)[0], (*p)[1]);
+				path->push_back(geoVEC3F(std::array < float, 3 > {{(*p)[0], (*p)[1], z}}));
+			}
 		}
 		geoVEC2F p = curve.back();
 		path->push_back(geoVEC3F(std::array < float, 3 > {{p[0], p[1], h->default_height()}}));
