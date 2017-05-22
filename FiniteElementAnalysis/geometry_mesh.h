@@ -48,7 +48,6 @@ namespace geometry
 	private:
 		mesh3f* mesh;
 		
-		lattice<std::vector<int>> nodes;
 		float min_x;
 		float min_y;
 		float max_x;
@@ -56,9 +55,16 @@ namespace geometry
 		int nx;
 		int ny;
 
-		std::vector<geometry::triangle<float, 3>> triangles;
-		std::vector<geometry::line<float, 3>> edges;
-		std::vector<geometry::vector<float, 3>> points;
+		std::vector<geometry::triangle<float, 3>> all_triangles;
+		std::vector<geometry::line<float, 3>> all_edges;
+		std::vector<geometry::vector<float, 3>> all_points;
+
+
+		lattice<std::vector< int >> nodes_points;
+		lattice<std::vector< int >> nodes_edges;
+		lattice<std::vector< int >> nodes_triangles;
+
+
 	public:
 
 		mesh3f_region();
@@ -67,18 +73,25 @@ namespace geometry
 		void build_nodes(mesh3f* mesh, int nx, int ny);
 		void set_region(float min_x, float max_x, float min_y, float max_y);
 
-		typedef std::vector<geometry::triangle<float, 3>>::iterator triangle_iterator;
-		triangle_iterator begin_triangle() { return triangles.begin(); }
-		triangle_iterator end_triangle()   { return triangles.end(); }
+		std::vector<int> distinct_triangles;
+		std::vector<int> distinct_edges;
+		std::vector<int> distinct_points;
 
-		typedef std::vector<geometry::line<float, 3>>::iterator edge_iterator;
-		edge_iterator begin_edge() { return edges.begin(); }
-		edge_iterator end_edge()   { return edges.end(); }
+		typedef std::vector<int>::iterator triangle_iterator;
+		triangle_iterator begin_triangle() { return distinct_triangles.begin(); }
+		triangle_iterator end_triangle()   { return distinct_triangles.end(); }
 
-		typedef std::vector<geometry::vector<float, 3>>::iterator point_iterator;
-		point_iterator begin_point() { return points.begin(); }
-		point_iterator end_point()   { return points.end(); }
+		typedef std::vector<int>::iterator edge_iterator;
+		edge_iterator begin_edge() { return distinct_edges.begin(); }
+		edge_iterator end_edge()   { return distinct_edges.end(); }
 
+		typedef std::vector<int >::iterator point_iterator;
+		point_iterator begin_point() { return distinct_points.begin(); }
+		point_iterator end_point()   { return distinct_points.end(); }
+
+		inline geometry::triangle<float, 3> get_triangle(int i){ return all_triangles[i]; }
+		inline geometry::line<float, 3> get_edge(int i){ return all_edges[i]; }
+		inline geometry::vector<float, 3> get_point(int i){ return mesh->points[i]; }
 	};
 
 

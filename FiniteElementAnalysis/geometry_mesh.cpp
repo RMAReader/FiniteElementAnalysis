@@ -127,7 +127,18 @@ geometry::mesh3f_region::mesh3f_region(mesh3f* mesh, int nx, int ny)
 void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 {
 	this->mesh = mesh;
-	this->nodes = lattice<std::vector<int>>(nx, ny);
+	this->nodes_triangles = lattice<std::vector<int>>(nx, ny);
+	this->nodes_edges = lattice<std::vector<int>>(nx, ny);
+	this->nodes_points = lattice<std::vector<int>>(nx, ny);
+
+	for (int e = 0; e < this->mesh->elements.size(); e++)
+	{
+		this->all_triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
+		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
+	}
+
 
 	geoVEC3F min, max;
 	this->mesh->get_mesh_range(min, max);
@@ -148,29 +159,71 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 		node_y[i] = (1 - (float)i / ny) * min[1] + (float)i / ny * max[1];
 	}
 
-	for (int e = 0; e < this->mesh->elements.size(); e++){
-		this->mesh->get_element_range(e, min, max);
+	float t_min_x, t_min_y, t_max_x, t_max_y;
 
-		//int min_x_index = (int)(nx * (min[0] - min_x) / (max_x - min_x));
-		//int min_y_index = (int)(ny * (min[1] - min_y) / (max_y - min_y));
-		//int max_x_index = (int)(nx * (max[0] - min_x) / (max_x - min_x));
-		//int max_y_index = (int)(ny * (max[1] - min_y) / (max_y - min_y));
 
-		//for (int i = min_x_index; i <= max_x_index; i++)
-		//{
-		//	for (int j = min_y_index; j <= max_y_index; j++)
-		//	{
-		//		nodes.GetPoint(i, j).push_back(e);
-		//	}
-		//}
+	//triangles
+	for (int e = 0; e < this->all_triangles.size(); e++){
+		triangle<float, 3> t = all_triangles[e];
+
+		t_min_x = (t.p1[0] < t.p2[0]) ? t.p1[0] : t.p2[0];
+		if (t.p3[0] < t_min_x) t_min_x = t.p3[0];
+
+		t_min_y = (t.p1[1] < t.p2[1]) ? t.p1[1] : t.p2[1];
+		if (t.p3[1] < t_min_y) t_min_y = t.p3[1];
+
+		t_max_x = (t.p1[0] < t.p2[0]) ? t.p2[0] : t.p1[0];
+		if (t.p3[0] > t_min_x) t_min_x = t.p3[0];
+		
+		t_max_y = (t.p1[1] < t.p2[1]) ? t.p2[1] : t.p1[1];
+		if (t.p3[1] > t_min_y) t_min_y = t.p3[1];
 
 		for (int i = 0; i < nx; i++){
-			if (min[0] <= node_x[i + 1] && max[0] >= node_x[i])
+			if (t_min_x <= node_x[i + 1] && t_max_x >= node_x[i])
 			{
 				for (int j = 0; j < ny; j++){
-					if (min[1] <= node_y[j + 1] && max[1] >= node_y[j])
+					if (t_min_y <= node_y[j + 1] && t_max_y >= node_y[j])
 					{
-						nodes.GetPoint(i, j).push_back(e);
+						nodes_triangles.GetPoint(i, j).push_back(e);
+					}
+				}
+			}
+		}
+	}
+
+	//edges
+	for (int e = 0; e < this->all_edges.size(); e++){
+		line<float, 3> t = all_edges[e];
+
+		t_min_x = (t.p1[0] < t.p2[0]) ? t.p1[0] : t.p2[0];
+		t_min_y = (t.p1[1] < t.p2[1]) ? t.p1[1] : t.p2[1];
+
+		t_max_x = (t.p1[0] < t.p2[0]) ? t.p2[0] : t.p1[0];
+		t_max_y = (t.p1[1] < t.p2[1]) ? t.p2[1] : t.p1[1];
+
+		for (int i = 0; i < nx; i++){
+			if (t_min_x <= node_x[i + 1] && t_max_x >= node_x[i])
+			{
+				for (int j = 0; j < ny; j++){
+					if (t_min_y <= node_y[j + 1] && t_max_y >= node_y[j])
+					{
+						nodes_edges.GetPoint(i, j).push_back(e);
+					}
+				}
+			}
+		}
+	}
+
+	//points
+	for (int e = 0; e < this->mesh->points.size(); e++){
+		vector<float, 3> p = this->mesh->points[e];
+		for (int i = 0; i < nx; i++){
+			if (p[0] <= node_x[i + 1] && p[0] >= node_x[i])
+			{
+				for (int j = 0; j < ny; j++){
+					if (p[1] <= node_y[j + 1] && p[1] >= node_y[j])
+					{
+						nodes_points.GetPoint(i, j).push_back(e);
 					}
 				}
 			}
@@ -182,10 +235,10 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 
 void geometry::mesh3f_region::set_region(float low_x, float high_x, float low_y, float high_y)
 {
-	this->points.clear();
-	this->edges.clear();
-	this->triangles.clear();
-	
+	distinct_triangles.clear();
+	distinct_edges.clear();
+	distinct_points.clear();
+
 	int min_x_index = (int)(nx * (low_x - min_x) / (max_x - min_x));
 	int min_y_index = (int)(ny * (low_y - min_y) / (max_y - min_y));
 	int max_x_index = (int)(nx * (high_x - min_x) / (max_x - min_x));
@@ -193,29 +246,27 @@ void geometry::mesh3f_region::set_region(float low_x, float high_x, float low_y,
 
 	if (min_x_index < 0) min_x_index = 0;
 	if (min_y_index < 0) min_y_index = 0;
-	if (max_x_index >= nodes.rows) max_x_index = nodes.rows-1;
-	if (max_y_index >= nodes.cols) max_y_index = nodes.cols-1;
-
-	std::unordered_set < int > elements;
+	if (max_x_index >= nodes_triangles.rows) max_x_index = nodes_triangles.rows - 1;
+	if (max_y_index >= nodes_triangles.cols) max_y_index = nodes_triangles.cols - 1;
 
 	for (int i = min_x_index; i <= max_x_index; i++)
 	{
 		for (int j = min_y_index; j <= max_y_index; j++)
 		{
-			for each(auto e in nodes.GetPoint(i, j))
-			{
-				if (elements.find(e) == elements.end())
-				{
-					elements.insert(e);
-					this->triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
-					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-					this->edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
-					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 0)));
-					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 1)));
-					this->points.push_back(geometry::vector<float, 3>(mesh->get_vertex(e, 2)));
-				}
-			}
+			distinct_triangles.insert(distinct_triangles.end(), nodes_triangles.GetPoint(i, j).begin(), nodes_triangles.GetPoint(i, j).end());
+			distinct_edges.insert(distinct_edges.end(), nodes_edges.GetPoint(i, j).begin(), nodes_edges.GetPoint(i, j).end());
+			distinct_points.insert(distinct_points.end(), nodes_points.GetPoint(i, j).begin(), nodes_points.GetPoint(i, j).end());
 		}
 	}
+	std::sort(distinct_triangles.begin(), distinct_triangles.end());
+	auto last_triangle = std::unique(distinct_triangles.begin(), distinct_triangles.end());
+	distinct_triangles.erase(last_triangle, distinct_triangles.end());
+
+	std::sort(distinct_edges.begin(), distinct_edges.end());
+	auto last_edge = std::unique(distinct_edges.begin(), distinct_edges.end());
+	distinct_edges.erase(last_edge, distinct_edges.end());
+
+	std::sort(distinct_points.begin(), distinct_points.end());
+	auto last_point = std::unique(distinct_points.begin(), distinct_points.end());
+	distinct_points.erase(last_point, distinct_points.end());
 }
