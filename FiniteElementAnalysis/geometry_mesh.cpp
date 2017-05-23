@@ -133,10 +133,10 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 
 	for (int e = 0; e < this->mesh->elements.size(); e++)
 	{
-		this->all_triangles.push_back(geometry::triangle<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
-		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
-		this->all_edges.push_back(geometry::line<float, 3>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
+		this->all_triangles.push_back(mesh_triangle<float>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+		this->all_edges.push_back(mesh_edge<float>(mesh->get_vertex(e, 0), mesh->get_vertex(e, 1)));
+		this->all_edges.push_back(mesh_edge<float>(mesh->get_vertex(e, 1), mesh->get_vertex(e, 2)));
+		this->all_edges.push_back(mesh_edge<float>(mesh->get_vertex(e, 2), mesh->get_vertex(e, 0)));
 	}
 
 
@@ -164,7 +164,7 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 
 	//triangles
 	for (int e = 0; e < this->all_triangles.size(); e++){
-		triangle<float, 3> t = all_triangles[e];
+		mesh_triangle<float> t = all_triangles[e];
 
 		t_min_x = (t.p1[0] < t.p2[0]) ? t.p1[0] : t.p2[0];
 		if (t.p3[0] < t_min_x) t_min_x = t.p3[0];
@@ -193,7 +193,7 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 
 	//edges
 	for (int e = 0; e < this->all_edges.size(); e++){
-		line<float, 3> t = all_edges[e];
+		mesh_edge<float> t = all_edges[e];
 
 		t_min_x = (t.p1[0] < t.p2[0]) ? t.p1[0] : t.p2[0];
 		t_min_y = (t.p1[1] < t.p2[1]) ? t.p1[1] : t.p2[1];
@@ -235,38 +235,47 @@ void geometry::mesh3f_region::build_nodes(mesh3f* mesh, int nx, int ny)
 
 void geometry::mesh3f_region::set_region(float low_x, float high_x, float low_y, float high_y)
 {
-	distinct_triangles.clear();
-	distinct_edges.clear();
-	distinct_points.clear();
 
-	int min_x_index = (int)(nx * (low_x - min_x) / (max_x - min_x));
-	int min_y_index = (int)(ny * (low_y - min_y) / (max_y - min_y));
-	int max_x_index = (int)(nx * (high_x - min_x) / (max_x - min_x));
-	int max_y_index = (int)(ny * (high_y - min_y) / (max_y - min_y));
+	int min_i = (int)(nx * (low_x - min_x) / (max_x - min_x));
+	int min_j = (int)(ny * (low_y - min_y) / (max_y - min_y));
+	int max_i = (int)(nx * (high_x - min_x) / (max_x - min_x));
+	int max_j = (int)(ny * (high_y - min_y) / (max_y - min_y));
 
-	if (min_x_index < 0) min_x_index = 0;
-	if (min_y_index < 0) min_y_index = 0;
-	if (max_x_index >= nodes_triangles.rows) max_x_index = nodes_triangles.rows - 1;
-	if (max_y_index >= nodes_triangles.cols) max_y_index = nodes_triangles.cols - 1;
+	if (min_i < 0) min_i = 0;
+	if (min_j < 0) min_j = 0;
+	if (max_i >= nodes_triangles.rows) max_i = nodes_triangles.rows - 1;
+	if (max_j >= nodes_triangles.cols) max_j = nodes_triangles.cols - 1;
 
-	for (int i = min_x_index; i <= max_x_index; i++)
+	if (min_i != min_x_index || min_j != min_y_index || max_i != max_x_index || max_j != max_y_index)
 	{
-		for (int j = min_y_index; j <= max_y_index; j++)
+		min_x_index = min_i;
+		min_y_index = min_j;
+		max_x_index = max_i;
+		max_y_index = max_j;
+
+		distinct_triangles.clear();
+		distinct_edges.clear();
+		distinct_points.clear();
+
+		for (int i = min_x_index; i <= max_x_index; i++)
 		{
-			distinct_triangles.insert(distinct_triangles.end(), nodes_triangles.GetPoint(i, j).begin(), nodes_triangles.GetPoint(i, j).end());
-			distinct_edges.insert(distinct_edges.end(), nodes_edges.GetPoint(i, j).begin(), nodes_edges.GetPoint(i, j).end());
-			distinct_points.insert(distinct_points.end(), nodes_points.GetPoint(i, j).begin(), nodes_points.GetPoint(i, j).end());
+			for (int j = min_y_index; j <= max_y_index; j++)
+			{
+				distinct_triangles.insert(distinct_triangles.end(), nodes_triangles.GetPoint(i, j).begin(), nodes_triangles.GetPoint(i, j).end());
+				distinct_edges.insert(distinct_edges.end(), nodes_edges.GetPoint(i, j).begin(), nodes_edges.GetPoint(i, j).end());
+				distinct_points.insert(distinct_points.end(), nodes_points.GetPoint(i, j).begin(), nodes_points.GetPoint(i, j).end());
+			}
 		}
+		std::sort(distinct_triangles.begin(), distinct_triangles.end());
+		auto last_triangle = std::unique(distinct_triangles.begin(), distinct_triangles.end());
+		distinct_triangles.erase(last_triangle, distinct_triangles.end());
+
+		std::sort(distinct_edges.begin(), distinct_edges.end());
+		auto last_edge = std::unique(distinct_edges.begin(), distinct_edges.end());
+		distinct_edges.erase(last_edge, distinct_edges.end());
+
+		std::sort(distinct_points.begin(), distinct_points.end());
+		auto last_point = std::unique(distinct_points.begin(), distinct_points.end());
+		distinct_points.erase(last_point, distinct_points.end());
 	}
-	std::sort(distinct_triangles.begin(), distinct_triangles.end());
-	auto last_triangle = std::unique(distinct_triangles.begin(), distinct_triangles.end());
-	distinct_triangles.erase(last_triangle, distinct_triangles.end());
-
-	std::sort(distinct_edges.begin(), distinct_edges.end());
-	auto last_edge = std::unique(distinct_edges.begin(), distinct_edges.end());
-	distinct_edges.erase(last_edge, distinct_edges.end());
-
-	std::sort(distinct_points.begin(), distinct_points.end());
-	auto last_point = std::unique(distinct_points.begin(), distinct_points.end());
-	distinct_points.erase(last_point, distinct_points.end());
 }

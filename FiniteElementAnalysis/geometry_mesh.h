@@ -43,11 +43,143 @@ namespace geometry
 	};
 
 
+	template <class T>
+	class mesh_triangle
+	{
+	private:
+
+	public:
+		vector<T, 3> p1;
+		vector<T, 3> p2;
+		vector<T, 3> p3;
+
+		mesh_triangle(vector<T, 3>& v1, vector<T, 3>& v2, vector<T, 3>& v3)
+		{
+			p1 = v1;
+			p2 = v2;
+			p3 = v3;
+		}
+			
+		bool min_height_sphere(T x, T y, T r, T& h)
+		{
+			//1. tool tip touches triangle surface
+			vector<T, 3> q1;
+			vector<T, 3> q2 = p2 - p1;
+			vector<T, 3> q3 = p3 - p1;
+
+			vector<T, 3> n = geometry::cross_product(q2, q3);
+
+			T det = n[2];
+			if (n[2] < 0) n *= -1;
+
+			n.normalise();
+
+			q1[0] = x - n[0] - p1[0];
+			q1[1] = y - n[1] - p1[1];
+
+			T alpha = (q3[1] * q1[0] - q3[0] * q1[1]) / det;
+			T beta = (-q2[1] * q1[0] + q2[0] * q1[1]) / det;
+
+			if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
+			{
+				h = p1[2] + alpha * q2[2] + beta * q3[2] + r * (n[2] - 1);
+				return true;
+			}
+		}
+	};
+
+	template <class T>
+	class mesh_edge
+	{
+	private:
+		T l, m, m0, m1, n, ux, uy, uz, a;
+		vector<T, 2> q;
+		vector<T, 3> t;
+	public:
+		vector<T, 3> p1;
+		vector<T, 3> p2;
+
+		mesh_edge(vector<T, 3>& v1, vector<T, 3>& v2)
+		{
+			p1 = v1;
+			p2 = v2;
+
+			t = p2 - p1;
+			l = t[0] * t[0] + t[1] * t[1] + t[2] * t[2];
+			m0 = -t[0] / l;
+			m1 = -t[1] / l;
+			m = -t[2] / l;
+			ux = m * t[0];
+			uy = m * t[1];
+			uz = m * t[2] + 1;
+			a = ux*ux + uy*uy + uz*uz;
+			ux /= a;
+			uy /= a;
+			uz /= a;
+			a *= 2;
+		}
+
+		bool min_height_sphere(T x, T y, T r, T& h)
+		{
+			T q0, q1, vx, vy, vz, b, c, d, r2, z, alpha;
+
+			q0 = p1[0] - x;
+			q1 = p1[1] - y;
+
+			n = q0 * m0 + q1 * m1;
+
+			vx = n * t[0] + q0;
+			vy = n * t[1] + q1;
+			vz = n * t[2];
+
+			b = ux*vx + uy*vy + uz*vz;
+			c = vx*vx + vy*vy + vz*vz - r*r;
+			
+			d = b*b - 2 * a*c;
+			bool contact = false;
+			if (d >= 0)
+			{
+				d = sqrtf(d) / a;
+				z = -b + d;
+				alpha = m * z + n;
+
+				if (0 <= alpha && alpha <= 1){
+					z = p1[2] - z;
+					h = z - r;
+					contact = true;
+				}
+				
+				z = -b - d;
+				alpha = m * z + n;
+				if (0 <= alpha && alpha <= 1){
+					z = p1[2] - z;
+					if (contact)
+					{
+						h = fmaxf(h, z - r);
+					}
+					else{
+						h = z - r;
+						contact = true;
+					}
+				}
+			}
+			return contact;
+		}
+
+	};
+
+
+
 	class mesh3f_region
 	{
 	private:
 		mesh3f* mesh;
 		
+		int min_x_index;
+		int min_y_index;
+		int max_x_index;
+		int max_y_index;
+
 		float min_x;
 		float min_y;
 		float max_x;
@@ -55,8 +187,8 @@ namespace geometry
 		int nx;
 		int ny;
 
-		std::vector<geometry::triangle<float, 3>> all_triangles;
-		std::vector<geometry::line<float, 3>> all_edges;
+		std::vector<mesh_triangle<float>> all_triangles;
+		std::vector<mesh_edge<float>> all_edges;
 		std::vector<geometry::vector<float, 3>> all_points;
 
 
@@ -89,8 +221,8 @@ namespace geometry
 		point_iterator begin_point() { return distinct_points.begin(); }
 		point_iterator end_point()   { return distinct_points.end(); }
 
-		inline geometry::triangle<float, 3> get_triangle(int i){ return all_triangles[i]; }
-		inline geometry::line<float, 3> get_edge(int i){ return all_edges[i]; }
+		inline mesh_triangle<float> get_triangle(int i){ return all_triangles[i]; }
+		inline mesh_edge<float> get_edge(int i){ return all_edges[i]; }
 		inline geometry::vector<float, 3> get_point(int i){ return mesh->points[i]; }
 	};
 
@@ -163,69 +295,7 @@ namespace geometry
 
 
 
-	template <class T>
-	struct mesh_edge
-	{
-		vector<T, 3> t;
-		vector<T, 3> p1;
-		T u1,u3;
-		T a;
-	public:
-		mesh_edge(vector<T, 3>& v1, vector<T, 3>& v2)
-		{
-			p1 = v1;
-			t = v2 - v1;
 
-			u1 = (t[0] * t[0] + t[1] * t[1]) / t[2];
-
-			a = t[0] * t[0] + t[1] * t[1] + u1 * u1;
-		}
-
-		bool min_height_sphere(T x, T y, T r, T& h)
-		{
-			vector<T, 2> p;  
-			p[0] = p1[0] - x; 
-			p[1] = p1[1] - y;
-
-			T u2 = (p[0] * t[0] + p[1] * t[1]) / t[2];
-
-			T b = 2 * (p[0] * t[0] + p[1] * t[1] + u1 * u2);
-			T c = p[0] * p[0] + p[1] * p[1] + u2 * u2 - r * r;
-			
-			T d = b * b - 4 * a * c;
-			T alpha;
-			T h1 = 0;
-			T h2 = 0;
-			bool contact = false;
-			if (d >= 0)
-			{
-				d = sqrtf(d);
-
-				alpha = (-b + d) / (2 * a);
-				if (0 <= alpha && alpha <= 1)
-				{
-					h1 = (alpha * u1 + u2) + p1[2] + alpha * t[2];
-					contact = true;
-				}
-				alpha = (-b - d) / (2 * a);
-				if (0 <= alpha && alpha <= 1)
-				{
-					h1 = (alpha * u1 + u2) + p1[2] + alpha * t[2];
-					contact = true;
-				}
-
-			}
-			if (contact){
-				h = fmaxf(h1, h2);
-				return true;
-			}
-			else{
-				return false;
-			}
-
-		}
-
-	};
 }
 
 

@@ -20,8 +20,13 @@ float toolpath_mesh_height::get_height(float x, float y)
 	for each(auto i in region.distinct_triangles)
 	{
 		//find height at which tool tip touches triangle on surface.  If no touches, false is returned
-		geometry::triangle<float, 3> &t = region.get_triangle(i);
-		if (geometry::min_height_sphere_on_triangle(x, y, r, t.p1, t.p2, t.p3, h))
+		//geometry::triangle<float, 3> &t = region.get_triangle(i);
+		//if (geometry::min_height_sphere_on_triangle(x, y, r, t.p1, t.p2, t.p3, h))
+		//{
+		//	z = fmaxf(z, h);
+		//}
+
+		if (region.get_triangle(i).min_height_sphere(x, y, r, h))
 		{
 			z = fmaxf(z, h);
 		}
@@ -29,8 +34,12 @@ float toolpath_mesh_height::get_height(float x, float y)
 	for each(auto i in region.distinct_edges)
 	{
 		//find height at which tool tip touches triangle on edge.  If no touches, false is returned
-		geometry::line<float, 3> &e = region.get_edge(i);
-		if (geometry::min_height_sphere_on_line(x, y, r, e.p1, e.p2, h))
+		//geometry::line<float, 3> &e = region.get_edge(i);
+		//if (geometry::min_height_sphere_on_line(x, y, r, e.p1, e.p2, h))
+		//{
+		//	z = fmaxf(z, h);
+		//}
+		if (region.get_edge(i).min_height_sphere(x, y, r, h))
 		{
 			z = fmaxf(z, h);
 		}
