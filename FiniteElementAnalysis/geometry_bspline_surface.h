@@ -78,9 +78,9 @@ namespace geometry {
 			}
 
 			curve<T,U> curve_x(double v){
-				std::vector<T> c(points.rows);
-				for (int j = 0; j < points.rows; j++){
-					c[j] = evaluate_curve(_q, _knoty.data(), _knoty.size(), _points.GetCRow(j).data(), v);
+				std::vector<T> c(_points.rows);
+				for (int j = 0; j < _points.rows; j++){
+					c[j] = evaluate_curve(_q, _knoty.data(), _knoty.size(), _points.GetRow(j).data(), v);
 				}
 				return curve<T,U>(_p, _knotx, c);
 			}

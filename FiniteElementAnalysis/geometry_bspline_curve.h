@@ -6,6 +6,7 @@
 //#include <algorithm>  
 #include "geometry_bspline_knot.h"
 #include "geometry_bspline_algorithms.h"
+#include "geometry_line.h"
 //#include "bspline_utils.h"
 
 namespace geometry {
@@ -162,7 +163,6 @@ namespace geometry {
 				return length1;
 			}
 
-
 			void set(int i, T point){
 				if (i < 0 || i>_n - 1) throw "bspline curve error: require 0 <= i < _n";
 				_points[i] = point;
@@ -280,7 +280,39 @@ namespace geometry {
 		}
 
 
+		static bool Project(curve<geometry::vector<float, 2>, double>& left, curve<geometry::vector<float, 3>, double>& right)
+		{
+			left._knot = right._knot;
+			left._p = right._p;
+			left._points = std::vector<geometry::vector<float, 2>>(right._points.size());
+			for (int i = 0; i < right._points.size(); i++)
+			{
+				left._points[i] << right._points[i];
+			}
+			return true;
+		}
 
+		
+		static std::vector<geometry::line<float, 2>> ToPolyLine(curve<geometry::vector<float, 2>, double>& curve, float step)
+		{
+			std::vector<geometry::vector<float, 2>> _array;
+			std::vector<geometry::line<float, 2>> result;
+
+			float length = curve.length(curve._knot.minParam(), curve._knot.maxParam());
+			int n = (int)(length / step) + 1;
+			double k;
+
+			for (int i = 0; i <= n; i++)
+			{
+				k = (1 - (double)i / n) * curve._knot.minParam() + (double)i / n * curve._knot.maxParam();
+				_array.push_back(geometry::vector<float, 2>(curve.evaluate(k)));
+			}
+			for (int i = 0; i < n; i++)
+			{
+				result.push_back(geometry::line<float, 2>(_array[i], _array[i+1]));
+			}
+			return result;
+		}
 	}
 }
 

@@ -47,7 +47,11 @@ namespace geometry
 	class mesh_triangle
 	{
 	private:
-
+		vector<T, 3> q1;
+		vector<T, 3> q2;
+		vector<T, 3> q3;
+		vector<T, 3> n;
+		T det,a0,a1;
 	public:
 		vector<T, 3> p1;
 		vector<T, 3> p2;
@@ -58,27 +62,45 @@ namespace geometry
 			p1 = v1;
 			p2 = v2;
 			p3 = v3;
-		}
-			
-		bool min_height_sphere(T x, T y, T r, T& h)
-		{
+
 			//1. tool tip touches triangle surface
-			vector<T, 3> q1;
-			vector<T, 3> q2 = p2 - p1;
-			vector<T, 3> q3 = p3 - p1;
+			q2 = p2 - p1;
+			q3 = p3 - p1;
 
-			vector<T, 3> n = geometry::cross_product(q2, q3);
+			n = geometry::cross_product(q2, q3);
 
-			T det = n[2];
+			det = n[2];
 			if (n[2] < 0) n *= -1;
 
 			n.normalise();
 
-			q1[0] = x - n[0] - p1[0];
-			q1[1] = y - n[1] - p1[1];
+			q2[0] /= det;
+			q2[1] /= det;
+			q3[0] /= det;
+			q3[1] /= det;
+			a0 = -n[0] - p1[0];
+			a1 = -n[1] - p1[1];
+		}
+			
+		bool min_height_sphere(T x, T y, T r, T& h)
+		{
+			////1. tool tip touches triangle surface
+			//vector<T, 3> q1;
+			//vector<T, 3> q2 = p2 - p1;
+			//vector<T, 3> q3 = p3 - p1;
 
-			T alpha = (q3[1] * q1[0] - q3[0] * q1[1]) / det;
-			T beta = (-q2[1] * q1[0] + q2[0] * q1[1]) / det;
+			//vector<T, 3> n = geometry::cross_product(q2, q3);
+
+			//T det = n[2];
+			//if (n[2] < 0) n *= -1;
+
+			//n.normalise();
+
+			q1[0] = a0 + x;
+			q1[1] = a1 + y;
+
+			T alpha = q3[1] * q1[0] - q3[0] * q1[1];
+			T beta = -q2[1] * q1[0] + q2[0] * q1[1];
 
 			if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
 			{

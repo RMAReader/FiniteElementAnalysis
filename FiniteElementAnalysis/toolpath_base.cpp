@@ -783,7 +783,7 @@ void toolpath_base::scanline_path_2D(std::vector<std::vector<geoVEC2F>>* path, s
 			bool continue_region = false;
 			for (int j = 0; j < curr.x.size(); j += 2)
 			{
-				if (curr.x[j] < prev.x[1] && curr.x[j + 1] > prev.x[0])
+				if (curr.x[j] <= prev.x[1] && curr.x[j + 1] >= prev.x[0])
 				{
 					if (path->back().size() > 0 && abs(prev.x[0] - path->back().back()[0]) > abs(prev.x[1] - path->back().back()[0]))
 					{

@@ -24,22 +24,26 @@ void toolpath_BackFinish::calculate()
 	auto t1 = std::chrono::high_resolution_clock::now();
 
 	//finish_surface_scanning_stl(&points, tool->diameter, step_x, step_y, minimum_z, mesh);
-	
 
 	//get border
-	geoVEC3F min, max;
-	mesh.get_mesh_range(min, max);
-	geoVEC2F p1(std::array < float, 2 > {{min[0], min[1]}});
-	geoVEC2F p2(std::array < float, 2 > {{min[0], max[1]}});
-	geoVEC2F p3(std::array < float, 2 > {{max[0], max[1]}});
-	geoVEC2F p4(std::array < float, 2 > {{max[0], min[1]}});
-	std::vector < geometry::line<float, 2>> border
-	{
-		geometry::line<float, 2 >(p1, p2),
-		geometry::line<float, 2 >(p2, p3),
-		geometry::line<float, 2 >(p3, p4),
-		geometry::line<float, 2 >(p4, p1),
-	};
+	geoCURVE2F b1, b2, b3, b4;
+	geometry::bspline::Project(b1, s.curve_x(s._knoty.minParam()));
+	geometry::bspline::Project(b2, s.curve_y(s._knotx.minParam()));
+	geometry::bspline::Project(b3, s.curve_x(s._knoty.maxParam()));
+	geometry::bspline::Project(b4, s.curve_y(s._knotx.maxParam()));
+
+	auto c1 = geometry::bspline::ToPolyLine(b1, step_y);
+	auto c2 = geometry::bspline::ToPolyLine(b2, step_y);
+	auto c3 = geometry::bspline::ToPolyLine(b3, step_y);
+	auto c4 = geometry::bspline::ToPolyLine(b4, step_y);
+
+	std::vector < geometry::line<float, 2>> border;
+	border.insert(border.end(), c1.begin(), c1.end());
+	border.insert(border.end(), c2.begin(), c2.end());
+	border.insert(border.end(), c3.begin(), c3.end());
+	border.insert(border.end(), c4.begin(), c4.end());
+
+
 
 	//build scan lines
 	std::vector<scan_line<float>> scan_lines;
